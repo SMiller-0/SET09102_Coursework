@@ -3,19 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SET09102_Coursework.Views.AllUsersPage"
              xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
+             xmlns:models="clr-namespace:SET09102_Coursework.Models"
              Title="All System Users">
 
 <ContentPage.BindingContext>
         <viewModels:AllUsersViewModel />
 </ContentPage.BindingContext>
 
-<VerticalStackLayout>
-        <Label Text="All System Users" FontAttributes="Bold" FontSize="20"/>
-        <!-- Display List in a grid -->
+<VerticalStackLayout Padding="20">
+        <Label Text="All Users" FontAttributes="Bold" FontSize="24" />
 
-        <Button Text="Add New User" Command="{Binding AddUserCommand}" />
-        <Button Text="Edit User" Command="{Binding EditUserCommand}" />
-        <Button Text="Delete User" Command="{Binding DeleteUserCommand}" />
-
+        <CollectionView ItemsSource="{Binding Users}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="{Binding FirstName}" />
+                        <Label Text="{Binding Surname}" />
+                        <Button Text="Details"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllUsersViewModel}}, Path=GoToUserDetailsCommand}"
+                                CommandParameter="{Binding}" />
+                    </HorizontalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>
