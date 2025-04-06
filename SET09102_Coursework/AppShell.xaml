@@ -13,8 +13,8 @@
             Icon="{OnPlatform 'icon_notes.png', iOS='icon_notes_ios.png', MacCatalyst='icon_notes_ios.png'}" />
 
         <ShellContent
-            Title="Notes"
-            ContentTemplate="{DataTemplate views:AllNotesPage}"
+            Title="Sensors"
+            ContentTemplate="{DataTemplate views:AllSensorsPage}"
             Icon="{OnPlatform 'icon_notes.png', iOS='icon_notes_ios.png', MacCatalyst='icon_notes_ios.png'}" />
 
         <ShellContent
