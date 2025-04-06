@@ -10,12 +10,12 @@
         <ShellContent
             Title="Users"
             ContentTemplate="{DataTemplate views:AllUsersPage}"
-            Icon="{OnPlatform 'icon_notes.png', iOS='icon_notes_ios.png', MacCatalyst='icon_notes_ios.png'}" />
+            Icon="user.png'}" />
 
         <ShellContent
             Title="Sensors"
             ContentTemplate="{DataTemplate views:AllSensorsPage}"
-            Icon="{OnPlatform 'icon_notes.png', iOS='icon_notes_ios.png', MacCatalyst='icon_notes_ios.png'}" />
+            Icon="sensor.png" />
 
         <ShellContent
             Title="About"
