@@ -1,8 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Views;
-using System.Collections.ObjectModel;
 
 namespace SET09102_Coursework.ViewModels;
 
@@ -22,14 +22,13 @@ public partial class AllSensorsViewModel : ObservableObject
         };
     }
 
-
     [RelayCommand]
     private async Task ViewSensorDetails(Sensor sensor)
     {
         await Shell.Current.GoToAsync(nameof(SensorPage), true, new Dictionary<string, object>
         {
-            { "Sensor", sensor }
+            { "SelectedSensor", sensor }
         });
     }
-
+    
 }

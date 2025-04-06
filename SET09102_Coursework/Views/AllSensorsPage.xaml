@@ -33,7 +33,7 @@
                                         </HorizontalStackLayout>
                                         
                                         <Button Text="View Details"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllSensorsViewModel}}, Path=ViewSensorCommand}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllSensorsViewModel}}, Path=ViewSensorDetailsCommand}"
                                             CommandParameter="{Binding}" />
                                     </VerticalStackLayout>
                                 </Frame>

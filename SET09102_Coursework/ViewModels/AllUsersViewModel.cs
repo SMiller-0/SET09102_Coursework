@@ -25,7 +25,7 @@ public partial class AllUsersViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task GoToUserDetails(User user)
+    private async Task ViewUserDetails(User user)
     {
         await Shell.Current.GoToAsync(nameof(UserPage), true, new Dictionary<string, object>
         {

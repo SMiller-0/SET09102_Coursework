@@ -10,7 +10,7 @@
         <ShellContent
             Title="Users"
             ContentTemplate="{DataTemplate views:AllUsersPage}"
-            Icon="user.png'}" />
+            Icon="user.png" />
 
         <ShellContent
             Title="Sensors"

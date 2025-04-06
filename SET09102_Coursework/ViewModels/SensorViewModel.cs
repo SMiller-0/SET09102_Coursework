@@ -3,10 +3,11 @@ using SET09102_Coursework.Models;
 namespace SET09102_Coursework.ViewModels;
 
 
-[QueryProperty(nameof(SelectedUser), "SelectedUser")]
-public partial class UserViewModel : ObservableObject
+[QueryProperty(nameof(SelectedSensor), "SelectedSensor")]
+public partial class SensorViewModel : ObservableObject
 {
     [ObservableProperty]
-    private User selectedUser;
-
+    private Sensor selectedSensor;
 }
+
+
