@@ -5,10 +5,6 @@
              xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
              xmlns:models="clr-namespace:SET09102_Coursework.Models"
              Title="All System Users">
-             
-<ContentPage.BindingContext>
-    <viewModels:AllUsersViewModel />
-</ContentPage.BindingContext>
 
 <ScrollView>
 <VerticalStackLayout Padding="20" Spacing="20">

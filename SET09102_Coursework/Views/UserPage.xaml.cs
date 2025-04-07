@@ -6,7 +6,7 @@ public partial class UserPage : ContentPage
 {
 	public UserPage()
 	{
+        this.BindingContext = new UserViewModel();
 		InitializeComponent();
-        BindingContext = new UserViewModel();
 	}
 }
