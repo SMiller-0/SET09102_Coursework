@@ -15,7 +15,7 @@
         <!-- Divider -->
         <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
 
-        <CollectionView ItemsSource="{Binding Users}">
+        <CollectionView ItemsSource="{Binding AllUsers}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnDefinitions="*, Auto" Padding="0,5">
@@ -28,8 +28,9 @@
                     <!-- Details Button -->
                     <Button Grid.Column="1"
                             Text="Details"
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllUsersViewModel}}, Path=ViewUserDetailsCommand}"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllUsersViewModel}}, Path=SelectUserCommand}"
                             CommandParameter="{Binding}" />
+
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

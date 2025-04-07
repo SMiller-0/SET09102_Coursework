@@ -4,9 +4,9 @@ namespace SET09102_Coursework.Views;
 
 public partial class AllUsersPage : ContentPage
 {
-	public AllUsersPage()
+	public AllUsersPage(AllUsersViewModel viewModel)
 	{
-		this.BindingContext = new AllUsersViewModel();
+		this.BindingContext = viewModel;
 		InitializeComponent();
 	}
 }

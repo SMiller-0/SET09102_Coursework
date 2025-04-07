@@ -22,7 +22,11 @@ public static class MauiProgram
     
 		builder.Configuration.AddConfiguration(config);
 
+		#if ANDROID
+		var connectionString = builder.Configuration.GetConnectionString("AndroidConnection");
+		#else
 		var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
+		#endif
 
 		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
