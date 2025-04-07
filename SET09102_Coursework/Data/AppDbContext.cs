@@ -2,14 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using SET09102_Coursework.Models;
 
 namespace SET09102_Coursework.Data;
-public class SensorsDbContext : DbContext
+public class AppDbContext : DbContext
 {
 
-    public SensorsDbContext()
+    public AppDbContext()
     { }
-    public SensorsDbContext(DbContextOptions options) : base(options)
+    public AppDbContext(DbContextOptions options) : base(options)
     { }
 
-    public DbSet Users { get; set; }
+    public DbSet<User> Users { get; set; }
 
 }
