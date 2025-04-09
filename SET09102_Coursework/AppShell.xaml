@@ -8,9 +8,32 @@
 
     <TabBar>
         <ShellContent
-            Title="Notes"
-            ContentTemplate="{DataTemplate views:AllNotesPage}"
-            Icon="{OnPlatform 'icon_notes.png', iOS='icon_notes_ios.png', MacCatalyst='icon_notes_ios.png'}" />
+            Title="Users"
+            ContentTemplate="{DataTemplate views:AllUsersPage}"
+            Icon="user.png" />
+
+        <ShellContent
+            Title="Sensors"
+            ContentTemplate="{DataTemplate views:AllSensorsPage}"
+            Icon="sensor.png" />
+
+        <ShellContent
+            Title="Backup Database"
+            ContentTemplate="{DataTemplate views:AdminBackUp}"
+            Icon="backup.png"
+            IsVisible="{Binding IsUserAdmin}"/>
+
+        <ShellContent
+            Title="Analyse Enviromental Data"
+            ContentTemplate="{DataTemplate views:AnalyticalTestsEnviromental}"
+            Icon="analysis.png"
+            IsVisible="{Binding IsUserEnviScientist}"/>
+        
+        <ShellContent
+            Title="Check Anomalies"
+            ContentTemplate="{DataTemplate views:OpsAnomalyManager}"
+            Icon="analysis.png"
+            IsVisible="{Binding IsUserOps}"/>
 
         <ShellContent
             Title="About"

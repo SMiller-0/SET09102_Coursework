@@ -4,9 +4,6 @@
              x:Class="SET09102_Coursework.Views.AllNotesPage"
              Title="Your Notes"
              NavigatedTo="ContentPage_NavigatedTo">
-    <ContentPage.BindingContext>
-        <viewModels:NotesViewModel />
-    </ContentPage.BindingContext>
     
     <!-- Add an item to the toolbar -->
     <ContentPage.ToolbarItems>
