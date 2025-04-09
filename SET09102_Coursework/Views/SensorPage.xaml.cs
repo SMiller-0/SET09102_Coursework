@@ -6,8 +6,7 @@ public partial class SensorPage : ContentPage
 {
 	public SensorPage()
 	{
+		this.BindingContext = new SensorViewModel();
 		InitializeComponent();
-		BindingContext = new SensorViewModel();
-
 	}
 }
