@@ -6,40 +6,38 @@
              xmlns:models="clr-namespace:SET09102_Coursework.Models"
              Title="All Sensors">
              
-             <ContentPage.BindingContext>
-                <viewModels:AllSensorsViewModel />
-            </ContentPage.BindingContext>
-            <ScrollView>
-                <VerticalStackLayout Padding="20" Spacing="15">
-                    <Button Text="Add New Sensor" Command="{Binding AddSensorCommand}" />
-                    <CollectionView ItemsSource="{Binding Sensors}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Frame BorderColor="Gray" Padding="10" Margin="0,5">
-                                    <VerticalStackLayout Spacing="5">
-                                        <HorizontalStackLayout>
-                                            <Label Text="Name: " FontAttributes="Bold" />
-                                            <Label Text="{Binding Name}" />
-                                        </HorizontalStackLayout>
-                                        
-                                        <HorizontalStackLayout>
-                                            <Label Text="Type: " FontAttributes="Bold" />
-                                            <Label Text="{Binding Type}" />
-                                        </HorizontalStackLayout>
 
-                                        <HorizontalStackLayout>
-                                            <Label Text="Active: " FontAttributes="Bold" />
-                                            <Label Text="{Binding IsActive}" />
-                                        </HorizontalStackLayout>
+<ScrollView>
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Button Text="Add New Sensor" Command="{Binding AddSensorCommand}" />
+        <CollectionView ItemsSource="{Binding Sensors}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="Gray" Padding="10" Margin="0,5">
+                        <VerticalStackLayout Spacing="5">
+                            <HorizontalStackLayout>
+                                <Label Text="Name: " FontAttributes="Bold" />
+                                <Label Text="{Binding Name}" />
+                            </HorizontalStackLayout>
                                         
-                                        <Button Text="View Details"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllSensorsViewModel}}, Path=ViewSensorDetailsCommand}"
-                                            CommandParameter="{Binding}" />
-                                    </VerticalStackLayout>
-                                </Frame>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </VerticalStackLayout>
-            </ScrollView>
-            </ContentPage>
+                            <HorizontalStackLayout>
+                                <Label Text="Type: " FontAttributes="Bold" />
+                                <Label Text="{Binding Type}" />
+                             </HorizontalStackLayout>
+
+                            <HorizontalStackLayout>
+                                <Label Text="Active: " FontAttributes="Bold" />
+                                <Label Text="{Binding IsActive}" />
+                            </HorizontalStackLayout>
+                                
+                            <Button Text="View Details"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllSensorsViewModel}}, Path=ViewSensorDetailsCommand}"
+                                CommandParameter="{Binding}" />
+                        </VerticalStackLayout>
+                    </Frame>
+                 </DataTemplate>
+             </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ScrollView>
+</ContentPage>

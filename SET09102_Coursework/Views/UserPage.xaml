@@ -13,25 +13,25 @@
         <!-- First Name -->
         <VerticalStackLayout Spacing="2">
             <Label Text="First Name" FontAttributes="Bold" FontSize="20"/>
-            <Label Text="{Binding FirstName}" FontSize="18" />
+            <Label Text="{Binding User.FirstName}" FontSize="18" />
         </VerticalStackLayout>
 
         <!-- Surname -->
         <VerticalStackLayout Spacing="2">
             <Label Text="Surname" FontAttributes="Bold" FontSize="20"/>
-            <Label Text="{Binding Surname}" FontSize="18" />
+            <Label Text="{Binding User.Surname}" FontSize="18" />
         </VerticalStackLayout>
 
         <!-- Role -->
         <VerticalStackLayout Spacing="2">
             <Label Text="Role" FontAttributes="Bold" FontSize="20"/>
-            <Label Text="{Binding Role}" FontSize="18" />
+            <Label Text="{Binding User.RoleName}" FontSize="18" />
         </VerticalStackLayout>
 
         <!-- Email -->
         <VerticalStackLayout Spacing="2">
             <Label Text="Email" FontAttributes="Bold" FontSize="20"/>
-            <Label Text="{Binding Email}" FontSize="18" />
+            <Label Text="{Binding User.Email}" FontSize="18" />
         </VerticalStackLayout>
 
         <!-- Divider -->
