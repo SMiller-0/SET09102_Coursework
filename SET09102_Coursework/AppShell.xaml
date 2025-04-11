@@ -8,6 +8,11 @@
 
     <TabBar>
         <ShellContent
+            Title="Login"
+            ContentTemplate="{DataTemplate views:LoginPage}"
+            Route="LoginPage" />
+
+        <ShellContent
             Title="Users"
             ContentTemplate="{DataTemplate views:AllUsersPage}"
             Icon="user.png" />

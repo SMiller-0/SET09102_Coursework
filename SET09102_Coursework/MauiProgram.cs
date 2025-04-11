@@ -36,13 +36,15 @@ public static class MauiProgram
 		builder.Services.AddSingleton<AllSensorsViewModel>();
 		builder.Services.AddTransient<SensorViewModel>();
 		builder.Services.AddTransient<SensorSettingsViewModel>();
-
+		builder.Services.AddSingleton<LoginViewModel>();
+		
 		// Views
 		builder.Services.AddSingleton<AllUsersPage>();
 		builder.Services.AddTransient<UserPage>();
 		builder.Services.AddSingleton<AllSensorsPage>();
 		builder.Services.AddTransient<SensorPage>();
 		builder.Services.AddTransient<SensorSettingsPage>();
+		builder.Services.AddSingleton<LoginPage>();
 
 		builder
 			.UseMauiApp<App>()
