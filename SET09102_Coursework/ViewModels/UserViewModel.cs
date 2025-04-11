@@ -17,7 +17,7 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
     public string FirstName => user.FirstName;
     public string Surname => user.Surname;
     public string Email => user.Email;
-    public string RoleName => User?.Role?.Name ?? "Unknown";
+    public int RoleId => user.RoleId;
 
     public UserViewModel(AppDbContext appDbContext)
     {
