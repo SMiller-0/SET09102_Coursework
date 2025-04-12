@@ -4,19 +4,19 @@
              xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
              x:Class="SET09102_Coursework.Views.LoginPage"
              Shell.NavBarIsVisible="False">
-             
+
     <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
         <Label Text="Login"
                FontSize="32"
                FontAttributes="Bold"
                HorizontalOptions="Center" />
 
-        <Entry x:Name="EmailEntry"
-               Placeholder="Email"
+        <Entry Text="{Binding Email}" 
+               Placeholder="Email" 
                Keyboard="Email" />
 
-        <Entry x:Name="PasswordEntry"
-               Placeholder="Password"
+        <Entry Text="{Binding Password}" 
+               Placeholder="Password" 
                IsPassword="True" />
 
         <Button Text="Login"
