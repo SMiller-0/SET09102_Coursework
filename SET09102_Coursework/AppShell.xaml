@@ -10,7 +10,8 @@
         <ShellContent
             Title="Login"
             ContentTemplate="{DataTemplate views:LoginPage}"
-            Route="LoginPage" />
+            Route="LoginPage" 
+            Icon="login.png" />
 
         <ShellContent
             Title="Users"
