@@ -8,7 +8,8 @@ namespace SET09102_Coursework.Models;
 [PrimaryKey(nameof(Id))]
 public class User
 {
-    [Column("id")]
+    [Key]
+    [Column("user_id")]
     public int Id { get; set; }
 
     [Required]
@@ -20,12 +21,30 @@ public class User
     public string Surname { get; set; }
 
     [Required]
+    [Column("street")]
+    public string Street { get; set; }
+
+    [Required]
+    [Column("city")]
+    public string City { get; set; }
+    
+    [Required]
+    [Column("postcode")]
+    public string Postcode { get; set; }
+
+    [Required]
     [Column("email")]
     public string Email { get; set; }
+
+    [Required]
+    [Column("password")]
+    public string Password { get; set; } 
 
     [ForeignKey("Role")]
     [Column("role_id")]
     public int RoleId { get; set; }
 
+
+    // Navigation Properties
     public Role Role { get; set; }
 }
