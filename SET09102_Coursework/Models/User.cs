@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SET09102_Coursework.Models;
 
 [Table("users")]
-[PrimaryKey(nameof(Id))]
 public class User
 {
     [Key]
