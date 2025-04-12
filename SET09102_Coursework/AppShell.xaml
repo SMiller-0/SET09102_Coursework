@@ -8,12 +8,6 @@
 
     <TabBar>
         <ShellContent
-            Title="Login"
-            ContentTemplate="{DataTemplate views:LoginPage}"
-            Route="LoginPage" 
-            Icon="login.png" />
-
-        <ShellContent
             Title="Users"
             ContentTemplate="{DataTemplate views:AllUsersPage}"
             Icon="user.png"
@@ -28,6 +22,12 @@
             Title="About"
             ContentTemplate="{DataTemplate views:AboutPage}"
             Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}" />
+
+        <ShellContent
+            Title="Logout"
+            ContentTemplate="{DataTemplate views:LoginPage}"
+            Icon="logout.png"
+            Route="LoginPage" />       
     </TabBar>
 
 </Shell>

@@ -54,7 +54,7 @@ public partial class LoginViewModel : ObservableObject
             .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u.Email == Email);
 
-        // Hardcoded password for development only remove in production
+        // Hardcoded password for development only (remove in production)
         if (user != null && Password == "Password123!" || BCrypt.Net.BCrypt.Verify(Password, user.Password))
         {
             await Shell.Current.GoToAsync($"//AllUsersPage");
@@ -64,5 +64,12 @@ public partial class LoginViewModel : ObservableObject
             LoginError = "Invalid email or password.";
             IsLoginFailed = true;
         }
+    }
+
+    [RelayCommand]
+    private async Task Logout()
+    {
+        await Shell.Current.DisplayAlert("Logged out", "You have been logged out.", "OK");
+        await Shell.Current.GoToAsync("//LoginPage");
     }
 }

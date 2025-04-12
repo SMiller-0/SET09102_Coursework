@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
              x:Class="SET09102_Coursework.Views.LoginPage"
+             Shell.TabBarIsVisible="False"
              Shell.NavBarIsVisible="False">
 
     <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
