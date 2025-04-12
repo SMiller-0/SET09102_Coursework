@@ -37,18 +37,18 @@
                    FontSize="16" />
         </Frame>
 
-<!-- Password Box -->
-<Frame CornerRadius="10"
-       BorderColor="{DynamicResource Primary}"
-       BackgroundColor="White"
-       HasShadow="False"
-       Padding="10">
-    <Entry Text="{Binding Password}" 
-           Placeholder="Password" 
-           IsPassword="True"
-           BackgroundColor="Transparent"
-           FontSize="16" />
-</Frame>
+        <!-- Password Box -->
+        <Frame CornerRadius="10"
+               BorderColor="{DynamicResource Primary}"
+               BackgroundColor="White"
+               HasShadow="False"
+               Padding="10">
+            <Entry Text="{Binding Password}" 
+                   Placeholder="Password" 
+                   IsPassword="True"
+                   BackgroundColor="Transparent"
+                   FontSize="16" />
+        </Frame>
 
         <Button Text="Login"
                 Command="{Binding LoginCommand}" />
