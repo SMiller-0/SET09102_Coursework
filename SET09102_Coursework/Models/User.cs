@@ -38,6 +38,9 @@ public class User
     [Column("email")]
     public string Email { get; set; }
 
+    [Column("phone_number")]
+    public string? PhoneNumber { get; set; }
+
     [Required]
     [Column("password")]
     public string Password { get; set; } 
