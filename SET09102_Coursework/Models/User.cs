@@ -15,6 +15,9 @@ public class User
     [Column("first_name")]
     public string FirstName { get; set; }
 
+    [Column("middle_name")]
+    public string? MiddleName { get; set; }
+
     [Required]
     [Column("surname")]
     public string Surname { get; set; }

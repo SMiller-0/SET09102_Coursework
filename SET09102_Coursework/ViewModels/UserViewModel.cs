@@ -20,6 +20,12 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
     public string Surname => user.Surname;
     public string Email => user.Email;
 
+    public string FullName =>
+    string.IsNullOrWhiteSpace(user?.MiddleName)
+        ? $"{user?.FirstName} {user?.Surname}"
+        : $"{user?.FirstName} {user.MiddleName} {user.Surname}";
+
+
     public UserViewModel(AppDbContext appDbContext)
     {
         _context = appDbContext;
@@ -38,6 +44,7 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
         {
             User = _context.Users.Include(u => u.Role).Single(n => n.Id == int.Parse(query["load"].ToString()));
             RoleName = User?.Role?.RoleName ?? "Unknown";
+            OnPropertyChanged(nameof(FullName));
         }
     }
 
