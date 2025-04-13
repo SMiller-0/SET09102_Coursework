@@ -17,11 +17,11 @@ public partial class LoginPage : ContentPage
     base.OnAppearing();
 
     if (BindingContext is LoginViewModel vm)
-    {
-        vm.Email = string.Empty;
-        vm.Password = string.Empty;
-        vm.LoginError = string.Empty;
-        vm.IsLoginFailed = false;
-    }
-    }
+		{
+			vm.Email = string.Empty;
+        	vm.Password = string.Empty;
+        	vm.LoginError = string.Empty;
+        	vm.IsLoginFailed = false;
+    	}
+	}
 }

@@ -57,7 +57,7 @@ public partial class LoginViewModel : ObservableObject
         // Hardcoded password for development only (remove in production)
         if (user != null && Password == "Password123!" || BCrypt.Net.BCrypt.Verify(Password, user.Password))
         {
-            await Shell.Current.GoToAsync($"//AllUsersPage");
+            await Shell.Current.GoToAsync($"//DashboardPage");
         }
         else
         {

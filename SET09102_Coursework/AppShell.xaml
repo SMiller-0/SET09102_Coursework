@@ -8,6 +8,12 @@
 
     <TabBar>
         <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate views:DashboardPage}"
+            Icon="home.png"
+            Route="DashboardPage" />
+
+        <ShellContent
             Title="Users"
             ContentTemplate="{DataTemplate views:AllUsersPage}"
             Icon="user.png"
@@ -29,7 +35,6 @@
             Icon="logout.png"
             Route="LoginPage" />       
     </TabBar>
-
 </Shell>
 
 
