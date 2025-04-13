@@ -10,6 +10,8 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
 {
     [ObservableProperty]
     public User user; 
+    [ObservableProperty]
+    private string roleName;
 
     private AppDbContext _context;
    
@@ -17,7 +19,6 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
     public string FirstName => user.FirstName;
     public string Surname => user.Surname;
     public string Email => user.Email;
-    //public string RoleName => User?.Role?.Name ?? "Unknown";
 
     public UserViewModel(AppDbContext appDbContext)
     {
@@ -36,7 +37,7 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
         if (query.ContainsKey("load"))
         {
             User = _context.Users.Include(u => u.Role).Single(n => n.Id == int.Parse(query["load"].ToString()));
-
+            RoleName = User?.Role?.RoleName ?? "Unknown";
         }
     }
 
