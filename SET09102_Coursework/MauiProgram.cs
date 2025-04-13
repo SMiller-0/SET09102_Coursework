@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using SET09102_Coursework.Data;
 using SET09102_Coursework.ViewModels;
 using SET09102_Coursework.Views;
+using SET09102_Coursework.Services;
+
 namespace SET09102_Coursework;
 
 public static class MauiProgram
@@ -29,6 +31,8 @@ public static class MauiProgram
 		#endif
 
 		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
+		builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
 		// ViewModels
 		builder.Services.AddSingleton<AllUsersViewModel>();

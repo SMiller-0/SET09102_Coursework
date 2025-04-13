@@ -83,8 +83,8 @@
 
             <!-- Buttons -->
             <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
-                <Button Text="Edit User" Command="{Binding EditUserCommand}" />
-                <Button Text="Delete User" Command="{Binding DeleteUserCommand}" BackgroundColor="IndianRed" TextColor="White"/>
+                <Button Text="Edit User" Command="{Binding EditUserCommand}" IsVisible="{Binding IsAdmin}" />
+                <Button Text="Delete User" Command="{Binding DeleteUserCommand}" BackgroundColor="IndianRed" TextColor="White" IsVisible="{Binding IsAdmin}" />
             </HorizontalStackLayout>
 
         </VerticalStackLayout>

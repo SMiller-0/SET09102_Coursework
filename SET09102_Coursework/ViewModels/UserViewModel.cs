@@ -1,10 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using SET09102_Coursework.Models;
-namespace SET09102_Coursework.ViewModels;
-using SET09102_Coursework.Data;
 using Microsoft.EntityFrameworkCore;
 using CommunityToolkit.Mvvm.Input;
+using SET09102_Coursework.Models;
+using SET09102_Coursework.Data;
+using SET09102_Coursework.Services;
 
+namespace SET09102_Coursework.ViewModels;
 
 public partial class UserViewModel : ObservableObject, IQueryAttributable
 {
@@ -12,8 +13,12 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
     public User user; 
     [ObservableProperty]
     private string roleName;
+    public bool IsAdmin => _currentUserService.IsAdmin;
+
 
     private AppDbContext _context;
+    private readonly ICurrentUserService _currentUserService;
+
    
     public int Id => user.Id;
     public string FirstName => user.FirstName;
@@ -26,16 +31,27 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
         : $"{user?.FirstName} {user.MiddleName} {user.Surname}";
 
 
-    public UserViewModel(AppDbContext appDbContext)
+    public UserViewModel(AppDbContext appDbContext, ICurrentUserService currentUserService)
     {
         _context = appDbContext;
+        _currentUserService = currentUserService;
+        _currentUserService.UserChanged += OnUserChanged;
         user = new User();
+
+        
     }
 
-        public UserViewModel(AppDbContext context, User user)
+    private void OnUserChanged(object? sender, EventArgs e)
+    {
+        OnPropertyChanged(nameof(IsAdmin)); // 🔁 update UI
+    }
+
+        public UserViewModel(AppDbContext context, User user, ICurrentUserService currentUserService)
     {
         _context = context;
         this.user = user;
+        _currentUserService = currentUserService;
+        _currentUserService.UserChanged += OnUserChanged;
     }
 
     void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
@@ -51,6 +67,12 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     private async Task Save()
     {
+        if (!_currentUserService.IsAdmin)
+            {
+                await Shell.Current.DisplayAlert("Access Denied", "Only admins can save changes.", "OK");
+                return;
+            }
+
         _context.SaveChanges();
         await Shell.Current.GoToAsync($"..?saved={User.Id}");
     }
@@ -63,6 +85,12 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     private async Task Delete()
     {
+        if (!_currentUserService.IsAdmin)
+        {
+            await Shell.Current.DisplayAlert("Access Denied", "OK");
+            return;
+        }
+            
         _context.Remove(User);
         _context.SaveChanges();
         await Shell.Current.GoToAsync($"..?deleted={User.Id}");

@@ -1,31 +1,47 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using System.Collections.Generic;
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Views;
 using SET09102_Coursework.Data;
-using System.Windows.Input;
-using System.Collections.Generic;
+using SET09102_Coursework.Services;
 
 namespace SET09102_Coursework.ViewModels;
 
-public class AllUsersViewModel : IQueryAttributable
+public class AllUsersViewModel : ObservableObject, IQueryAttributable
 {
+    private readonly AppDbContext _context;
+    private readonly ICurrentUserService _currentUserService;
+
+
     public ObservableCollection<UserViewModel> AllUsers { get; }
     public ICommand NewCommand { get; }
     public ICommand SelectUserCommand { get; }
-    private AppDbContext _context;
+
+    public bool IsAdmin => _currentUserService.IsAdmin;
     
-    public AllUsersViewModel(AppDbContext appDbContext)
+
+    public AllUsersViewModel(AppDbContext appDbContext, ICurrentUserService currentUserService)
     {
         _context = appDbContext;
+        _currentUserService = currentUserService;
+        _currentUserService.UserChanged += OnUserChanged;
 
         AllUsers = new ObservableCollection<UserViewModel>(
-        _context.Users.ToList().Select(u => new UserViewModel(_context, u))
+        _context.Users.ToList().Select(u => new UserViewModel(_context, u, _currentUserService))
         );
+
         NewCommand = new AsyncRelayCommand(NewUserAsync);
         SelectUserCommand = new AsyncRelayCommand<UserViewModel>(SelectUserAsync);
     }
+
+    private void OnUserChanged(object? sender, EventArgs e)
+    {
+        OnPropertyChanged(nameof(IsAdmin)); 
+    }
+
 
     private async Task NewUserAsync()
     {
@@ -65,12 +81,8 @@ public class AllUsersViewModel : IQueryAttributable
             else
             {
                 var newUser = _context.Users.Single(u => u.Id == int.Parse(userId));
-                AllUsers.Insert(0, new UserViewModel(_context, newUser));
+                AllUsers.Insert(0, new UserViewModel(_context, newUser, _currentUserService));
             }
         }
     }
-
-
-   
-
 }

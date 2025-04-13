@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Views;
 using SET09102_Coursework.Data;
+using SET09102_Coursework.Services;
+
 
 namespace SET09102_Coursework.ViewModels;
 
@@ -15,6 +17,8 @@ namespace SET09102_Coursework.ViewModels;
 public partial class LoginViewModel : ObservableObject 
 {
     private readonly AppDbContext _context;
+    private readonly ICurrentUserService _currentUserService;
+
 
     [ObservableProperty]
     private string email;
@@ -28,9 +32,10 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool isLoginFailed;
 
-    public LoginViewModel(AppDbContext context)
+    public LoginViewModel(AppDbContext context, ICurrentUserService currentUserService)
     {
         _context = context;
+        _currentUserService = currentUserService;
     }
 
     /// <summary>
@@ -57,6 +62,7 @@ public partial class LoginViewModel : ObservableObject
         // Hardcoded password for development only (remove in production)
         if (user != null && Password == "Password123!" || BCrypt.Net.BCrypt.Verify(Password, user.Password))
         {
+            _currentUserService.SetUser(user);
             await Shell.Current.GoToAsync($"//DashboardPage");
         }
         else
@@ -69,6 +75,7 @@ public partial class LoginViewModel : ObservableObject
     [RelayCommand]
     private async Task Logout()
     {
+        _currentUserService.Logout();
         await Shell.Current.DisplayAlert("Logged out", "You have been logged out.", "OK");
         await Shell.Current.GoToAsync("//LoginPage");
     }
