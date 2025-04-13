@@ -81,12 +81,17 @@
             <!-- Divider -->
             <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,20"/>
 
-            <!-- Buttons -->
-            <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
-                <Button Text="Edit User" Command="{Binding EditUserCommand}" IsVisible="{Binding IsAdmin}" />
-                <Button Text="Delete User" Command="{Binding DeleteUserCommand}" BackgroundColor="IndianRed" TextColor="White" IsVisible="{Binding IsAdmin}" />
-            </HorizontalStackLayout>
-
+            <!-- Admin-only Buttons -->
+            <ContentView IsVisible="{Binding IsAdmin}">
+                <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                    <Button Text="Save Changes"
+                            Command="{Binding SaveCommand}" />
+                    <Button Text="Delete User"
+                            Command="{Binding DeleteCommand}"
+                            BackgroundColor="IndianRed"
+                            TextColor="White" />
+                </HorizontalStackLayout>
+            </ContentView>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

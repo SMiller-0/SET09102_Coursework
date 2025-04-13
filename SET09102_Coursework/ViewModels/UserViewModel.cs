@@ -69,11 +69,12 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
     {
         if (!_currentUserService.IsAdmin)
             {
-                await Shell.Current.DisplayAlert("Access Denied", "Only admins can save changes.", "OK");
+                await Shell.Current.DisplayAlert("Access Denied", "You don’t have permission to perform this action.", "OK");
                 return;
             }
 
         _context.SaveChanges();
+        await Shell.Current.DisplayAlert("Saved", "User details updated.", "OK");
         await Shell.Current.GoToAsync($"..?saved={User.Id}");
     }
 
@@ -87,7 +88,7 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
     {
         if (!_currentUserService.IsAdmin)
         {
-            await Shell.Current.DisplayAlert("Access Denied", "OK");
+            await Shell.Current.DisplayAlert("Access Denied", "You don’t have permission to perform this action.", "OK");
             return;
         }
             
