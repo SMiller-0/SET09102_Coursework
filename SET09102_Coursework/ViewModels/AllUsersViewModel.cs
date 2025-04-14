@@ -15,13 +15,12 @@ public class AllUsersViewModel : ObservableObject, IQueryAttributable
     private readonly AppDbContext _context;
     private readonly ICurrentUserService _currentUserService;
 
-
     public ObservableCollection<UserViewModel> AllUsers { get; }
     public ICommand NewCommand { get; }
     public ICommand SelectUserCommand { get; }
 
     public bool IsAdmin => _currentUserService.IsAdmin;
-    
+
 
     public AllUsersViewModel(AppDbContext appDbContext, ICurrentUserService currentUserService)
     {
@@ -53,7 +52,7 @@ public class AllUsersViewModel : ObservableObject, IQueryAttributable
     {
         if (user != null)
         {
-            await Shell.Current.GoToAsync($"{nameof(Views.UserPage)}?load={user.Id}");
+            await Shell.Current.Navigation.PushAsync(new UserPage(user));        
         }
     }
 

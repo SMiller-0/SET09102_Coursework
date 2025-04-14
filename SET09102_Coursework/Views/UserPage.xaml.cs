@@ -4,9 +4,10 @@ namespace SET09102_Coursework.Views;
 
 public partial class UserPage : ContentPage
 {
-	public UserPage (UserViewModel viewModel)
+		public UserPage (UserViewModel viewModel)
 	{
 		InitializeComponent();
-		this.BindingContext = viewModel;
+		BindingContext = viewModel;
 	}
+
 }

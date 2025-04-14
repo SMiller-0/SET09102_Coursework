@@ -13,4 +13,5 @@ public partial class App : Application
         Shell.Current.GoToAsync("//LoginPage");
 
     }
+    
 }
