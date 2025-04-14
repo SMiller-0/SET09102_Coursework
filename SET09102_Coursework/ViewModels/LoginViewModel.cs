@@ -20,17 +20,14 @@ public partial class LoginViewModel : ObservableObject
     private readonly ICurrentUserService _currentUserService;
 
 
-    [ObservableProperty]
-    private string email;
+    [ObservableProperty] private string email;
 
-    [ObservableProperty]
-    private string password;
+    [ObservableProperty] private string password;
 
-    [ObservableProperty]
-    private string loginError;
+    [ObservableProperty] private string loginError;
 
-    [ObservableProperty]
-    private bool isLoginFailed;
+    [ObservableProperty] private bool isLoginFailed;
+
 
     public LoginViewModel(AppDbContext context, ICurrentUserService currentUserService)
     {
@@ -47,25 +44,47 @@ public partial class LoginViewModel : ObservableObject
         IsLoginFailed = false;
         LoginError = string.Empty;
 
-        if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+        var trimmedEmail = Email?.Trim();
+        var trimmedPassword = Password?.Trim();
+
+        if (string.IsNullOrWhiteSpace(trimmedEmail) || string.IsNullOrWhiteSpace(trimmedPassword))
         {
             LoginError = "Email and password are required.";
             IsLoginFailed = true;
             return;
         }
 
-        // Look up user by email
-        var user = await _context.Users
-            .Include(u => u.Role)
-            .FirstOrDefaultAsync(u => u.Email == Email);
-
-        // Hardcoded password for development only (remove in production)
-        if (user != null && Password == "Password123!" || BCrypt.Net.BCrypt.Verify(Password, user.Password))
+        if (!System.Text.RegularExpressions.Regex.IsMatch(trimmedEmail, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
         {
-            _currentUserService.SetUser(user);
-            await Shell.Current.GoToAsync($"//DashboardPage");
+            LoginError = "Please enter a valid email address.";
+            IsLoginFailed = true;
+            return;
         }
-        else
+
+        try
+        {
+            var user = await _context.Users
+            .Include(u => u.Role)
+            .FirstOrDefaultAsync(u => u.Email == trimmedEmail);
+
+            // Hardcoded password for development only (remove in production)
+            bool isPasswordValid =
+                 trimmedPassword == "pw" ||
+                 trimmedPassword == "Password123!" ||
+                 (user != null && BCrypt.Net.BCrypt.Verify(trimmedPassword, user.Password));
+
+            if (user != null && isPasswordValid)
+            {
+                _currentUserService.SetUser(user);
+                await Shell.Current.GoToAsync($"//DashboardPage");
+            }
+            else
+            {
+                LoginError = "Invalid email or password.";
+                IsLoginFailed = true;
+            }
+        }
+        catch (Exception ex)
         {
             LoginError = "Invalid email or password.";
             IsLoginFailed = true;
