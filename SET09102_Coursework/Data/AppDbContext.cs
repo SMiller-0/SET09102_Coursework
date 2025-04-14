@@ -12,4 +12,9 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
 
+    public DbSet<AirQData> AirQData { get; set; }
+
+    public DbSet<WaterQData> WaterQData { get; set; }
+
+    public DbSet<WeatherData> WeatherData { get; set; }
 }

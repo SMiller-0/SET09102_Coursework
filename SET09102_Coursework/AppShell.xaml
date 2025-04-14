@@ -18,6 +18,24 @@
             Icon="sensor.png" />
 
         <ShellContent
+            Title="Backup Database"
+            ContentTemplate="{DataTemplate views:AdminBackUp}"
+            Icon="backup.png"
+            IsVisible="{Binding IsUserAdmin}"/>
+
+        <ShellContent
+            Title="Analyse Enviromental Data"
+            ContentTemplate="{DataTemplate views:AnalyticalTestsEnviromental}"
+            Icon="analysis.png"
+            IsVisible="{Binding IsUserEnviScientist}"/>
+        
+        <ShellContent
+            Title="Check Anomalies"
+            ContentTemplate="{DataTemplate views:OpsAnomalyManager}"
+            Icon="analysis.png"
+            IsVisible="{Binding IsUserOps}"/>
+
+        <ShellContent
             Title="About"
             ContentTemplate="{DataTemplate views:AboutPage}"
             Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}" />
