@@ -74,5 +74,10 @@
     	</None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Documentation/" />
+	  <Folder Include="Documentation/UML/" />
+	</ItemGroup>
+
 
 </Project>
