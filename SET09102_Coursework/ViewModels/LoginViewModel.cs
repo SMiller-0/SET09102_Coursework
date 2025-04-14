@@ -96,6 +96,7 @@ public partial class LoginViewModel : ObservableObject
     {
         _currentUserService.Logout();
         await Shell.Current.DisplayAlert("Logged out", "You have been logged out.", "OK");
+        Application.Current.MainPage = new AppShell();
         await Shell.Current.GoToAsync("//LoginPage");
     }
 }

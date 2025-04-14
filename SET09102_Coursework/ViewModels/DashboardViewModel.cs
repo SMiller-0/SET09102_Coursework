@@ -9,23 +9,28 @@ public partial class DashboardViewModel: ObservableObject
 {
     private readonly ICurrentUserService _currentUserService;
 
-        public DashboardViewModel(ICurrentUserService currentUserService)
-        {
-            _currentUserService = currentUserService;
-        }
+    public DashboardViewModel(ICurrentUserService currentUserService)
+    {
+        _currentUserService = currentUserService;
+        _currentUserService.UserChanged += OnUserChanged;
+    }
 
-        public string WelcomeMessage
+    public string WelcomeMessage
+    {
+        get
         {
-            get
+            var user = _currentUserService.LoggedInUser;
+            if (user == null)
             {
-                var user = _currentUserService.LoggedInUser;
-                if (user == null)
-                {
-                    return "Welcome!";
-                }
-
-                return $"Welcome, {user.FirstName}!";
+                return "Welcome!";
             }
-        }
 
+            return $"Welcome, {user.FirstName}!";
+        }
+    }
+
+    private void OnUserChanged(object? sender, EventArgs e)
+    {
+        OnPropertyChanged(nameof(WelcomeMessage));
+    }
 }
