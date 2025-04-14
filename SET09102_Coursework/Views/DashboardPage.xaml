@@ -4,20 +4,17 @@
              x:Class="SET09102_Coursework.Views.DashboardPage">
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="25" VerticalOptions="Center">
-            <Label Text="Welcome to Smart Sense!"
-                   FontSize="26"
+
+            <Label Text="Smart Sense Technologies ®"
+                   HorizontalOptions="Center"
                    FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+                   FontSize="24" />
 
-            <Button Text="View Users"
-                    Command="{Binding ViewAllUsersCommand}"
-                    HeightRequest="50"
-                    FontSize="18" />
+            <!-- Personalized Welcome -->
+            <Label Text="{Binding WelcomeMessage}"
+                   HorizontalOptions="Center"
+                   FontSize="20" />
 
-            <Button Text="View Sensors"
-                    Command="{Binding ViewAllSensorsCommand}"
-                    HeightRequest="50"
-                    FontSize="18" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

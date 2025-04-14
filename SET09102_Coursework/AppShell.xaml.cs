@@ -15,16 +15,6 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(DashboardPage), typeof(DashboardPage));
 		Routing.RegisterRoute(nameof(EditUserPage), typeof(EditUserPage));
 	
-	this.Navigated += async (s, e) =>
-{
-    if (e.Current?.Location.OriginalString == "//DashboardPage")
-    {
-        // Reset navigation stack ONLY if we came from another page
-        await Shell.Current.GoToAsync("///DashboardPage");
-    }
-};
-
-	
 	}
 }
 

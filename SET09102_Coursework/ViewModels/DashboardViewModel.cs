@@ -1,21 +1,31 @@
 using System;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SET09102_Coursework.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SET09102_Coursework.Services;
 
 namespace SET09102_Coursework.ViewModels;
 
 public partial class DashboardViewModel: ObservableObject
 {
-   [RelayCommand]
-    private async Task ViewAllUsers()
-    {
-        await Shell.Current.GoToAsync(nameof(Views.AllUsersPage));
-    }
+    private readonly ICurrentUserService _currentUserService;
 
-    [RelayCommand]
-    private async Task ViewAllSensors()
-    {
-        await Shell.Current.GoToAsync(nameof(Views.AllSensorsPage));
-    }
+        public DashboardViewModel(ICurrentUserService currentUserService)
+        {
+            _currentUserService = currentUserService;
+        }
+
+        public string WelcomeMessage
+        {
+            get
+            {
+                var user = _currentUserService.LoggedInUser;
+                if (user == null)
+                {
+                    return "Welcome!";
+                }
+
+                return $"Welcome, {user.FirstName}!";
+            }
+        }
+
 }
