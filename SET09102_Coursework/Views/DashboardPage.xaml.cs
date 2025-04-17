@@ -1,13 +1,11 @@
 using SET09102_Coursework.ViewModels;
 
 namespace SET09102_Coursework.Views;
-
-public partial class UserPage : ContentPage
+public partial class DashboardPage : ContentPage
 {
-		public UserPage (UserViewModel viewModel)
+	public DashboardPage(DashboardViewModel viewModel)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;
 	}
-
 }

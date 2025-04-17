@@ -10,7 +10,9 @@
 <VerticalStackLayout Padding="20" Spacing="20">
     
         <!-- Buttons -->
-        <Button Text="Add New User" Command="{Binding AddUserCommand}"/>
+        <Button Text="Add New User" 
+                Command="{Binding AddUserCommand}"
+                IsVisible="{Binding IsAdmin}" />
 
         <!-- Divider -->
         <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>

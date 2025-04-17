@@ -8,9 +8,16 @@
 
     <TabBar>
         <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate views:DashboardPage}"
+            Icon="home.png"
+            Route="DashboardPage" />
+
+        <ShellContent
             Title="Users"
             ContentTemplate="{DataTemplate views:AllUsersPage}"
-            Icon="user.png" />
+            Icon="user.png"
+            Route="AllUsersPage" />
 
         <ShellContent
             Title="Sensors"
@@ -21,8 +28,13 @@
             Title="About"
             ContentTemplate="{DataTemplate views:AboutPage}"
             Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}" />
-    </TabBar>
 
+        <ShellContent
+            Title="Logout"
+            ContentTemplate="{DataTemplate views:LoginPage}"
+            Icon="logout.png"
+            Route="LoginPage" />       
+    </TabBar>
 </Shell>
 
 

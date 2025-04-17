@@ -2,12 +2,16 @@
 
 public partial class App : Application
 {
+    public static bool IsUserLoggedIn { get; set; } = false;
+
     public App()
     {
         InitializeComponent();
     
-        Routing.RegisterRoute(nameof(Views.NotePage), typeof(Views.NotePage));
-
         MainPage = new AppShell();
+
+        Shell.Current.GoToAsync("//LoginPage");
+
     }
+    
 }
