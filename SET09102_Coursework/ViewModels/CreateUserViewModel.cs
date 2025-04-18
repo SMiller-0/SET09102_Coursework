@@ -10,26 +10,49 @@ using Microsoft.Maui.Controls;
 using System.Text.RegularExpressions;
 namespace SET09102_Coursework.ViewModels;
 
+/// <summary>
+    /// ViewModel for the Create User page.  
+    /// Handles user input, validation, password hashing, and saving a new user.
+    /// </summary>
 public partial class CreateUserViewModel: ObservableObject
-{
+
+{   /// <summary>Database context for accessing user data.</summary>
     private readonly AppDbContext _context;
+    /// <summary> Service that provides information about the current user.</summary>
     private readonly ICurrentUserService _currentUserService;
-
+    // <summary>First name of the new user.</summary>
     [ObservableProperty] private string firstName;
+    /// <summary>Middle name of the new user (optional).</summary>
     [ObservableProperty] private string middleName;
+    /// <summary>Last name (surname) of the new user.</summary>
     [ObservableProperty] private string surname;
+    /// <summary>
+    /// The new user’s corporate email address.  
+    /// This is initialized to the domain “@smartsense.com” so that
+    /// the user only needs to type the local part (e.g. “j.doe”)
+    /// to form “j.doe@smartsense.com”.  
+    /// </summary> 
     [ObservableProperty] private string email;
+    /// <summary>Phone number of the new user (optional).</summary>
     [ObservableProperty] private string phoneNumber;
+    /// <summary>Street address of the new user.</summary>
     [ObservableProperty] private string street;
+    /// <summary>City of the new user.</summary>
     [ObservableProperty] private string city;
+    /// <summary>Postcode of the new user.</summary>
     [ObservableProperty] private string postcode;
-
+    /// <summary>Password for the new user (must match <see cref="ConfirmPassword"/>).</summary>
     [ObservableProperty] private string password;
+    /// <summary>Confirmation of the password.</summary>
     [ObservableProperty] private string confirmPassword;
-
+    /// <summary>List of available roles to choose from.</summary>
     [ObservableProperty] private List<Role> availableRoles;
+    /// <summary>The role selected for the new user.</summary>
     [ObservableProperty] private Role selectedRole;
-
+    /// <summary>
+    /// Indicates whether the current user has admin privileges.
+    /// Used to enable/disable the Create operation.
+    /// </summary>
     public bool IsAdmin => _currentUserService.IsAdmin;
 
     public CreateUserViewModel(AppDbContext context,
