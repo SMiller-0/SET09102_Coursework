@@ -36,6 +36,17 @@ public class NavigationService : INavigationService
         };
         await Shell.Current.GoToAsync(nameof(UpdateFirmwarePage), parameters);
     }
+
+    public async Task NavigateToUpdateSettingsAsync(Sensor sensor)
+    {
+        if (sensor == null) return;
+        
+        var parameters = new Dictionary<string, object>
+        {
+            { "sensor", sensor }
+        };
+        await Shell.Current.GoToAsync(nameof(UpdateSettingsPage), parameters);
+    }
 }
 
 

@@ -8,5 +8,6 @@ public interface INavigationService
     Task NavigateToSensorSettingsAsync(Sensor sensor);
     Task NavigateToAllSensorsAsync();
     Task NavigateToUpdateFirmwareAsync(Sensor sensor);
+    Task NavigateToUpdateSettingsAsync(Sensor sensor);
 }
 
