@@ -58,6 +58,29 @@ public class SensorService : ISensorService
             .OrderBy(s => s.SettingType.Name)
             .ToListAsync();
     }
+
+    public async Task<bool> UpdateSensorSettingsAsync(IEnumerable<Settings> settings)
+    {
+        try
+        {
+            foreach (var setting in settings)
+            {
+                var existingSetting = await _context.Settings.FindAsync(setting.Id);
+                if (existingSetting != null)
+                {
+                    existingSetting.MinimumValue = setting.MinimumValue;
+                    existingSetting.MaximumValue = setting.MaximumValue;
+                }
+            }
+            
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 }
 
 
