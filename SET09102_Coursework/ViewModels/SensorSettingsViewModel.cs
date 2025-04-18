@@ -11,6 +11,7 @@ public partial class SensorSettingsViewModel : ObservableObject
 {
     private readonly ISensorService _sensorService;
     private readonly INavigationService _navigationService;
+    private readonly ICurrentUserService _currentUserService;
 
     [ObservableProperty]
     private Sensor sensor;
@@ -18,12 +19,25 @@ public partial class SensorSettingsViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<Settings> sensorSettings = new();
 
+    [ObservableProperty]
+    private bool isAdmin;
+
     public SensorSettingsViewModel(
         ISensorService sensorService,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        ICurrentUserService currentUserService)
     {
         _sensorService = sensorService;
         _navigationService = navigationService;
+        _currentUserService = currentUserService;
+        
+        IsAdmin = _currentUserService.IsAdmin;
+        _currentUserService.UserChanged += OnUserChanged;
+    }
+
+    private void OnUserChanged(object? sender, EventArgs e)
+    {
+        IsAdmin = _currentUserService.IsAdmin;
     }
 
     partial void OnSensorChanged(Sensor value)

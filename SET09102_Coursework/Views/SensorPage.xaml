@@ -50,7 +50,8 @@
                     
                 <Button Text="Update Firmware"
                         Command="{Binding UpdateFirmwareCommand}"
-                        BackgroundColor="{StaticResource Primary}"/>
+                        BackgroundColor="{StaticResource Primary}"
+                        IsVisible="{Binding IsAdmin}"/>
             </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>

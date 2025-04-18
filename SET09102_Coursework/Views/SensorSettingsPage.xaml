@@ -67,6 +67,7 @@
             <Button Text="Update Settings"
                     Command="{Binding UpdateSettingsCommand}"
                     BackgroundColor="{StaticResource Primary}"
+                    IsVisible="{Binding IsAdmin}"
                     Margin="0,20,0,0"/>
         </VerticalStackLayout>
     </ScrollView>
