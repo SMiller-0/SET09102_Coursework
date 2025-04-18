@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Services;
+using SET09102_Coursework.Validation;
 using System.Collections.ObjectModel;
 
 namespace SET09102_Coursework.ViewModels;
@@ -11,6 +12,7 @@ public partial class UpdateSettingsViewModel : ObservableObject
 {
     private readonly ISensorService _sensorService;
     private readonly INavigationService _navigationService;
+    private readonly ISettingsValidator _settingsValidator;
 
     [ObservableProperty]
     private Sensor sensor;
@@ -26,10 +28,12 @@ public partial class UpdateSettingsViewModel : ObservableObject
 
     public UpdateSettingsViewModel(
         ISensorService sensorService,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        ISettingsValidator settingsValidator)
     {
         _sensorService = sensorService;
         _navigationService = navigationService;
+        _settingsValidator = settingsValidator;
     }
 
     partial void OnSensorChanged(Sensor value)
@@ -58,14 +62,12 @@ public partial class UpdateSettingsViewModel : ObservableObject
 
         try
         {
-            foreach (var setting in SensorSettings)
+            var validationResult = _settingsValidator.ValidateCollection(SensorSettings);
+            if (!validationResult.IsValid)
             {
-                if (setting.MinimumValue >= setting.MaximumValue)
-                {
-                    ErrorMessage = $"Minimum value must be less than maximum value for {setting.SettingType.Name}";
-                    HasError = true;
-                    return;
-                }
+                ErrorMessage = validationResult.ErrorMessage;
+                HasError = true;
+                return;
             }
 
             var success = await _sensorService.UpdateSensorSettingsAsync(SensorSettings);
@@ -98,3 +100,4 @@ public partial class UpdateSettingsViewModel : ObservableObject
         await Shell.Current.GoToAsync("..");
     }
 }
+

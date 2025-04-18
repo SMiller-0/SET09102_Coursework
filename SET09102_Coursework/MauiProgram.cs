@@ -6,6 +6,7 @@ using SET09102_Coursework.Data;
 using SET09102_Coursework.ViewModels;
 using SET09102_Coursework.Views;
 using SET09102_Coursework.Services;
+using SET09102_Coursework.Validation;
 
 namespace SET09102_Coursework;
 
@@ -37,6 +38,7 @@ public static class MauiProgram
 		// Services
 		builder.Services.AddSingleton<ISensorService, SensorService>();
 		builder.Services.AddSingleton<INavigationService, NavigationService>();
+		builder.Services.AddSingleton<ISettingsValidator, SettingsValidator>();
 
 		// ViewModels
 		builder.Services.AddSingleton<AllUsersViewModel>();
