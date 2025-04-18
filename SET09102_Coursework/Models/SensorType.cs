@@ -8,9 +8,10 @@ namespace SET09102_Coursework.Models;
 [PrimaryKey(nameof(Id))]
 public class SensorType
 {
+    [Column("id")]
     public int Id { get; set; }
 
     [Required]
+    [Column("name")]
     public string Name { get; set; }
-
 }
