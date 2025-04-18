@@ -10,16 +10,20 @@ namespace SET09102_Coursework.ViewModels;
 public partial class SensorSettingsViewModel : ObservableObject
 {
     private readonly ISensorService _sensorService;
-    
+    private readonly INavigationService _navigationService;
+
     [ObservableProperty]
     private Sensor sensor;
 
     [ObservableProperty]
     private ObservableCollection<Settings> sensorSettings = new();
 
-    public SensorSettingsViewModel(ISensorService sensorService)
+    public SensorSettingsViewModel(
+        ISensorService sensorService,
+        INavigationService navigationService)
     {
         _sensorService = sensorService;
+        _navigationService = navigationService;
     }
 
     partial void OnSensorChanged(Sensor value)
@@ -43,9 +47,6 @@ public partial class SensorSettingsViewModel : ObservableObject
     [RelayCommand]
     private async Task UpdateSettings()
     {
-        await Shell.Current.DisplayAlert(
-            "Not Implemented",
-            "The settings update feature has not been implemented yet.",
-            "OK");
+        await _navigationService.NavigateToUpdateSettingsAsync(Sensor);
     }
 }

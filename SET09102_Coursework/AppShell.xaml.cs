@@ -17,6 +17,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(SensorDashboardPage), typeof(SensorDashboardPage));
         Routing.RegisterRoute(nameof(UpdateFirmwarePage), typeof(UpdateFirmwarePage));
         Routing.RegisterRoute(nameof(SensorSettingsPage), typeof(SensorSettingsPage));
+        Routing.RegisterRoute(nameof(UpdateSettingsPage), typeof(UpdateSettingsPage));
     }
 }
 
