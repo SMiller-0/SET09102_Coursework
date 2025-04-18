@@ -79,7 +79,7 @@ public partial class UpdateSettingsViewModel : ObservableObject
                     "Settings have been updated successfully.",
                     "OK");
 
-                await _navigationService.NavigateToSensorSettingsAsync(Sensor);
+                await _navigationService.NavigateToAllSensorsAsync();
             }
             else
             {
