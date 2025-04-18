@@ -62,6 +62,12 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
+            <!-- Add Update Settings Button -->
+            <Button Text="Update Settings"
+                    Command="{Binding UpdateSettingsCommand}"
+                    BackgroundColor="{StaticResource Primary}"
+                    Margin="0,20,0,0"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

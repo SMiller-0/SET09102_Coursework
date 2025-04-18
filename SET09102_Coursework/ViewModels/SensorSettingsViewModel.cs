@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Services;
 using System.Collections.ObjectModel;
@@ -37,5 +38,14 @@ public partial class SensorSettingsViewModel : ObservableObject
         {
             SensorSettings.Add(setting);
         }
+    }
+
+    [RelayCommand]
+    private async Task UpdateSettings()
+    {
+        await Shell.Current.DisplayAlert(
+            "Not Implemented",
+            "The settings update feature has not been implemented yet.",
+            "OK");
     }
 }
