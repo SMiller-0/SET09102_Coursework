@@ -159,4 +159,12 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
         AvailableRoles = _context.Roles.ToList();
     }
 
+    [RelayCommand]
+private async Task Cancel()
+{
+    // Reset to the root AllUsersPage
+    await Shell.Current.GoToAsync("//AllUsersPage");
+}
+
+
 }

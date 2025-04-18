@@ -25,8 +25,19 @@
                     ItemDisplayBinding="{Binding RoleName}"
                     SelectedItem="{Binding SelectedRole}" />
 
-            <Button Text="Save Changes" Command="{Binding SaveCommand}" />
-
+            <!-- Buttons -->
+            <ContentView IsVisible="{Binding IsAdmin}">
+                <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                    <Button Text="Save Changes"
+                            Command="{Binding SaveCommand}"
+                            BackgroundColor="Green"
+                            TextColor="White" />
+                    <Button Text="Cancel"
+                            Command="{Binding CancelCommand}"
+                            BackgroundColor="IndianRed"
+                            TextColor="White" />
+                </HorizontalStackLayout>
+            </ContentView>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
