@@ -6,6 +6,7 @@ using SET09102_Coursework.Data;
 using SET09102_Coursework.ViewModels;
 using SET09102_Coursework.Views;
 using SET09102_Coursework.Services;
+using SET09102_Coursework.Validation;
 
 namespace SET09102_Coursework;
 
@@ -34,6 +35,11 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
+		// Services
+		builder.Services.AddSingleton<ISensorService, SensorService>();
+		builder.Services.AddSingleton<INavigationService, NavigationService>();
+		builder.Services.AddSingleton<ISettingsValidator, SettingsValidator>();
+
 		// ViewModels
 		builder.Services.AddSingleton<AllUsersViewModel>();
 		builder.Services.AddTransient<UserViewModel>();
@@ -42,6 +48,9 @@ public static class MauiProgram
 		builder.Services.AddTransient<SensorSettingsViewModel>();
 		builder.Services.AddSingleton<LoginViewModel>();
 		builder.Services.AddTransient<DashboardViewModel>();
+		builder.Services.AddSingleton<SensorDashboardViewModel>();
+		builder.Services.AddTransient<UpdateFirmwareViewModel>();
+		builder.Services.AddTransient<UpdateSettingsViewModel>();
 		builder.Services.AddTransient<CreateUserViewModel>();
 
 		
@@ -53,6 +62,9 @@ public static class MauiProgram
 		builder.Services.AddTransient<SensorSettingsPage>();
 		builder.Services.AddSingleton<LoginPage>();
 		builder.Services.AddSingleton<DashboardPage>();
+		builder.Services.AddSingleton<SensorDashboardPage>();
+		builder.Services.AddTransient<UpdateFirmwarePage>();
+		builder.Services.AddTransient<UpdateSettingsPage>();
 		builder.Services.AddTransient<CreateUserPage>();
 
 		builder

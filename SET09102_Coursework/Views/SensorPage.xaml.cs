@@ -4,9 +4,9 @@ namespace SET09102_Coursework.Views;
 
 public partial class SensorPage : ContentPage
 {
-	public SensorPage()
+	public SensorPage(SensorViewModel viewModel)
 	{
-		this.BindingContext = new SensorViewModel();
+		BindingContext = viewModel;
 		InitializeComponent();
 	}
 }
