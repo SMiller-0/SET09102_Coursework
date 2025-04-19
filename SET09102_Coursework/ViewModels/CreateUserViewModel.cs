@@ -32,7 +32,7 @@ public partial class CreateUserViewModel: ObservableObject
     /// the user only needs to type the local part (e.g. “j.doe”)
     /// to form “j.doe@smartsense.com”.  
     /// </summary> 
-    [ObservableProperty] private string email;
+    [ObservableProperty] private string email = "@smartsense.com";
     /// <summary>Phone number of the new user (optional).</summary>
     [ObservableProperty] private string phoneNumber;
     /// <summary>Street address of the new user.</summary>
@@ -55,6 +55,13 @@ public partial class CreateUserViewModel: ObservableObject
     /// </summary>
     public bool IsAdmin => _currentUserService.IsAdmin;
 
+    /// <summary>
+    /// Constructs a new <see cref="CreateUserViewModel"/>.  
+    /// Loads the available roles from the database.
+    /// </summary>
+    /// <param name="context">Database context for accessing user data <see cref="AppDbContext"/>.</param>
+    /// <param name="currentUserService">Service that provides info about the currently logged‑in user (for IsAdmin).
+    /// </param>
     public CreateUserViewModel(AppDbContext context,
                                ICurrentUserService currentUserService)
     {
