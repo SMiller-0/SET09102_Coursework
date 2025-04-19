@@ -21,13 +21,9 @@
 
         <ShellContent
             Title="Sensors"
-            ContentTemplate="{DataTemplate views:AllSensorsPage}"
-            Icon="sensor.png" />
-
-        <ShellContent
-            Title="About"
-            ContentTemplate="{DataTemplate views:AboutPage}"
-            Icon="{OnPlatform 'icon_about.png', iOS='icon_about_ios.png', MacCatalyst='icon_about_ios.png'}" />
+            ContentTemplate="{DataTemplate views:SensorDashboardPage}"
+            Icon="sensor.png"
+            Route="SensorDashboardPage" />
 
         <ShellContent
             Title="Logout"
@@ -35,7 +31,6 @@
             Icon="logout.png"
             Route="LoginPage" />       
     </TabBar>
+
 </Shell>
-
-
 
