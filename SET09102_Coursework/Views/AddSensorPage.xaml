@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:SET09102_Coursework.ViewModels"
+    x:Class="SET09102_Coursework.Views.AddSensorPage"
+    Title="Add New Sensor">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Name -->
+            <Entry Placeholder="Sensor Name"
+                   Text="{Binding Name}" />
+
+            <!-- Firmware Version -->
+            <Entry Placeholder="Firmware Version"
+                   Text="{Binding FirmwareVersion}" />
+
+            <!-- Sensor Type Dropdown -->
+            <Picker Title="Select Sensor Type"
+                    ItemsSource="{Binding SensorTypes}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding SelectedSensorType}" />
+
+            <!-- Latitude -->
+            <Entry Placeholder="Latitude"
+                   Keyboard="Numeric"
+                   Text="{Binding Latitude}" />
+
+            <!-- Longitude -->
+            <Entry Placeholder="Longitude"
+                   Keyboard="Numeric"
+                   Text="{Binding Longitude}" />
+
+            <!-- IsActive toggle -->
+            <Switch IsToggled="{Binding IsActive}" />
+            <Label Text="Sensor is Active" />
+
+            <!-- Error Message -->
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="Red"
+                   IsVisible="{Binding HasError}" />
+
+            <!-- Buttons -->
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="Save"
+                        Command="{Binding SaveSensorCommand}" />
+                <Button Text="Cancel"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="LightGray"
+                        TextColor="Black"/>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -52,8 +52,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<UpdateFirmwareViewModel>();
 		builder.Services.AddTransient<UpdateSettingsViewModel>();
 		builder.Services.AddTransient<CreateUserViewModel>();
+		builder.Services.AddTransient<AddSensorViewModel>();
 
-		
 		// Views
 		builder.Services.AddSingleton<AllUsersPage>();
 		builder.Services.AddTransient<UserPage>();
@@ -66,6 +66,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<UpdateFirmwarePage>();
 		builder.Services.AddTransient<UpdateSettingsPage>();
 		builder.Services.AddTransient<CreateUserPage>();
+		builder.Services.AddTransient<AddSensorPage>();
 
 		builder
 			.UseMauiApp<App>()

@@ -47,6 +47,12 @@ public class NavigationService : INavigationService
         };
         await Shell.Current.GoToAsync(nameof(UpdateSettingsPage), parameters);
     }
+
+    public async Task NavigateToAddNewSensorAsync()
+    {
+        await Shell.Current.GoToAsync(nameof(AddSensorPage));
+    }
+
 }
 
 

@@ -81,6 +81,21 @@ public class SensorService : ISensorService
             return false;
         }
     }
+
+    public async Task<bool> AddSensorAsync(Sensor sensor)
+    {
+        try
+        {
+            _context.Sensors.Add(sensor);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            // Optionally log the error or rethrow
+            return false;
+        }
+    }
 }
 
 
