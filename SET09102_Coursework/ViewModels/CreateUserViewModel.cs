@@ -63,10 +63,29 @@ public partial class CreateUserViewModel: ObservableObject
         AvailableRoles = _context.Roles.ToList();
     }
 
+
+    /// <summary>
+    /// Command to create a new user.  
+    /// Validates inputs, hashes the password, writes to the database,
+    /// and navigates back to the all‑users page on success.
+    /// On success, displays a confirmation and navigates back to the AllUsersPage.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="Task"/> that completes when the creation flow (including alerts and navigation)
+    /// has finished.
+    /// </returns>
+    /// <exception cref="DbUpdateException">
+    /// Thrown internally if the database rejects the insert (e.g. unique‑constraint on email).
+    /// This is caught and translated into a user alert.
+    /// </exception>
+    /// <exception cref="Exception">
+    /// Catches any other unexpected errors and displays a generic alert.
+    /// </exception>
     [RelayCommand]
     private async Task Create()
     {
-        // 1. required fields
+        // Validation checks:
+        // 1) Required fields and matching password
         if (string.IsNullOrWhiteSpace(FirstName)
         || string.IsNullOrWhiteSpace(Surname)
         || string.IsNullOrWhiteSpace(Email)
@@ -79,7 +98,7 @@ public partial class CreateUserViewModel: ObservableObject
             return;
         }
 
-        // 2. email format
+        // 2) Email format
         var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         if (!Regex.IsMatch(Email, emailPattern))
         {
@@ -88,7 +107,7 @@ public partial class CreateUserViewModel: ObservableObject
             return;
         }
 
-        // 3. postcode format 
+        // 3) Postcode format
         var postcodePattern = @"^[A-Z0-9 ]{3,20}$";
         if (!Regex.IsMatch(Postcode.ToUpper(), postcodePattern))
         {
@@ -97,7 +116,7 @@ public partial class CreateUserViewModel: ObservableObject
             return;
         }
 
-        // 4. optional phone number (digits, +, spaces, dashes)
+        // 4) Optional phone number format
         if (!string.IsNullOrWhiteSpace(PhoneNumber))
         {
             var phonePattern = @"^[\d\+\-\s]{5,20}$";
@@ -109,7 +128,7 @@ public partial class CreateUserViewModel: ObservableObject
             }
         }
 
-        // hash the password
+        // Apply BCrypt hashing and build the new user entity
         var hashed = BCrypt.Net.BCrypt.HashPassword(Password);
 
         var user = new User
@@ -130,7 +149,7 @@ public partial class CreateUserViewModel: ObservableObject
 
         try
         {
-            // save to DB
+            // Attempt to save to DB
              await _context.SaveChangesAsync();
         }
         catch (DbUpdateException dbEx)
@@ -145,36 +164,37 @@ public partial class CreateUserViewModel: ObservableObject
             return;
             }
 
-        // any other DB problem
-        await Shell.Current.DisplayAlert(
-            "Database Error",
-            "Unable to save user right now. Please try again later.",
-            "OK");
-        return;
-    }
-    catch (Exception ex)
-    {
-        // unexpected
-        await Shell.Current.DisplayAlert(
-            "Unexpected Error",
-            $"Something went wrong:\n{ex.Message}",
-            "OK");
-        return;
-    }
+             // Any other database error
+            await Shell.Current.DisplayAlert(
+                "Database Error",
+                "Unable to save user right now. Please try again later.",
+                "OK");
+            return;
+        }
+        catch (Exception ex)
+        {
+            // Unexpected errors
+            await Shell.Current.DisplayAlert(
+                "Unexpected Error",
+                $"Something went wrong:\n{ex.Message}",
+                "OK");
+            return;
+        }
 
-    // only reach here if save succeeded
-    await Shell.Current.DisplayAlert("Success",
-    "New user created.", "OK");
-
-    // navigate back to AllUsersPage and refresh list
-    await Shell.Current.GoToAsync($"///AllUsersPage?created={user.Id}");
+        await Shell.Current.DisplayAlert("Success", "New user created.", "OK");
+        await Shell.Current.GoToAsync($"///AllUsersPage?created={user.Id}");
     }
 
 
+    /// <summary>
+    /// Cancels user creation and navigates back to the All Users page.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="Task"/> that completes when the navigation has finished.
+    /// </returns>
     [RelayCommand]
     private async Task Cancel()
     {
-        // simply go back to the list
         await Shell.Current.GoToAsync("//AllUsersPage");
     }
 }
