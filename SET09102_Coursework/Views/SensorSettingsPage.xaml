@@ -64,7 +64,7 @@
             </CollectionView>
 
             <!-- Add Update Settings Button -->
-            <Button Text="Update Settings"
+            <Button Text="Update Threshold Settings"
                     Command="{Binding UpdateSettingsCommand}"
                     BackgroundColor="{StaticResource Primary}"
                     IsVisible="{Binding IsAdmin}"

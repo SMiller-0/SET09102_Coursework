@@ -40,10 +40,10 @@
             </VerticalStackLayout>
 
 
-            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,20"/>
+            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,5"/>
 
             <VerticalStackLayout Spacing="10">
-                <Button Text="Settings"
+                <Button Text="Threshold Settings"
                         Command="{Binding UpdateSettingsCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         Margin="0,0,0,5"/>
