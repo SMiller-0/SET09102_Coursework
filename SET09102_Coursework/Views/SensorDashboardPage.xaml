@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SET09102_Coursework.Views.SensorDashboardPage"
              Title="Sensor Dashboard">
-    
+   
     <ScrollView>
-        <Grid RowDefinitions="Auto,*" 
+        <Grid RowDefinitions="Auto,*,*" 
               Padding="20" 
               RowSpacing="20">
             
@@ -31,6 +31,16 @@
                            FontSize="14"/>
                     <Button Text="View Sensors"
                             Command="{Binding ViewSensorsCommand}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Grid.Row="2">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="New Sensor"
+                           FontSize="20"
+                           FontAttributes="Bold"/>
+                    <Label Text="Add new Sensors sensors"
+                           FontSize="14"/>
                     <Button Text="Add New Sensor"
                             Command="{Binding AddNewSensorCommand}"/>
                 </VerticalStackLayout>

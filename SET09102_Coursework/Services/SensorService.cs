@@ -32,15 +32,17 @@ public class SensorService : ISensorService
                 query = query.Where(s => s.SensorTypeId == typeId.Value);
             }
 
-            return await query.ToListAsync();
-            OrderByDescending(s => s.IsActive)
-            .ThenBy(s => s.Name)
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error retrieving sensors: {ex.Message}");
-                return Enumerable.Empty<Sensor>();
-            }
+            return await query
+                .OrderByDescending(s => s.IsActive)
+                .ThenBy(s => s.Name)
+                .ToListAsync();
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving sensors: {ex.Message}");
+            return Enumerable.Empty<Sensor>();
+        }
+    }
 
     public async Task<bool> UpdateFirmwareVersionAsync(int sensorId, string newVersion)
     {
