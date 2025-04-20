@@ -90,9 +90,9 @@ public class SensorService : ISensorService
             await _context.SaveChangesAsync();
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Optionally log the error or rethrow
+            Console.WriteLine($"Failed to save sensor: {ex.Message}");
             return false;
         }
     }

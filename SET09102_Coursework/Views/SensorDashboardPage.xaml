@@ -31,6 +31,8 @@
                            FontSize="14"/>
                     <Button Text="View Sensors"
                             Command="{Binding ViewSensorsCommand}"/>
+                    <Button Text="Add New Sensor"
+                            Command="{Binding AddNewSensorCommand}"/>
                 </VerticalStackLayout>
             </Frame>
         </Grid>

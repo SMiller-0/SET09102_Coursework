@@ -13,25 +13,25 @@
             <Entry Placeholder="Sensor Name"
                    Text="{Binding Name}" />
 
-            <!-- Firmware Version -->
-            <Entry Placeholder="Firmware Version"
-                   Text="{Binding FirmwareVersion}" />
-
             <!-- Sensor Type Dropdown -->
             <Picker Title="Select Sensor Type"
                     ItemsSource="{Binding SensorTypes}"
                     ItemDisplayBinding="{Binding Name}"
                     SelectedItem="{Binding SelectedSensorType}" />
 
+            <!-- Firmware Version -->
+            <Entry Placeholder="Firmware Version"
+            Text="{Binding FirmwareVersion}" />
+
             <!-- Latitude -->
-            <Entry Placeholder="Latitude"
+            <Entry Placeholder="Enter Latitude (between -90 and 90)"
                    Keyboard="Numeric"
-                   Text="{Binding Latitude}" />
+                   Text="{Binding Latitude, Mode=TwoWay, StringFormat='{}{0:F6}'}" />
 
             <!-- Longitude -->
-            <Entry Placeholder="Longitude"
+            <Entry Placeholder="Enter Longitude (between -90 and 90)"
                    Keyboard="Numeric"
-                   Text="{Binding Longitude}" />
+                   Text="{Binding Longitude, Mode=TwoWay, StringFormat='{}{0:F6}'}" />
 
             <!-- IsActive toggle -->
             <Switch IsToggled="{Binding IsActive}" />
@@ -40,9 +40,10 @@
             <!-- Error Message -->
             <Label Text="{Binding ErrorMessage}"
                    TextColor="Red"
+                   FontAttributes="Bold"
                    IsVisible="{Binding HasError}" />
 
-            <!-- Buttons -->
+            <!-- SAve & Cancel Buttons -->
             <HorizontalStackLayout Spacing="10">
                 <Button Text="Save"
                         Command="{Binding SaveSensorCommand}" />
