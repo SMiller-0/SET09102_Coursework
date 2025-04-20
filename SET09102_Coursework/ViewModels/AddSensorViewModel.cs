@@ -25,8 +25,8 @@ public partial class AddSensorViewModel : ObservableObject
     [ObservableProperty] private string name;
     [ObservableProperty] private SensorType selectedSensorType;
     [ObservableProperty] private string firmwareVersion;
-    [ObservableProperty] private decimal? longitude;
-    [ObservableProperty] private decimal? latitude;
+    [ObservableProperty] private string longitudeInput;
+    [ObservableProperty] private string latitudeInput;
     [ObservableProperty] private bool isActive = true; 
 
     [ObservableProperty] private string errorMessage;
@@ -71,8 +71,8 @@ public partial class AddSensorViewModel : ObservableObject
         return string.IsNullOrWhiteSpace(Name)
             || string.IsNullOrWhiteSpace(FirmwareVersion)
             || SelectedSensorType == null
-            || Latitude == null
-            || Longitude == null;
+            || string.IsNullOrWhiteSpace(LatitudeInput)
+            || string.IsNullOrWhiteSpace(LongitudeInput);
     }
 
 
@@ -84,23 +84,36 @@ public partial class AddSensorViewModel : ObservableObject
     private async Task SaveSensor()
     {
         HasError = false;
-    ErrorMessage = string.Empty;
+        ErrorMessage = string.Empty;
 
-    // ✅ Validate fields BEFORE creating the Sensor object
-    if (AreRequiredFieldsMissing())
-    {
-        ErrorMessage = "Please fill in all required fields.";
-        HasError = true;
-        return;
-    }
+        if (AreRequiredFieldsMissing())
+        {
+            ErrorMessage = "Please fill in all required fields.";
+            HasError = true;
+            return;
+        }
+
+        if (!decimal.TryParse(LatitudeInput, out var latitude))
+        {
+            ErrorMessage = "Latitude must be a valid number.";
+            HasError = true;
+            return;
+        }
+
+        if (!decimal.TryParse(LongitudeInput, out var longitude))
+        {
+            ErrorMessage = "Longitude must be a valid number.";
+            HasError = true;
+            return;
+        }
 
         var newSensor = new Sensor
         {
             Name = Name.Trim(),
             FirmwareVersion = FirmwareVersion.Trim(),
             SensorTypeId = SelectedSensorType.Id,
-            Longitude = Longitude.Value,
-            Latitude = Latitude.Value,
+            Longitude = longitude,
+            Latitude = latitude,
             IsActive = IsActive
         };
 
@@ -114,16 +127,16 @@ public partial class AddSensorViewModel : ObservableObject
 
         var success = await _sensorService.AddSensorAsync(newSensor);
 
-    if (success)
-    {
-        await Shell.Current.DisplayAlert("Success", "Sensor added successfully!", "OK");
-        await _navigationService.NavigateToAllSensorsAsync();
-    }
-    else
-    {
-        ErrorMessage = "An error occurred while saving the sensor.";
-        HasError = true;
-    }
+        if (success)
+        {
+            await Shell.Current.DisplayAlert("Success", "Sensor added successfully!", "OK");
+            await _navigationService.NavigateToAllSensorsAsync();
+        }
+        else
+        {
+            ErrorMessage = "An error occurred while saving the sensor.";
+            HasError = true;
+        }
     }
 
 

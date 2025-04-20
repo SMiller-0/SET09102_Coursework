@@ -20,18 +20,27 @@ public class SensorService : ISensorService
 
     public async Task<IEnumerable<Sensor>> GetSensorsByTypeAsync(int? typeId)
     {
-        var query = _context.Sensors
-            .Include(s => s.SensorType)
-            .OrderBy(s => s.Name)
-            .AsQueryable();
-
-        if (typeId.HasValue)
+        try
         {
-            query = query.Where(s => s.SensorTypeId == typeId.Value);
-        }
+            var query = _context.Sensors
+                .Include(s => s.SensorType)
+                .OrderBy(s => s.Name)
+                .AsQueryable();
 
-        return await query.ToListAsync();
-    }
+            if (typeId.HasValue)
+            {
+                query = query.Where(s => s.SensorTypeId == typeId.Value);
+            }
+
+            return await query.ToListAsync();
+            OrderByDescending(s => s.IsActive)
+            .ThenBy(s => s.Name)
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving sensors: {ex.Message}");
+                return Enumerable.Empty<Sensor>();
+            }
+        }
 
     public async Task<bool> UpdateFirmwareVersionAsync(int sensorId, string newVersion)
     {

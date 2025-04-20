@@ -26,12 +26,12 @@
             <!-- Latitude -->
             <Entry Placeholder="Enter Latitude (between -90 and 90)"
                    Keyboard="Numeric"
-                   Text="{Binding Latitude, Mode=TwoWay, StringFormat='{}{0:F6}'}" />
+                   Text="{Binding LatitudeInput}" />
 
             <!-- Longitude -->
             <Entry Placeholder="Enter Longitude (between -90 and 90)"
                    Keyboard="Numeric"
-                   Text="{Binding Longitude, Mode=TwoWay, StringFormat='{}{0:F6}'}" />
+                   Text="{Binding LongitudeInput}" />
 
             <!-- IsActive toggle -->
             <Switch IsToggled="{Binding IsActive}" />
