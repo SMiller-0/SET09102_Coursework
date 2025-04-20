@@ -98,10 +98,10 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
         }
 
         User.FirstName = FirstName;
-        User.MiddleName = MiddleName;
+        User.MiddleName = String.IsNullOrWhiteSpace(MiddleName) ? null : MiddleName;
         User.Surname = Surname;
         User.Email = Email;
-        User.PhoneNumber = PhoneNumber;
+        User.PhoneNumber = String.IsNullOrWhiteSpace(PhoneNumber) ? null : PhoneNumber;
         User.Street = Street;
         User.City = City;
         User.Postcode = Postcode;

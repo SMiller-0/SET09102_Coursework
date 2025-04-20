@@ -11,13 +11,13 @@ using SET09102_Coursework.Services;
 
 namespace SET09102_Coursework.ViewModels;
 
-public class AllUsersViewModel : ObservableObject, IQueryAttributable
+public partial class AllUsersViewModel : ObservableObject, IQueryAttributable
 {
     private readonly AppDbContext _context;
     private readonly ICurrentUserService _currentUserService;
 
     public ObservableCollection<UserViewModel> AllUsers { get; }
-    public ICommand NewCommand { get; }
+    //public ICommand NewCommand { get; }
     public ICommand SelectUserCommand { get; }
 
     public bool IsAdmin => _currentUserService.IsAdmin;
@@ -32,7 +32,7 @@ public class AllUsersViewModel : ObservableObject, IQueryAttributable
         AllUsers = new ObservableCollection<UserViewModel>();
         RefreshUserList();
 
-        NewCommand = new AsyncRelayCommand(NewUserAsync);
+        //NewCommand = new AsyncRelayCommand(NewUserAsync);
         SelectUserCommand = new AsyncRelayCommand<UserViewModel>(SelectUserAsync);
     }
 
@@ -42,9 +42,10 @@ public class AllUsersViewModel : ObservableObject, IQueryAttributable
     }
 
 
-    private async Task NewUserAsync()
+    [RelayCommand]
+    private async Task AddUser()
     {
-        await Shell.Current.GoToAsync(nameof(Views.UserPage));
+         await Shell.Current.GoToAsync(nameof(CreateUserPage));
     }
 
 
@@ -59,27 +60,26 @@ public class AllUsersViewModel : ObservableObject, IQueryAttributable
 
     void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.ContainsKey("deleted") || query.ContainsKey("saved"))
+        if (query.ContainsKey("deleted") || query.ContainsKey("saved") || query.ContainsKey("created"))
         {
             RefreshUserList();
         }
     }
     
         
-        private void RefreshUserList()
-{
-    AllUsers.Clear();
+    private void RefreshUserList()
+    {
+        AllUsers.Clear();
 
-    var sortedUsers = _context.Users
+        var sortedUsers = _context.Users
         .Include(u => u.Role)
         .OrderBy(u => u.Surname)
         .ThenBy(u => u.FirstName)
         .ToList();
 
-    foreach (var user in sortedUsers)
-    {
-        AllUsers.Add(new UserViewModel(_context, user, _currentUserService));
+        foreach (var user in sortedUsers)
+        {
+            AllUsers.Add(new UserViewModel(_context, user, _currentUserService));
+        }
     }
 }
-
-    }
