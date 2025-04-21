@@ -33,9 +33,26 @@
                    Keyboard="Numeric"
                    Text="{Binding LongitudeInput}" />
 
-            <!-- IsActive toggle -->
-            <Switch IsToggled="{Binding IsActive}" />
-            <Label Text="Sensor is Active" />
+            <!-- IsActive toggle with Yes/No label -->
+            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                <Label Text="Active:"
+                       VerticalOptions="Center" />
+                <Switch IsToggled="{Binding IsActive}" />
+                <Label VerticalOptions="Center">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Text" Value="No" />
+                            <Style.Triggers>
+                                 <DataTrigger TargetType="Label"
+                                              Binding="{Binding IsActive}"
+                                              Value="True">
+                                    <Setter Property="Text" Value="Yes" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+            </HorizontalStackLayout>
 
             <!-- Error Message -->
             <Label Text="{Binding ErrorMessage}"
@@ -43,14 +60,16 @@
                    FontAttributes="Bold"
                    IsVisible="{Binding HasError}" />
 
-            <!-- SAve & Cancel Buttons -->
-            <HorizontalStackLayout Spacing="10">
+            <!-- Save & Cancel Buttons -->
+            <HorizontalStackLayout Spacing="10" VerticalOptions="Center" HorizontalOptions="Center">
                 <Button Text="Save"
-                        Command="{Binding SaveSensorCommand}" />
-                <Button Text="Cancel"
+                        Command="{Binding SaveSensorCommand}" 
+                        TextColor="White"
+                        BackgroundColor="Green" />
+                <Button Text="Delete"
                         Command="{Binding CancelCommand}"
-                        BackgroundColor="LightGray"
-                        TextColor="Black"/>
+                        BackgroundColor="IndianRed"
+                        TextColor="White" />
             </HorizontalStackLayout>
 
         </VerticalStackLayout>
