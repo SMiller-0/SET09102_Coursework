@@ -31,6 +31,7 @@ public partial class AllSensorsViewModel : ObservableObject, IQueryAttributable
     {
         if (query.ContainsKey("refresh"))
         {
+            InitializeFilterOptionsAsync();
             LoadSensorsAsync().ConfigureAwait(false);
             query.Clear();
         }

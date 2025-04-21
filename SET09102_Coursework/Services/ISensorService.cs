@@ -3,11 +3,12 @@ using SET09102_Coursework.Models;
 namespace SET09102_Coursework.Services;
 
 /// <summary>
-/// Defines sensor-related data operations.
+/// This interface provides methods to manage sensors, including adding, updating, deleting, and retrieving sensor information.
 /// </summary>
 public interface ISensorService
 {
     Task<IEnumerable<SensorType>> GetSensorTypesAsync();
+    
     /// <summary>
     /// Retrieves all sensors, optionally filtered by sensor type ID.
     /// Active sensors are listed first.
@@ -25,6 +26,21 @@ public interface ISensorService
     /// <param name="sensor">The sensor to add.</param>
     /// <returns>True if saved successfully; otherwise, false.</returns>
     Task<bool> AddSensorAsync(Sensor sensor);
+
+    /// <summary>
+    /// Updates an existing sensor in the database.
+    /// </summary>
+    /// <param name="sensor">The sensor to update.</param>
+    /// <returns>True if updated successfully; otherwise, false.</returns>
+    Task<bool> UpdateSensorAsync(Sensor sensor);
+
+    /// <summary>
+    /// Deletes a sensor from the database.
+    /// </summary>
+    /// <param name="sensorId">The ID of the sensor to delete.</param>
+    /// <returns>True if deleted successfully; otherwise, false.</returns>
+    Task<bool> DeleteSensorAsync(int sensorId);
+
 }   
 
 

@@ -23,9 +23,13 @@ public class NavigationService : INavigationService
         await Shell.Current.GoToAsync(nameof(SensorSettingsPage), parameters);
     }
 
-    public async Task NavigateToAllSensorsAsync()
+    public async Task NavigateToAllSensorsAsync(bool refresh = false)
     {
-        await Shell.Current.GoToAsync($"///SensorDashboardPage/{nameof(AllSensorsPage)}");
+        var uri = refresh
+        ? "///SensorDashboardPage/AllSensorsPage?refresh=true"
+        : $"///SensorDashboardPage/{nameof(AllSensorsPage)}";
+        
+        await Shell.Current.GoToAsync(uri);
     }
 
     public async Task NavigateToUpdateFirmwareAsync(Sensor sensor)
@@ -51,6 +55,15 @@ public class NavigationService : INavigationService
     public async Task NavigateToAddNewSensorAsync()
     {
         await Shell.Current.GoToAsync(nameof(AddSensorPage));
+    }
+
+    public async Task NavigateToEditSensorAsync(Sensor sensor)
+    {
+        var parameters = new Dictionary<string, object>
+        {
+            { "Sensor", sensor }
+        };
+        await Shell.Current.GoToAsync(nameof(EditSensorPage), parameters);
     }
 
 }

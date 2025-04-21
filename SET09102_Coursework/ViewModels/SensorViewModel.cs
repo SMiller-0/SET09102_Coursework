@@ -47,6 +47,13 @@ public partial class SensorViewModel : ObservableObject
     {
         await _navigationService.NavigateToUpdateFirmwareAsync(Sensor);
     }
+
+    [RelayCommand]
+    private async Task EditSensor()
+    {
+        await _navigationService.NavigateToEditSensorAsync(Sensor);
+    }   
+
 }
 
 

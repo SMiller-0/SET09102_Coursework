@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SET09102_Coursework.Views.EditSensorPage"
+             Title="Edit Sensor">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Name -->
+            <Entry Placeholder="Sensor Name"
+                   Text="{Binding Name}" />
+
+            <!-- Sensor Type Dropdown -->
+            <Picker Title="Select Sensor Type"
+                    ItemsSource="{Binding SensorTypes}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding SelectedSensorType}" />
+
+            <!-- Firmware Version -->
+            <Entry Placeholder="Firmware Version"
+                   Text="{Binding FirmwareVersion}" />
+
+            <!-- Latitude -->
+            <Entry Placeholder="Enter Latitude (between -90 and 90)"
+                   Keyboard="Numeric"
+                   Text="{Binding LatitudeInput}" />
+
+            <!-- Longitude -->
+            <Entry Placeholder="Enter Longitude (between -180 and 180)"
+                   Keyboard="Numeric"
+                   Text="{Binding LongitudeInput}" />
+
+            <!-- IsActive toggle with label -->
+            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                <Label Text="Sensor is Active"
+                       VerticalOptions="Center" />
+                <Switch IsToggled="{Binding IsActive}" />
+            </HorizontalStackLayout>
+
+            <!-- Error Message -->
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="Red"
+                   FontAttributes="Bold"
+                   IsVisible="{Binding HasError}" />
+
+            <!-- Save & Delete Buttons -->
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="Save"
+                        Command="{Binding SaveCommand}" />
+                <Button Text="Delete"
+                        Command="{Binding DeleteCommand}"
+                        BackgroundColor="IndianRed"
+                        TextColor="White" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+   </ScrollView>
+</ContentPage>

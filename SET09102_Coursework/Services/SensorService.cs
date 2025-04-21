@@ -107,6 +107,41 @@ public class SensorService : ISensorService
             return false;
         }
     }
+
+    public async Task<bool> UpdateSensorAsync(Sensor sensor)
+    {
+        try
+        {
+            _context.Sensors.Update(sensor);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating sensor: {ex.Message}");
+            return false;
+        }
+    }
+
+
+    public async Task<bool> DeleteSensorAsync(int sensorId)
+    {
+        try
+        {
+            var sensor = await _context.Sensors.FindAsync(sensorId);
+            if (sensor == null) return false;
+
+            _context.Sensors.Remove(sensor);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting sensor: {ex.Message}");
+            return false;
+        }
+    }
+
 }
 
 

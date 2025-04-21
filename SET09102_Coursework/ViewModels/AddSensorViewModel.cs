@@ -19,13 +19,15 @@ public partial class AddSensorViewModel : ObservableObject
     private readonly ISensorValidator _sensorValidator;
     private readonly INavigationService _navigationService;
 
-    /// <summary>List of available sensor types shown in the dropdown.</summary>
+    /// <summary>List of all available sensor types for selection.</summary>
     public ObservableCollection<SensorType> SensorTypes { get; } = new(); 
 
     [ObservableProperty] private string name;
     [ObservableProperty] private SensorType selectedSensorType;
     [ObservableProperty] private string firmwareVersion;
+    /// <summary>Longitude input as string to allow binding with Entry.</summary>
     [ObservableProperty] private string longitudeInput;
+    /// <summary>Latitude input as string to allow binding with Entry.</summary>
     [ObservableProperty] private string latitudeInput;
     [ObservableProperty] private bool isActive = true; 
 
