@@ -28,10 +28,7 @@ public partial class SensorDashboardViewModel : ObservableObject
     [RelayCommand]
     private async Task ViewSensorStatus()
     {
-        await Shell.Current.DisplayAlert(
-            "Feature Not Available",
-            "The sensor status feature has not been implemented yet.",
-            "OK");
+        await _navigationService.NavigateToSensorStatusAsync();
     }
 }
 
