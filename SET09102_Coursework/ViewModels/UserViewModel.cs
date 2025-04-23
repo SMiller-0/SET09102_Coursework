@@ -139,11 +139,23 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
             await Shell.Current.DisplayAlert("Access Denied", "You don’t have permission to perform this action.", "OK");
             return;
         }
-            
-        _context.Remove(User);
-        _context.SaveChanges();
-        await Shell.Current.GoToAsync($"..?deleted={User.Id}");
+
+        var confirm = await Shell.Current.DisplayAlert("Confirm Delete", "Are you sure you want to delete this user?", "Yes", "Cancel");
+        if (!confirm) return;
+        
+        try
+        {
+            _context.Remove(User);
+            await _context.SaveChangesAsync();
+            await Shell.Current.DisplayAlert("Deleted", "User deleted successfully.", "OK");
+            await Shell.Current.GoToAsync("//AllUsersPage?deleted=true");
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Error", $"An unexpected error occurred: {ex.Message}", "OK");
+        }    
     }
+
 
     public void LoadUserValues()
     {
@@ -160,11 +172,10 @@ public partial class UserViewModel : ObservableObject, IQueryAttributable
     }
 
     [RelayCommand]
-private async Task Cancel()
-{
-    // Reset to the root AllUsersPage
-    await Shell.Current.GoToAsync("//AllUsersPage");
-}
 
-
+    private async Task Cancel()
+    {
+        // Reset to the root AllUsersPage
+     await Shell.Current.GoToAsync("//AllUsersPage");
+    }
 }

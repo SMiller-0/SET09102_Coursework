@@ -3,37 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SET09102_Coursework.Views.SensorDashboardPage"
              Title="Sensor Dashboard">
-    
+   
     <ScrollView>
-        <Grid RowDefinitions="Auto,*" 
-              Padding="20" 
-              RowSpacing="20">
+        <VerticalStackLayout Padding="20" Spacing="20">
             
-            <VerticalStackLayout Grid.Row="0" Spacing="5">
-                <Label Text="Sensor Management"
-                       HorizontalOptions="Center"
-                       FontAttributes="Bold"
-                       FontSize="28"
-                       TextColor="#333333"/>
-                <Label Text="Monitor and manage your sensor network"
-                       HorizontalOptions="Center"
-                       FontSize="16"
-                       TextColor="#666666"/>
-                <BoxView HeightRequest="2" />
+            <!-- Header -->
+            <Label Text="Sensor Dashboard" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center"/>
+
+            <Label Text="Monitor and manage your sensor network"
+                   FontSize="16"
+                   HorizontalOptions="Center"
+                   TextColor="#666666"/>
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
+
+            <!-- Action Buttons -->
+            <VerticalStackLayout Spacing="10">
+                <Button Text="View All Sensors"
+                        Command="{Binding ViewSensorsCommand}"
+                        FontAttributes="Bold"/>
+                
+                <Button Text="Add New Sensor"
+                        Command="{Binding AddNewSensorCommand}"
+                        FontAttributes="Bold"/>
             </VerticalStackLayout>
 
-            <Frame Grid.Row="1">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="Sensor List"
-                           FontSize="20"
-                           FontAttributes="Bold"/>
-                    <Label Text="View, update and configure sensors"
-                           FontSize="14"/>
-                    <Button Text="View Sensors"
-                            Command="{Binding ViewSensorsCommand}"/>
-                </VerticalStackLayout>
-            </Frame>
-        </Grid>
+            <!-- Divider -->
+            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
 

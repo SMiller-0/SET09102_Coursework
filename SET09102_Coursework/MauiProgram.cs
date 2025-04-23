@@ -39,6 +39,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ISensorService, SensorService>();
 		builder.Services.AddSingleton<INavigationService, NavigationService>();
 		builder.Services.AddSingleton<ISettingsValidator, SettingsValidator>();
+		builder.Services.AddSingleton<ISensorValidator, SensorValidator>();
 
 		// ViewModels
 		builder.Services.AddSingleton<AllUsersViewModel>();
@@ -52,8 +53,9 @@ public static class MauiProgram
 		builder.Services.AddTransient<UpdateFirmwareViewModel>();
 		builder.Services.AddTransient<UpdateSettingsViewModel>();
 		builder.Services.AddTransient<CreateUserViewModel>();
+		builder.Services.AddTransient<AddSensorViewModel>();
+		builder.Services.AddTransient<EditSensorViewModel>();
 
-		
 		// Views
 		builder.Services.AddSingleton<AllUsersPage>();
 		builder.Services.AddTransient<UserPage>();
@@ -66,6 +68,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<UpdateFirmwarePage>();
 		builder.Services.AddTransient<UpdateSettingsPage>();
 		builder.Services.AddTransient<CreateUserPage>();
+		builder.Services.AddTransient<AddSensorPage>();
+		builder.Services.AddTransient<EditSensorPage>();
 
 		builder
 			.UseMauiApp<App>()

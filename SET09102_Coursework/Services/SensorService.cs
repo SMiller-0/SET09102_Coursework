@@ -20,17 +20,28 @@ public class SensorService : ISensorService
 
     public async Task<IEnumerable<Sensor>> GetSensorsByTypeAsync(int? typeId)
     {
-        var query = _context.Sensors
-            .Include(s => s.SensorType)
-            .OrderBy(s => s.Name)
-            .AsQueryable();
-
-        if (typeId.HasValue)
+        try
         {
-            query = query.Where(s => s.SensorTypeId == typeId.Value);
-        }
+            var query = _context.Sensors
+                .Include(s => s.SensorType)
+                .OrderBy(s => s.Name)
+                .AsQueryable();
 
-        return await query.ToListAsync();
+            if (typeId.HasValue)
+            {
+                query = query.Where(s => s.SensorTypeId == typeId.Value);
+            }
+
+            return await query
+                .OrderByDescending(s => s.IsActive)
+                .ThenBy(s => s.Name)
+                .ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving sensors: {ex.Message}");
+            return Enumerable.Empty<Sensor>();
+        }
     }
 
     public async Task<bool> UpdateFirmwareVersionAsync(int sensorId, string newVersion)
@@ -81,6 +92,56 @@ public class SensorService : ISensorService
             return false;
         }
     }
+
+    public async Task<bool> AddSensorAsync(Sensor sensor)
+    {
+        try
+        {
+            _context.Sensors.Add(sensor);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to save sensor: {ex.Message}");
+            return false;
+        }
+    }
+
+    public async Task<bool> UpdateSensorAsync(Sensor sensor)
+    {
+        try
+        {
+            _context.Sensors.Update(sensor);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating sensor: {ex.Message}");
+            return false;
+        }
+    }
+
+
+    public async Task<bool> DeleteSensorAsync(int sensorId)
+    {
+        try
+        {
+            var sensor = await _context.Sensors.FindAsync(sensorId);
+            if (sensor == null) return false;
+
+            _context.Sensors.Remove(sensor);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting sensor: {ex.Message}");
+            return false;
+        }
+    }
+
 }
 
 
