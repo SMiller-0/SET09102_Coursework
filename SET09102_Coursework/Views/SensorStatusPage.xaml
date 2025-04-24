@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SET09102_Coursework.Views.SensorStatusPage"
              xmlns:models="clr-namespace:SET09102_Coursework.Models"
+             xmlns:converters="clr-namespace:SET09102_Coursework.Converters"
+             x:Class="SET09102_Coursework.Views.SensorStatusPage"
              Title="Sensor Status">
 
     <VerticalStackLayout Padding="20" Spacing="15">
         <Label Text="Sensor Network Status"
                FontSize="24"
                FontAttributes="Bold"
-               HorizontalOptions="Center"/>
+               HorizontalOptions="Start"
+               Margin="0,0,0,10"/>
 
         <CollectionView ItemsSource="{Binding Sensors}"
-                      EmptyView="No sensors found.">
+                       EmptyView="No sensors found.">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Sensor">
                     <Frame BorderColor="{Binding IsActive, Converter={StaticResource BoolToColorConverter}}" 
@@ -33,10 +35,6 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
-        <Button Text="Refresh"
-                Command="{Binding LoadSensorsCommand}"/>
     </VerticalStackLayout>
 </ContentPage>
-
 

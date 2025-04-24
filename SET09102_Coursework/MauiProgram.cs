@@ -40,6 +40,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<INavigationService, NavigationService>();
 		builder.Services.AddSingleton<ISettingsValidator, SettingsValidator>();
 		builder.Services.AddSingleton<ISensorValidator, SensorValidator>();
+		builder.Services.AddSingleton<ITimerService, TimerService>();
 
 		// ViewModels
 		builder.Services.AddSingleton<AllUsersViewModel>();
