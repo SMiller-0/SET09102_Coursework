@@ -23,34 +23,28 @@ public partial class AllSensorsViewModel : ObservableObject, IQueryAttributable
     {
         _sensorService = sensorService;
         _navigationService = navigationService;
-
-        InitializeFilterOptionsAsync().ConfigureAwait(false);
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.ContainsKey("refresh"))
-        {
-            InitializeFilterOptionsAsync();
-            LoadSensorsAsync().ConfigureAwait(false);
-            query.Clear();
-        }
-    }
-
-    [RelayCommand]
-    private async Task ViewSensorDetails(Sensor sensor)
-    {
-        if (sensor == null) return;
-        await _navigationService.NavigateToSensorDetailsAsync(sensor);
+        LoadSensors().ConfigureAwait(false);
+        query.Clear();
     }
 
     private async Task InitializeFilterOptionsAsync()
     {
+        var types = await _sensorService.GetSensorTypesAsync();
         FilterOptions.Clear();
-        FilterOptions.Add(new SensorFilter { SelectedTypeId = null, DisplayName = "All" });
+        
+        // Add "All Sensors" option
+        FilterOptions.Add(new SensorFilter 
+        { 
+            SelectedTypeId = null, 
+            DisplayName = "All Sensors" 
+        });
 
-        var sensorTypes = await _sensorService.GetSensorTypesAsync();
-        foreach (var type in sensorTypes)
+        // Add filter option for each sensor type
+        foreach (var type in types)
         {
             FilterOptions.Add(new SensorFilter 
             { 
@@ -59,24 +53,30 @@ public partial class AllSensorsViewModel : ObservableObject, IQueryAttributable
             });
         }
 
-        SelectedFilter = FilterOptions.First();
+        // Select "All Sensors" by default if nothing is selected
+        if (SelectedFilter == null)
+        {
+            SelectedFilter = FilterOptions.First();
+        }
     }
 
-    partial void OnSelectedFilterChanged(SensorFilter value)
+    [RelayCommand]
+    private async Task LoadSensors()
     {
-        LoadSensorsAsync().ConfigureAwait(false);
-    }
-
-    private async Task LoadSensorsAsync()
-    {
-        if (SelectedFilter == null) return;
-
-        var sensorList = await _sensorService.GetSensorsByTypeAsync(SelectedFilter.SelectedTypeId);
+        await InitializeFilterOptionsAsync();
+        var sensorList = await _sensorService.GetSensorsByTypeAsync(SelectedFilter?.SelectedTypeId);
         
         Sensors.Clear();
         foreach (var sensor in sensorList)
         {
             Sensors.Add(sensor);
         }
+    }
+
+    [RelayCommand]
+    private async Task ViewSensorDetails(Sensor sensor)
+    {
+        if (sensor == null) return;
+        await _navigationService.NavigateToSensorDetailsAsync(sensor);
     }
 }

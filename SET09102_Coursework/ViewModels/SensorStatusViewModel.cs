@@ -20,8 +20,12 @@ public partial class SensorStatusViewModel : ObservableObject, IDisposable
     {
         _refreshService = refreshService;
         _refreshService.SensorsRefreshed += OnSensorsRefreshed;
-        
-        LoadSensorsCommand.Execute(null);
+        InitializeAsync();
+    }
+
+    private async void InitializeAsync()
+    {
+        await LoadSensors();
         _refreshService.StartAutoRefresh(REFRESH_INTERVAL_SECONDS);
     }
 
@@ -44,10 +48,6 @@ public partial class SensorStatusViewModel : ObservableObject, IDisposable
         {
             IsRefreshing = true;
             await _refreshService.RefreshSensors();
-        }
-        catch (Exception ex)
-        {
-            await Shell.Current.DisplayAlert("Error", "Failed to load sensors.", "OK");
         }
         finally
         {
