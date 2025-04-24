@@ -57,6 +57,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<CreateUserViewModel>();
 		builder.Services.AddTransient<AddSensorViewModel>();
 		builder.Services.AddTransient<EditSensorViewModel>();
+		builder.Services.AddTransient<CreateTicketViewModel>();
+
 
 		// Views
 		builder.Services.AddSingleton<AllUsersPage>();
@@ -72,6 +74,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<CreateUserPage>();
 		builder.Services.AddTransient<AddSensorPage>();
 		builder.Services.AddTransient<EditSensorPage>();
+		builder.Services.AddTransient<CreateTicketPage>();
 
 		builder
 			.UseMauiApp<App>()

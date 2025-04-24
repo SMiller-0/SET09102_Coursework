@@ -66,6 +66,15 @@ public class NavigationService : INavigationService
         await Shell.Current.GoToAsync(nameof(EditSensorPage), parameters);
     }
 
+    public async Task NavigateToCreateTicketAsync(Sensor sensor)
+    {
+        var parameters = new Dictionary<string, object>
+        {
+            { "Sensor", sensor }
+        };
+        await Shell.Current.GoToAsync(nameof(CreateTicketPage), parameters);
+    }
+
 }
 
 

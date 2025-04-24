@@ -57,6 +57,12 @@
                         Command="{Binding UpdateFirmwareCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         IsVisible="{Binding IsAdmin}"/>
+
+                <Button Text="Report Issue"
+                        Command="{Binding CreateTicketCommand}"
+                        BackgroundColor="Orange"
+                        TextColor="White"/>
+
             </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>

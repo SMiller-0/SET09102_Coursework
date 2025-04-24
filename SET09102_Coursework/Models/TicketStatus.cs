@@ -1,11 +1,19 @@
-using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SET09102_Coursework.Models;
 
-public static class TicketStatus
+[Table("ticket_status")]
+public class TicketStatus
 {
-    public const string Open = "Open";
-    public const string InProgress = "Under Investigation";
-    public const string Closed = "Closed";
-}
+    [Key]
+    [Column("id")]
+    public int Id { get; set; }
 
+    [Required]
+    [Column("status_name")]
+    public string StatusName { get; set; }
+
+    // Navigational propery
+    public ICollection<SensorTicket> Tickets { get; set; }
+}

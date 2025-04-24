@@ -21,6 +21,8 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(CreateUserPage), typeof(CreateUserPage));
 		Routing.RegisterRoute(nameof(AddSensorPage), typeof(AddSensorPage));
 		Routing.RegisterRoute(nameof(EditSensorPage), typeof(EditSensorPage));
+		Routing.RegisterRoute(nameof(CreateTicketPage), typeof(CreateTicketPage));
+		
 
 
     }

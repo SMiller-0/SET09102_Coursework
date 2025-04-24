@@ -1,4 +1,5 @@
-using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SET09102_Coursework.Models;
 
@@ -18,13 +19,15 @@ public class SensorTicket
     public string IssueDescription { get; set; }
 
     [Required]
-    [Column("status")]
-    public string Status { get; set; } = "Open"; 
+    [Column("status_id")]
+    public int StatusId { get; set; } 
 
     [Column("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    // Navigation property
-    public Sensor Sensor { get; set; }
+    /// Navigational properties
+    public Sensor Sensor { get; set; } 
 
+    [ForeignKey(nameof(StatusId))]
+    public TicketStatus Status { get; set; } 
 }

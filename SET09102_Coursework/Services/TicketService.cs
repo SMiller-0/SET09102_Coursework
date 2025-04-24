@@ -1,8 +1,13 @@
-using System;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using SET09102_Coursework.Models;
+using SET09102_Coursework.Data;
 
 namespace SET09102_Coursework.Services;
 
-public class TicketService
+public class TicketService : ITicketService
 {
 private readonly AppDbContext _context;
 
@@ -43,29 +48,13 @@ private readonly AppDbContext _context;
 
     public async Task<IEnumerable<SensorTicket>> GetAllTicketsAsync()
     {
-        var statusPriority = new Dictionary<string, int>
-    {
-        { TicketStatus.Open, 2 },
-        { TicketStatus.InProgress, 1 },
-        { TicketStatus.Closed, 3 }
-    };
-
-    try
+        try
         {
             return await _context.SensorTickets
-                .AsEnumerable()
+                .Include(t => t.Status)
                 .OrderBy(t =>
-                {
-                    if (statusPriority.TryGetValue(t.Status, out int priority))
-                    {
-                        return priority;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"[Warning] Unexpected ticket status: '{t.Status}' (Ticket ID: {t.Id})");
-                        return 99;
-                    }
-                })
+                    t.Status.StatusName == "Open" ? 1 :
+                    t.Status.StatusName == "Under Investigation" ? 2 : 3)
                 .ThenByDescending(t => t.CreatedAt)
                 .ToListAsync();
         }
@@ -83,7 +72,10 @@ private readonly AppDbContext _context;
             var ticket = await _context.SensorTickets.FindAsync(ticketId);
             if (ticket == null) return false;
 
-            ticket.Status = newStatus;
+            var statusObj = await _context.TicketStatuses.FirstOrDefaultAsync(s => s.StatusName == newStatus);
+            if (statusObj == null) return false;
+
+            ticket.Status = statusObj;
             await _context.SaveChangesAsync();
             return true;
         }
@@ -93,4 +85,11 @@ private readonly AppDbContext _context;
             return false;
         }
     }
+
+
+    public async Task<TicketStatus?> GetStatusByNameAsync(string name)
+    {   
+        return await _context.TicketStatuses.FirstOrDefaultAsync(s => s.StatusName == name);
+    }
+
 }
