@@ -24,8 +24,8 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                        <Label Text="{Binding ColumnID}" FontSize="14" TextColor="{StaticResource Secondary}"/>
-                        <Label Text="{Binding ColumnData}" FontSize="14" TextColor="{StaticResource Secondary}"/>
+                        <Label Text="{Binding columnID}" FontSize="14" TextColor="{StaticResource Secondary}"/>
+                        <Label Text="{Binding columnData}" FontSize="14" TextColor="{StaticResource Secondary}"/>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

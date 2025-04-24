@@ -5,24 +5,50 @@ using Microsoft.EntityFrameworkCore;
 using CommunityToolkit.Mvvm.Input;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Collections.ObjectModel;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace SET09102_Coursework.ViewModels
 {
+    /*! \brief The code-behind for AnalyticalTestView.xaml to meet the requirements of Issue #11.*/
     public partial class AnalyticalTestsEnviromentalViewModel : ObservableObject
     {
+        /*! \brief To prevent an error with trying to load a non-existent set of data when the page is first loaded, the full set of Air Quality data is used to popluate the table.
+        * This is probably unnecessary however, as I believe bindings don't throw errors if no data is given or null values could be used, so this variable may be removed later*/
         [ObservableProperty]
-        public AirQData airData;
+        public required AirQData airData;
 
+        /*! \brief Creates a model of the application's associated database using Data/AppDbContext class.*/
         private AppDbContext _context;
 
-        public ObservableCollection<AnalyticalTestsEnviromentalViewModel> tableData = new AnalyticalTestsEnviromentalViewModel
+        /*! \brief This collection is used to display the correct data to users.
+         * Due to the use of different data models depending on table, a generic object is used as the type.*/
+        public ObservableCollection<System.Object> AllData { get; set; } = new();
+
+        /*! \brief The constructor for this ViewModel.
+        *
+        *  Creates a model of the database using the Data/AppDbContext class and calls the LoadData() method to display the first table of data.
+        */
+        public AnalyticalTestsEnviromentalViewModel(AppDbContext context)
         {
-            ColumnId = 0,
-            ColumnData = 0
-        };
+            _context = context;
+            LoadData();
+        }
 
-        //Add RelayCommand to actually ADD DATA TO THE TABLE!!
+        /*! \brief The id of a record that meets the calculation criteria.
+        * Currently 0 as this is the integer equivalent of null.*/
+        [ObservableProperty]
+        private int columnId = 0;
 
+        /*! \brief The value, e.g. nitrogen level, of a record that meets the calculation criteria.
+        * Currently 0 as this is the integer equivalent of null.*/
+        [ObservableProperty]
+        private int columnData = 0;
+
+        /*! \brief A function that calulates the highest nitrogen level in the air quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the nitrogen value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the highest nitrogen level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcHighestNitrogenAir()
         {
@@ -30,14 +56,14 @@ namespace SET09102_Coursework.ViewModels
             int highestNitrogen = 0;
             List<int[]> outputAirQData = new List<int[]>(); ;
             Array arrayAirQData = _context.AirQData.ToArray();
-            foreach (var item in arrayAirQData)
+            foreach (AirQData item in arrayAirQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 highestNitrogenId = item.Id;
                 highestNitrogen = item.Nitrogen;
-                foreach (var item2 in arrayAirQData)
+                foreach (AirQData item2 in arrayAirQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.Nitrogen > highestNitrogen)
                         {
@@ -53,14 +79,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputAirQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the lowest nitrogen level in the air quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the nitrogen value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the lowest nitrogen level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcLowestNitrogenAir()
         {
@@ -68,14 +95,14 @@ namespace SET09102_Coursework.ViewModels
             int lowestNitrogen = 0;
             List<int[]> outputAirQData = new List<int[]>(); ;
             Array arrayAirQData = _context.AirQData.ToArray();
-            foreach (var item in arrayAirQData)
+            foreach (AirQData item in arrayAirQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 lowestNitrogenId = item.Id;
                 lowestNitrogen = item.Nitrogen;
-                foreach (var item2 in arrayAirQData)
+                foreach (AirQData item2 in arrayAirQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.Nitrogen < lowestNitrogen)
                         {
@@ -91,14 +118,16 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputAirQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the mean nitrogen level in the air quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the nitrogen value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  The mean is calculated by adding all the nitrogen levels for each day and dividing by the number of records for that day.
+        *  Each record is ordered by date, so the mean nitrogen level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcMeanNitrogenAir()
         {
@@ -106,14 +135,14 @@ namespace SET09102_Coursework.ViewModels
             int meanNitrogen = 0;
             List<int[]> outputAirQData = new List<int[]>(); ;
             Array arrayAirQData = _context.AirQData.ToArray();
-            foreach (var item in arrayAirQData)
+            foreach (AirQData item in arrayAirQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 meanNitrogenId = item.Id;
                 meanNitrogen = item.Nitrogen;
-                foreach (var item2 in arrayAirQData)
+                foreach (AirQData item2 in arrayAirQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         meanNitrogen+= item2.Nitrogen;
                     }
@@ -123,14 +152,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputAirQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the highest sulphur level in the air quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the sulphur value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the highest sulphur level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcHighestSulphurAir()
         {
@@ -138,14 +168,14 @@ namespace SET09102_Coursework.ViewModels
             int highestSulphur = 0;
             List<int[]> outputAirQData = new List<int[]>(); ;
             Array arrayAirQData = _context.AirQData.ToArray();
-            foreach (var item in arrayAirQData)
+            foreach (AirQData item in arrayAirQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 highestSulphurId = item.Id;
                 highestSulphur = item.Sulphur;
-                foreach (var item2 in arrayAirQData)
+                foreach (AirQData item2 in arrayAirQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.Sulphur > highestSulphur)
                         {
@@ -161,14 +191,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputAirQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the lowest sulphur level in the air quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the sulphur value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the lowest sulphur level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcLowestSulphurAir()
         {
@@ -176,14 +207,14 @@ namespace SET09102_Coursework.ViewModels
             int lowestSulphur = 0;
             List<int[]> outputAirQData = new List<int[]>(); ;
             Array arrayAirQData = _context.AirQData.ToArray();
-            foreach (var item in arrayAirQData)
+            foreach (AirQData item in arrayAirQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 lowestSulphurId = item.Id;
                 lowestSulphur = item.Sulphur;
-                foreach (var item2 in arrayAirQData)
+                foreach (AirQData item2 in arrayAirQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.Sulphur < lowestSulphur)
                         {
@@ -199,14 +230,16 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputAirQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the mean sulphur level in the air quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the sulphur value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  The mean is calculated by adding all the sulphur levels for each day and dividing by the number of records for that day.
+        *  Each record is ordered by date, so the mean sulphur level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcMeanSulphurAir()
         {
@@ -214,14 +247,14 @@ namespace SET09102_Coursework.ViewModels
             int meanSulphur = 0;
             List<int[]> outputAirQData = new List<int[]>(); ;
             Array arrayAirQData = _context.AirQData.ToArray();
-            foreach (var item in arrayAirQData)
+            foreach (AirQData item in arrayAirQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 meanSulphurId = item.Id;
                 meanSulphur = item.Sulphur;
-                foreach (var item2 in arrayAirQData)
+                foreach (AirQData item2 in arrayAirQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         meanSulphur += item2.Sulphur;
                     }
@@ -231,14 +264,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputAirQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the highest nitrite level in the water quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the nitrite value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the highest nitrite level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcHighestNitriteWater()
         {
@@ -246,14 +280,14 @@ namespace SET09102_Coursework.ViewModels
             int highestNitrite = 0;
             List<int[]> outputWaterQData = new List<int[]>(); ;
             Array arrayWaterQData = _context.WaterQData.ToArray();
-            foreach (var item in arrayWaterQData)
+            foreach (WaterQData item in arrayWaterQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 highestNitriteId = item.Id;
                 highestNitrite = item.Nitrite;
-                foreach (var item2 in arrayWaterQData)
+                foreach (WaterQData item2 in arrayWaterQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.Nitrite > highestNitrite)
                         {
@@ -269,14 +303,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWaterQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the lowest nitrite level in the water quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the nitrite value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the lowest nitrite level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcLowestNitriteWater()
         {
@@ -284,14 +319,14 @@ namespace SET09102_Coursework.ViewModels
             int lowestNitrite = 0;
             List<int[]> outputWaterQData = new List<int[]>(); ;
             Array arrayWaterQData = _context.WaterQData.ToArray();
-            foreach (var item in arrayWaterQData)
+            foreach (WaterQData item in arrayWaterQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 lowestNitriteId = item.Id;
                 lowestNitrite = item.Nitrite;
-                foreach (var item2 in arrayWaterQData)
+                foreach (WaterQData item2 in arrayWaterQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.Nitrite < lowestNitrite)
                         {
@@ -307,14 +342,16 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWaterQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the mean nitrine level in the water quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the nitrine value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  The mean is calculated by adding all the nitrine levels for each day and dividing by the number of records for that day.
+        *  Each record is ordered by date, so the mean nitrine level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcMeanNitriteWater()
         {
@@ -322,14 +359,14 @@ namespace SET09102_Coursework.ViewModels
             int meanNitrite = 0;
             List<int[]> outputWaterQData = new List<int[]>(); ;
             Array arrayWaterQData = _context.WaterQData.ToArray();
-            foreach (var item in arrayWaterQData)
+            foreach (WaterQData item in arrayWaterQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 meanNitriteId = item.Id;
                 meanNitrite = item.Nitrite;
-                foreach (var item2 in arrayWaterQData)
+                foreach (WaterQData item2 in arrayWaterQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         meanNitrite += item2.Nitrite;
                     }
@@ -339,14 +376,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWaterQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the highest nitrate level in the water quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the nitrate value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the highest nitrate level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcHighestNitrateWater()
         {
@@ -354,14 +392,14 @@ namespace SET09102_Coursework.ViewModels
             int highestNitrate = 0;
             List<int[]> outputWaterQData = new List<int[]>(); ;
             Array arrayWaterQData = _context.WaterQData.ToArray();
-            foreach (var item in arrayWaterQData)
+            foreach (WaterQData item in arrayWaterQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 highestNitrateId = item.Id;
                 highestNitrate = item.Nitrate;
-                foreach (var item2 in arrayWaterQData)
+                foreach (WaterQData item2 in arrayWaterQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.Nitrate > highestNitrate)
                         {
@@ -377,14 +415,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWaterQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the lowest nitrate level in the water quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the nitrate value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the lowest nitrate level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcLowestNitrateWater()
         {
@@ -392,14 +431,14 @@ namespace SET09102_Coursework.ViewModels
             int lowestNitrate = 0;
             List<int[]> outputWaterQData = new List<int[]>(); ;
             Array arrayWaterQData = _context.WaterQData.ToArray();
-            foreach (var item in arrayWaterQData)
+            foreach (WaterQData item in arrayWaterQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 lowestNitrateId = item.Id;
                 lowestNitrate = item.Nitrate;
-                foreach (var item2 in arrayWaterQData)
+                foreach (WaterQData item2 in arrayWaterQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.Nitrate < lowestNitrate)
                         {
@@ -415,14 +454,16 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWaterQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the mean nitrate level in the water quality data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the nitrate value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  The mean is calculated by adding all the nitrate levels for each day and dividing by the number of records for that day.
+        *  Each record is ordered by date, so the mean nitrate level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcMeanNitrateWater()
         {
@@ -430,14 +471,14 @@ namespace SET09102_Coursework.ViewModels
             int meanNitrate = 0;
             List<int[]> outputWaterQData = new List<int[]>(); ;
             Array arrayWaterQData = _context.WaterQData.ToArray();
-            foreach (var item in arrayWaterQData)
+            foreach (WaterQData item in arrayWaterQData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 meanNitrateId = item.Id;
                 meanNitrate = item.Nitrate;
-                foreach (var item2 in arrayWaterQData)
+                foreach (WaterQData item2 in arrayWaterQData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         meanNitrate += item2.Nitrate;
                     }
@@ -447,14 +488,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWaterQData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the highest air temperature in the weather data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the air temperature and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the highest air temperature for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcHighestAirTempWeather()
         {
@@ -462,14 +504,14 @@ namespace SET09102_Coursework.ViewModels
             int highestAirTemp = 0;
             List<int[]> outputWeatherData = new List<int[]>(); ;
             Array arrayWeatherData = _context.WeatherData.ToArray();
-            foreach (var item in arrayWeatherData)
+            foreach (WeatherData item in arrayWeatherData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 highestAirTempId = item.Id;
                 highestAirTemp = item.AirTemp;
-                foreach (var item2 in arrayWeatherData)
+                foreach (WeatherData item2 in arrayWeatherData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.AirTemp > highestAirTemp)
                         {
@@ -485,14 +527,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWeatherData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the lowest air temperature in the weather data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the air temperature and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the lowest air temperature for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcLowestAirTempWeather()
         {
@@ -500,14 +543,14 @@ namespace SET09102_Coursework.ViewModels
             int lowestAirTemp = 0;
             List<int[]> outputWeatherData = new List<int[]>(); ;
             Array arrayWeatherData = _context.WeatherData.ToArray();
-            foreach (var item in arrayWeatherData)
+            foreach (WeatherData item in arrayWeatherData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 lowestAirTempId = item.Id;
                 lowestAirTemp = item.AirTemp;
-                foreach (var item2 in arrayWeatherData)
+                foreach (WeatherData item2 in arrayWeatherData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.AirTemp < lowestAirTemp)
                         {
@@ -523,14 +566,16 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWeatherData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the mean air temperature level in the weather data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the air temperature and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  The mean is calculated by adding all the air temperatures for each day and dividing by the number of records for that day.
+        *  Each record is ordered by date, so the mean air temperature for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcMeanAirTempWeather()
         {
@@ -538,14 +583,14 @@ namespace SET09102_Coursework.ViewModels
             int meanAirTemp = 0;
             List<int[]> outputWeatherData = new List<int[]>(); ;
             Array arrayWeatherData = _context.WeatherData.ToArray();
-            foreach (var item in arrayWeatherData)
+            foreach (WeatherData item in arrayWeatherData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 meanAirTempId = item.Id;
                 meanAirTemp = item.AirTemp;
-                foreach (var item2 in arrayWeatherData)
+                foreach (WeatherData item2 in arrayWeatherData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         meanAirTemp += item2.AirTemp;
                     }
@@ -555,14 +600,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWeatherData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the highest humidity level in the weather data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the humidity value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the highest humidity level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcHighestHumidityWeather()
         {
@@ -570,14 +616,14 @@ namespace SET09102_Coursework.ViewModels
             int highestHumidity = 0;
             List<int[]> outputWeatherData = new List<int[]>(); ;
             Array arrayWeatherData = _context.WeatherData.ToArray();
-            foreach (var item in arrayWeatherData)
+            foreach (WeatherData item in arrayWeatherData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 highestHumidityId = item.Id;
                 highestHumidity = item.Humidity;
-                foreach (var item2 in arrayWeatherData)
+                foreach (WeatherData item2 in arrayWeatherData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.Humidity > highestHumidity)
                         {
@@ -593,14 +639,15 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWeatherData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the lowest humidity level in the weather data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the humidity value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  Each record is ordered by date, so the lowest humidity level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcLowestHumidityWeather()
         {
@@ -608,14 +655,14 @@ namespace SET09102_Coursework.ViewModels
             int lowestHumidity = 0;
             List<int[]> outputWeatherData = new List<int[]>(); ;
             Array arrayWeatherData = _context.WeatherData.ToArray();
-            foreach (var item in arrayWeatherData)
+            foreach (WeatherData item in arrayWeatherData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 lowestHumidityId = item.Id;
                 lowestHumidity = item.Humidity;
-                foreach (var item2 in arrayWeatherData)
+                foreach (WeatherData item2 in arrayWeatherData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         if (item2.Humidity < lowestHumidity)
                         {
@@ -631,14 +678,16 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWeatherData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
+        /*! \brief A function that calulates the mean humidity level in the weather data and then recreates a table of the data, displaying it onscreen.
+        *
+        *  Only the humidity value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
+        *  The mean is calculated by adding all the humidity levels for each day and dividing by the number of records for that day.
+        *  Each record is ordered by date, so the mean humidity level for each day is displayed, allowing for a quick overview of the data.
+        */
         [RelayCommand]
         public void CalcMeanHumidityWeather()
         {
@@ -646,14 +695,14 @@ namespace SET09102_Coursework.ViewModels
             int meanHumidity = 0;
             List<int[]> outputWeatherData = new List<int[]>(); ;
             Array arrayWeatherData = _context.WeatherData.ToArray();
-            foreach (var item in arrayWeatherData)
+            foreach (WeatherData item in arrayWeatherData)
             {
-                Date itemDate = item.Date.Date;
+                DateTime itemDate = item.Date;
                 meanHumidityId = item.Id;
                 meanHumidity = item.Humidity;
-                foreach (var item2 in arrayWeatherData)
+                foreach (WeatherData item2 in arrayWeatherData)
                 {
-                    if (item2.Date.Date == itemDate)
+                    if (item2.Date == itemDate)
                     {
                         meanHumidity += item2.Humidity;
                     }
@@ -663,19 +712,32 @@ namespace SET09102_Coursework.ViewModels
                         break;
                     }
                 }
-                tableData = new ObservableCollection<AnalyticalTestsEnviromentalViewModel>(outputWeatherData.Select(x => new AnalyticalTestsEnviromentalViewModel
-                {
-                    ColumnId = x[0],
-                    ColumnData = x[1]
-                }));
+                //Display output data on-screen:
             }
         }
 
-
+        /*! \brief A function that navigates the AllUsersPage; the current homepage for the application.
+        *
+        *  This function is a little redundant as users can navigate directly to the AllUsersPage using the navigation banner at the bottom of the screen, but it is included for the sake of completeness.
+        */
         [RelayCommand]
         public void ReturnToHome()
         {
             Shell.Current.GoToAsync("//AllUsersPage");
+        }
+
+        /*! \brief A function that loads the correct data from the database for the current table index.
+        *
+        *  Removes the information currently displayed in the table onscreen and replaces it with the data from the database associated with the current table index.
+        */
+        public void LoadData()
+        {
+            var currentData = _context.AirQData.ToList();
+            AllData.Clear();
+            foreach (var info in currentData)
+            {
+                AllData.Add(info);
+            }
         }
     }
 }

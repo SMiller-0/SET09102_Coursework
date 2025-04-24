@@ -13,19 +13,31 @@ using Microsoft.Extensions.Configuration;
 
 namespace SET09102_Coursework.ViewModels
 {
+    /*! \brief The code-behind for AdminBackUpView.xaml to meet the requirements of Issue #10.*/
     public partial class AdminBackUpViewModel : ObservableObject
     {
+        /*! \brief Creates a model of the application's associated database using Data/AppDbContext class.*/
         private readonly AppDbContext _context;
 
+        /*! \brief Creates an index to keep track of which table is currently being displayed.*/
         public int currentTable = 0;
 
+        /*! \brief List of tables to display, which needs to be manually updated as new tables are added to the database.*/
         public string[] tableNames = { "Users", "Roles", "Sensors", "SensorTypes", "AirQData", "WaterQData", "WeatherData" };
 
+        /*! \brief The two following variables, name & currentDate, are used when creating a name for the database backup or csv file to allow for multiple backups in the same location
+        * Also creates a sort of version-control system for backups so long as users regularly create backups.*/
         public string name = "Admin_DB_Backup";
         public System.DateTime currentDate = DateTime.Now.Date;
 
+        /*! \brief This collection is used to display the correct data to users.
+         * Due to the use of different data models depending on table, a generic object is used as the type.*/
         public ObservableCollection<System.Object> AllData { get; } = new();
 
+        /*! \brief The constructor for this ViewModel.
+        *
+        *  Creates a model of the database using the Data/AppDbContext class and calls the LoadData() method to display the first table of data.
+        */
         public AdminBackUpViewModel(AppDbContext context)
         {
             _context = context;
@@ -33,21 +45,30 @@ namespace SET09102_Coursework.ViewModels
         }
 
 
+        /*! \brief A function called when the user clicks the next button on the page.
+        *
+        *  Updates the table index and calls the LoadData() method to update the information displayed to the next table of data.
+        */
         [RelayCommand]
         public void nextPage()
         {
-            if (currentTable < 6)
+            if (currentTable + 1 < tableNames.Length - 1)
             {
                 currentTable++;
                 LoadData();
             }
             else
             {
+                /*! \brief An error message for if the table index would go out of bounds.*/
                 Shell.Current.DisplayAlert("No more tables found!",
                     $"Please try navigating back through the data for the table you desire.", "OK");
             }
         }
 
+        /*! \brief A function called when the user clicks the back button on the page.
+        *
+        *  Updates the table index and calls the LoadData() method to update the information displayed to the previous table of data.
+        */
         [RelayCommand]
         public void previousPage()
         {
@@ -58,11 +79,17 @@ namespace SET09102_Coursework.ViewModels
             }
             else
             {
+                /*! \brief An error message for if the table index would go out of bounds.*/
                 Shell.Current.DisplayAlert("No more tables found!",
                     $"Please try navigating forward through the data for the table you desire.", "OK");
             }
         }
 
+        /*! \brief A function that creates a clone of the application's associated database for redundancy purposes.
+        *
+        *  Creates a copy of the database used by the application using the libraries Microsoft.Data.SqlClient and Microsoft.Extensions.Configuration.
+        *  The new database is named using the name variable and the current date to allow for multiple backups in the same location and a form of version control.
+        */
         [RelayCommand]
         public bool CopyDatabase()
         {
@@ -97,6 +124,11 @@ namespace SET09102_Coursework.ViewModels
             return false;
         }
 
+        /*! \brief A function that creates a comma-separated values (CSV) file of the current table of data for archiving and backup.
+        *
+        *  Creates a csv file of the current table displayed from the database associated with the application.
+        *  The csv is named using the name variable and the current date to allow for multiple backups in the same location and a form of version control.
+        */
         [RelayCommand]
         public bool CreateCSV()
         {
@@ -123,7 +155,10 @@ namespace SET09102_Coursework.ViewModels
         }
 
 
-
+        /*! \brief A function that loads the correct data from the database for the current table index.
+        *
+        *  Removes the information currently displayed in the table onscreen and replaces it with the data from the database associated with the current table index.
+        */
         public void LoadData()
         {
             if (currentTable == 0)
@@ -188,6 +223,13 @@ namespace SET09102_Coursework.ViewModels
                 {
                     AllData.Add(info);
                 }
+            }
+            else
+            {
+                /*! \brief An error message for if the table index would go out of bounds.*/
+                Shell.Current.DisplayAlert("Error! Out of bounds table value.",
+                    $"If this issue persists, please contact our customer support team.", "OK");
+                currentTable = 0;
             }
         }
     }

@@ -71,7 +71,7 @@
             Grid.Row="1"
             Grid.Column="0"
             Margin="15"
-            Command="{Binding PrintCSV}"
+            Command="{Binding CreateCSV}"
             Style="{StaticResource ButtonPrimary}"
             Text="Print CSV"/>
             <Button

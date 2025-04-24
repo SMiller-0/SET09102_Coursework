@@ -12,20 +12,24 @@ public class WeatherData
     public int Id { get; set; }
 
     [Required]
+    [Column("timestamp")]
+    public DateTime Date { get; set; }
+
+    [Required]
     [Column("airTemperature")]
-    public string AirTemp { get; set; }
+    public int AirTemp { get; set; }
 
     [Required]
     [Column("humidity")]
-    public string Humidity { get; set; }
+    public int Humidity { get; set; }
 
     [Required]
     [Column("windSpeed")]
-    public string WindSpeed { get; set; }
+    public int WindSpeed { get; set; }
 
     [Required]
     [Column("windDirection")]
-    public string WindDirection { get; set; }
+    public int WindDirection { get; set; }
 
     [ForeignKey("Reading")]
     [Column("reading_id")]

@@ -13,23 +13,23 @@ public class AirQData
 
     [Required]
     [Column("timestamp")]
-    public string Date { get; set; }
+    public DateTime Date { get; set; }
 
     [Required]
     [Column("nitrogenLevel")]
-    public string Nitrogen { get; set; }
+    public int Nitrogen { get; set; }
 
     [Required]
     [Column("sulphurLevel")]
-    public string Sulphur { get; set; }
+    public int Sulphur { get; set; }
 
     [Required]
     [Column("particleMatterSmall")]
-    public string particleMatterSmall { get; set; }
+    public int particleMatterSmall { get; set; }
 
     [Required]
     [Column("particleMatterBig")]
-    public string particleMatterBig { get; set; }
+    public int particleMatterBig { get; set; }
 
     [ForeignKey("Reading")]
     [Column("reading_id")]

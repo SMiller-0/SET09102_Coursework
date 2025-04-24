@@ -13,27 +13,27 @@ public class WaterQData
 
     [Required]
     [Column("timestamp")]
-    public string Date { get; set; }
+    public DateTime Date { get; set; }
 
     [Required]
     [Column("nitriteLevel")]
-    public string Nitrite { get; set; }
+    public int Nitrite { get; set; }
 
     [Required]
     [Column("nitrateLevel")]
-    public string Nitrate { get; set; }
+    public int Nitrate { get; set; }
 
     [Required]
     [Column("phosphate")]
-    public string Phosphate { get; set; }
+    public int Phosphate { get; set; }
 
     [Required]
     [Column("escherichiaColi")]
-    public string EscherichiaColi { get; set; }
+    public int EscherichiaColi { get; set; }
 
     [Required]
     [Column("intestinalEnterococci")]
-    public string IntestinalEnterococci { get; set; }
+    public int IntestinalEnterococci { get; set; }
 
     [ForeignKey("Reading")]
     [Column("reading_id")]
