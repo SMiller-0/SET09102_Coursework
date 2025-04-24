@@ -51,12 +51,6 @@
                                                FontAttributes="Bold" />
                                         <Label Text="{Binding SensorType.Name}" />
                                     </HorizontalStackLayout>
-                                    
-                                    <HorizontalStackLayout>
-                                        <Label Text="Status: " 
-                                               FontAttributes="Bold" />
-                                        <Label Text="{Binding IsActive, Converter={StaticResource BoolToActiveConverter}}" />
-                                    </HorizontalStackLayout>
                                 </VerticalStackLayout>
                                 
                                 <Button Grid.Row="0"
