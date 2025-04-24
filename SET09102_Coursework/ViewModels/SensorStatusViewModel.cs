@@ -8,8 +8,7 @@ namespace SET09102_Coursework.ViewModels;
 
 public partial class SensorStatusViewModel : ObservableObject, IDisposable
 {
-    private readonly ISensorService _sensorService;
-    private readonly ITimerService _timerService;
+    private readonly ISensorRefreshService _refreshService;
     private const int REFRESH_INTERVAL_SECONDS = 5;
 
     public ObservableCollection<Sensor> Sensors { get; } = new();
@@ -17,18 +16,25 @@ public partial class SensorStatusViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private bool isRefreshing;
 
-    public SensorStatusViewModel(
-        ISensorService sensorService,
-        ITimerService timerService)
+    public SensorStatusViewModel(ISensorRefreshService refreshService)
     {
-        _sensorService = sensorService;
-        _timerService = timerService;
+        _refreshService = refreshService;
+        _refreshService.SensorsRefreshed += OnSensorsRefreshed;
         
- 
         LoadSensorsCommand.Execute(null);
-        
-        _timerService.Start(TimeSpan.FromSeconds(REFRESH_INTERVAL_SECONDS), 
-            async () => await RefreshSensors());
+        _refreshService.StartAutoRefresh(REFRESH_INTERVAL_SECONDS);
+    }
+
+    private void OnSensorsRefreshed(object? sender, IEnumerable<Sensor> sensors)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            Sensors.Clear();
+            foreach (var sensor in sensors)
+            {
+                Sensors.Add(sensor);
+            }
+        });
     }
 
     [RelayCommand]
@@ -37,7 +43,7 @@ public partial class SensorStatusViewModel : ObservableObject, IDisposable
         try
         {
             IsRefreshing = true;
-            await RefreshSensors();
+            await _refreshService.RefreshSensors();
         }
         catch (Exception ex)
         {
@@ -49,30 +55,9 @@ public partial class SensorStatusViewModel : ObservableObject, IDisposable
         }
     }
 
-    private async Task RefreshSensors()
-    {
-        try
-        {
-            var sensors = await _sensorService.GetSensorsByTypeAsync(null);
-            
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                Sensors.Clear();
-                foreach (var sensor in sensors)
-                {
-                    Sensors.Add(sensor);
-                }
-            });
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error refreshing sensors: {ex.Message}");
-        }
-    }
-
     public void Dispose()
     {
-        _timerService.Dispose();
+        _refreshService.Dispose();
         GC.SuppressFinalize(this);
     }
 }

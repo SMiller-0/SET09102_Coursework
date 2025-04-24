@@ -23,8 +23,8 @@ public interface ISensorService
     /// </summary>
     /// <param name="typeId">Optional sensor type ID to filter by.</param>
     /// <returns>A list of matching Sensor objects.</returns> 
-
     Task<IEnumerable<Sensor>> GetSensorsByTypeAsync(int? typeId);
+
     /// <summary>
     /// Updates the firmware version of a specified sensor.
     /// </summary>
@@ -34,7 +34,6 @@ public interface ISensorService
     /// <remarks>
     /// The firmware version should follow semantic versioning format (X.Y.Z).
     /// </remarks>
-
     Task<bool> UpdateFirmwareVersionAsync(int sensorId, string newVersion);
 
     /// <summary>
@@ -45,7 +44,6 @@ public interface ISensorService
     /// <remarks>
     /// Returns an empty collection if no settings are found or if the sensor doesn't exist.
     /// </remarks>
-
     Task<IEnumerable<Settings>> GetSensorSettingsAsync(int sensorId);
 
     /// <summary>
@@ -57,7 +55,6 @@ public interface ISensorService
     /// This method should validate that all settings are valid before applying any updates.
     /// If any setting update fails, the entire operation should be rolled back.
     /// </remarks>
-    
     Task<bool> UpdateSensorSettingsAsync(IEnumerable<Settings> settings);
 
     /// <summary>

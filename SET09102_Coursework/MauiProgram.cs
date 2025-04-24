@@ -41,6 +41,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ISettingsValidator, SettingsValidator>();
 		builder.Services.AddSingleton<ISensorValidator, SensorValidator>();
 		builder.Services.AddSingleton<ITimerService, TimerService>();
+		builder.Services.AddSingleton<ISensorRefreshService, SensorRefreshService>();
 
 		// ViewModels
 		builder.Services.AddSingleton<AllUsersViewModel>();
