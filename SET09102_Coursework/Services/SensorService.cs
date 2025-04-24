@@ -22,8 +22,11 @@ public class SensorService : ISensorService
     {
         try
         {
+            _context.ChangeTracker.Clear();
+            
             var query = _context.Sensors
                 .Include(s => s.SensorType)
+                .AsNoTracking()
                 .OrderBy(s => s.Name)
                 .AsQueryable();
 
@@ -141,7 +144,4 @@ public class SensorService : ISensorService
             return false;
         }
     }
-
 }
-
-

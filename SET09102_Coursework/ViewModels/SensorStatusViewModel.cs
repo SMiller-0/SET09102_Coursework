@@ -14,6 +14,9 @@ public partial class SensorStatusViewModel : ObservableObject, IDisposable
 
     public ObservableCollection<Sensor> Sensors { get; } = new();
 
+    [ObservableProperty]
+    private bool isRefreshing;
+
     public SensorStatusViewModel(
         ISensorService sensorService,
         ITimerService timerService)
@@ -21,12 +24,11 @@ public partial class SensorStatusViewModel : ObservableObject, IDisposable
         _sensorService = sensorService;
         _timerService = timerService;
         
-        // Initial load
+ 
         LoadSensorsCommand.Execute(null);
         
-        // Start auto-refresh immediately
         _timerService.Start(TimeSpan.FromSeconds(REFRESH_INTERVAL_SECONDS), 
-            async () => await LoadSensorsCommand.ExecuteAsync(null));
+            async () => await RefreshSensors());
     }
 
     [RelayCommand]
@@ -34,17 +36,37 @@ public partial class SensorStatusViewModel : ObservableObject, IDisposable
     {
         try
         {
-            var sensors = await _sensorService.GetSensorsByTypeAsync(null);
-            
-            Sensors.Clear();
-            foreach (var sensor in sensors)
-            {
-                Sensors.Add(sensor);
-            }
+            IsRefreshing = true;
+            await RefreshSensors();
         }
         catch (Exception ex)
         {
             await Shell.Current.DisplayAlert("Error", "Failed to load sensors.", "OK");
+        }
+        finally
+        {
+            IsRefreshing = false;
+        }
+    }
+
+    private async Task RefreshSensors()
+    {
+        try
+        {
+            var sensors = await _sensorService.GetSensorsByTypeAsync(null);
+            
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Sensors.Clear();
+                foreach (var sensor in sensors)
+                {
+                    Sensors.Add(sensor);
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error refreshing sensors: {ex.Message}");
         }
     }
 
