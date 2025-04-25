@@ -17,6 +17,14 @@ public partial class AllSensorsViewModel : ObservableObject, IQueryAttributable
     [ObservableProperty]
     private SensorFilter selectedFilter;
 
+    partial void OnSelectedFilterChanged(SensorFilter value)
+    {
+        if (value != null)  // Add null check
+        {
+            LoadSensorsCommand.Execute(null);
+        }
+    }
+
     public AllSensorsViewModel(
         ISensorService sensorService,
         INavigationService navigationService)
@@ -33,29 +41,26 @@ public partial class AllSensorsViewModel : ObservableObject, IQueryAttributable
 
     private async Task InitializeFilterOptionsAsync()
     {
-        var types = await _sensorService.GetSensorTypesAsync();
-        FilterOptions.Clear();
-        
-        // Add "All Sensors" option
-        FilterOptions.Add(new SensorFilter 
-        { 
-            SelectedTypeId = null, 
-            DisplayName = "All Sensors" 
-        });
-
-        // Add filter option for each sensor type
-        foreach (var type in types)
+        if (FilterOptions.Count == 0)  // Only initialize if not already initialized
         {
+            var types = await _sensorService.GetSensorTypesAsync();
+            FilterOptions.Clear();
+            
             FilterOptions.Add(new SensorFilter 
             { 
-                SelectedTypeId = type.Id, 
-                DisplayName = type.Name 
+                SelectedTypeId = null, 
+                DisplayName = "All Sensors" 
             });
-        }
 
-        // Select "All Sensors" by default if nothing is selected
-        if (SelectedFilter == null)
-        {
+            foreach (var type in types)
+            {
+                FilterOptions.Add(new SensorFilter 
+                { 
+                    SelectedTypeId = type.Id, 
+                    DisplayName = type.Name 
+                });
+            }
+
             SelectedFilter = FilterOptions.First();
         }
     }

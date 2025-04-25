@@ -110,7 +110,15 @@ public class SensorService : ISensorService
     {
         try
         {
-            _context.Sensors.Update(sensor);
+            _context.ChangeTracker.Clear(); // Clear any tracked entities
+        
+            var existingSensor = await _context.Sensors
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Id == sensor.Id);
+            
+            if (existingSensor == null) return false;
+
+            _context.Entry(sensor).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return true;
         }
