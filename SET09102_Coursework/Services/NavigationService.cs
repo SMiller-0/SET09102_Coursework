@@ -28,14 +28,25 @@ public class NavigationService : INavigationService
     public async Task NavigateToUpdateSettingsAsync(Sensor sensor)
     {
         if (sensor == null) return;
-        await Shell.Current.GoToAsync(nameof(UpdateSettingsPage), CreateSensorParameters(sensor));
+        
+        var parameters = new Dictionary<string, object>
+        {
+            { "sensor", sensor }
+        };
+        await Shell.Current.GoToAsync(nameof(UpdateSettingsPage), parameters);
     }
 
     public async Task NavigateToAddNewSensorAsync() =>
         await Shell.Current.GoToAsync(nameof(AddSensorPage));
 
-    public async Task NavigateToEditSensorAsync(Sensor sensor) =>
-        await Shell.Current.GoToAsync(nameof(EditSensorPage), CreateSensorParameters(sensor));
+    public async Task NavigateToEditSensorAsync(Sensor sensor)
+    {
+        var parameters = new Dictionary<string, object>
+        {
+            { "Sensor", sensor }
+        };
+        await Shell.Current.GoToAsync(nameof(EditSensorPage), parameters);
+    }
 
     public async Task NavigateToSensorStatusAsync() =>
         await Shell.Current.GoToAsync(nameof(SensorStatusPage));
