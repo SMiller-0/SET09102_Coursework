@@ -5,41 +5,25 @@ namespace SET09102_Coursework.Services;
 
 public class NavigationService : INavigationService
 {
-    public async Task NavigateToSensorDetailsAsync(Sensor sensor)
-    {
-        var parameters = new Dictionary<string, object>
-        {
-            { "sensor", sensor }
-        };
-        await Shell.Current.GoToAsync(nameof(SensorPage), parameters);
-    }
+    private Dictionary<string, object> CreateSensorParameters(Sensor sensor) =>
+        new() { { "sensor", sensor } };
 
-    public async Task NavigateToSensorSettingsAsync(Sensor sensor)
-    {
-        var parameters = new Dictionary<string, object>
-        {
-            { "sensor", sensor }
-        };
-        await Shell.Current.GoToAsync(nameof(SensorSettingsPage), parameters);
-    }
+    public async Task NavigateToSensorDetailsAsync(Sensor sensor) =>
+        await Shell.Current.GoToAsync(nameof(SensorPage), CreateSensorParameters(sensor));
+
+    public async Task NavigateToSensorSettingsAsync(Sensor sensor) =>
+        await Shell.Current.GoToAsync(nameof(SensorSettingsPage), CreateSensorParameters(sensor));
 
     public async Task NavigateToAllSensorsAsync(bool refresh = false)
     {
-        var uri = refresh
-        ? "///SensorDashboardPage/AllSensorsPage?refresh=true"
-        : $"///SensorDashboardPage/{nameof(AllSensorsPage)}";
-        
+        var uri = refresh ? 
+            "///SensorDashboardPage/AllSensorsPage?refresh=true" : 
+            "///SensorDashboardPage/AllSensorsPage";
         await Shell.Current.GoToAsync(uri);
     }
 
-    public async Task NavigateToUpdateFirmwareAsync(Sensor sensor)
-    {
-        var parameters = new Dictionary<string, object>
-        {
-            { "sensor", sensor }
-        };
-        await Shell.Current.GoToAsync(nameof(UpdateFirmwarePage), parameters);
-    }
+    public async Task NavigateToUpdateFirmwareAsync(Sensor sensor) =>
+        await Shell.Current.GoToAsync(nameof(UpdateFirmwarePage), CreateSensorParameters(sensor));
 
     public async Task NavigateToUpdateSettingsAsync(Sensor sensor)
     {
@@ -52,10 +36,8 @@ public class NavigationService : INavigationService
         await Shell.Current.GoToAsync(nameof(UpdateSettingsPage), parameters);
     }
 
-    public async Task NavigateToAddNewSensorAsync()
-    {
+    public async Task NavigateToAddNewSensorAsync() =>
         await Shell.Current.GoToAsync(nameof(AddSensorPage));
-    }
 
     public async Task NavigateToEditSensorAsync(Sensor sensor)
     {
@@ -66,6 +48,8 @@ public class NavigationService : INavigationService
         await Shell.Current.GoToAsync(nameof(EditSensorPage), parameters);
     }
 
+    public async Task NavigateToSensorStatusAsync() =>
+        await Shell.Current.GoToAsync(nameof(SensorStatusPage));
 }
 
 
