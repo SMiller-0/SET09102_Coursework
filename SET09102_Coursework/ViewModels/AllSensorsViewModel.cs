@@ -41,7 +41,7 @@ public partial class AllSensorsViewModel : ObservableObject, IQueryAttributable
 
     private async Task InitializeFilterOptionsAsync()
     {
-        if (FilterOptions.Count == 0)  // Only initialize if not already initialized
+        if (FilterOptions.Count == 0)
         {
             var types = await _sensorService.GetSensorTypesAsync();
             FilterOptions.Clear();
