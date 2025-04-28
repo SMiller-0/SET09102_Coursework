@@ -13,8 +13,22 @@
                HorizontalOptions="Start"
                Margin="0,0,0,10"/>
 
+        <Frame BorderColor="Gray" 
+               Padding="15" 
+               Margin="0,5">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Filter Status"
+                       FontAttributes="Bold"/>
+                <Picker ItemsSource="{Binding FilterOptions}"
+                        SelectedItem="{Binding SelectedFilter}"
+                        ItemDisplayBinding="{Binding DisplayName}"
+                        HorizontalOptions="Fill"/>
+            </VerticalStackLayout>
+        </Frame>
+
         <CollectionView ItemsSource="{Binding Sensors}"
-                       EmptyView="No sensors found.">
+                       EmptyView="No sensors found."
+                       RemainingItemsThreshold="2">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Sensor">
                     <Frame BorderColor="{Binding IsActive, Converter={StaticResource BoolToColorConverter}}" 

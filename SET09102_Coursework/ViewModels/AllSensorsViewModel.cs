@@ -10,6 +10,7 @@ public partial class AllSensorsViewModel : ObservableObject, IQueryAttributable
 {
     private readonly ISensorService _sensorService;
     private readonly INavigationService _navigationService;
+    private readonly ISensorFilterService _filterService;
 
     public ObservableCollection<Sensor> Sensors { get; } = new();
     public ObservableCollection<SensorFilter> FilterOptions { get; } = new();
@@ -27,10 +28,15 @@ public partial class AllSensorsViewModel : ObservableObject, IQueryAttributable
 
     public AllSensorsViewModel(
         ISensorService sensorService,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        ISensorFilterService filterService)
     {
         _sensorService = sensorService;
         _navigationService = navigationService;
+        _filterService = filterService;
+        
+        // Load sensors immediately when ViewModel is created
+        LoadSensors().ConfigureAwait(false);
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -44,21 +50,12 @@ public partial class AllSensorsViewModel : ObservableObject, IQueryAttributable
         if (FilterOptions.Count == 0)
         {
             var types = await _sensorService.GetSensorTypesAsync();
-            FilterOptions.Clear();
+            var filters = _filterService.GetTypeFilterOptions(types);
             
-            FilterOptions.Add(new SensorFilter 
-            { 
-                SelectedTypeId = null, 
-                DisplayName = "All Sensors" 
-            });
-
-            foreach (var type in types)
+            FilterOptions.Clear();
+            foreach (var filter in filters)
             {
-                FilterOptions.Add(new SensorFilter 
-                { 
-                    SelectedTypeId = type.Id, 
-                    DisplayName = type.Name 
-                });
+                FilterOptions.Add(filter);
             }
 
             SelectedFilter = FilterOptions.First();
@@ -69,10 +66,11 @@ public partial class AllSensorsViewModel : ObservableObject, IQueryAttributable
     private async Task LoadSensors()
     {
         await InitializeFilterOptionsAsync();
-        var sensorList = await _sensorService.GetSensorsByTypeAsync(SelectedFilter?.SelectedTypeId);
+        var sensorList = await _sensorService.GetSensorsByTypeAsync(null);
+        var filteredSensors = _filterService.ApplyTypeFilter(sensorList, SelectedFilter);
         
         Sensors.Clear();
-        foreach (var sensor in sensorList)
+        foreach (var sensor in filteredSensors)
         {
             Sensors.Add(sensor);
         }
