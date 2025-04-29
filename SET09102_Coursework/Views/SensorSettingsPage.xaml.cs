@@ -4,9 +4,10 @@ namespace SET09102_Coursework.Views;
 
 public partial class SensorSettingsPage : ContentPage
 {
-    public SensorSettingsPage(SensorSettingsViewModel viewModel)
-    {
-        InitializeComponent();
-        BindingContext = viewModel;
-    }
+	public SensorSettingsPage()
+	{
+		this.BindingContext = new SensorSettingsViewModel();
+		InitializeComponent();
+
+	}
 }

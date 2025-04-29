@@ -5,71 +5,41 @@
              xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
              xmlns:models="clr-namespace:SET09102_Coursework.Models"
              Title="All Sensors">
+             
+             <ContentPage.BindingContext>
+                <viewModels:AllSensorsViewModel />
+            </ContentPage.BindingContext>
+            <ScrollView>
+                <VerticalStackLayout Padding="20" Spacing="15">
+                    <Button Text="Add New Sensor" Command="{Binding AddSensorCommand}" />
+                    <CollectionView ItemsSource="{Binding Sensors}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BorderColor="Gray" Padding="10" Margin="0,5">
+                                    <VerticalStackLayout Spacing="5">
+                                        <HorizontalStackLayout>
+                                            <Label Text="Name: " FontAttributes="Bold" />
+                                            <Label Text="{Binding Name}" />
+                                        </HorizontalStackLayout>
+                                        
+                                        <HorizontalStackLayout>
+                                            <Label Text="Type: " FontAttributes="Bold" />
+                                            <Label Text="{Binding Type}" />
+                                        </HorizontalStackLayout>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <Label Text="Sensor List"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"/>
-
-
-            <Frame BorderColor="Gray" 
-                   Padding="15" 
-                   Margin="0,5">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="Filter by Type"
-                           FontAttributes="Bold"/>
-                    <Picker ItemsSource="{Binding FilterOptions}"
-                            SelectedItem="{Binding SelectedFilter}"
-                            ItemDisplayBinding="{Binding DisplayName}"
-                            HorizontalOptions="Fill"/>
+                                        <HorizontalStackLayout>
+                                            <Label Text="Active: " FontAttributes="Bold" />
+                                            <Label Text="{Binding IsActive}" />
+                                        </HorizontalStackLayout>
+                                        
+                                        <Button Text="View Details"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllSensorsViewModel}}, Path=ViewSensorDetailsCommand}"
+                                            CommandParameter="{Binding}" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
-            </Frame>
-            
-            <CollectionView ItemsSource="{Binding Sensors}"
-                          EmptyView="No sensors found in the database.">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Sensor">
-                        <Frame BorderColor="Gray" 
-                               Padding="15" 
-                               Margin="0,5">
-                            <Grid RowDefinitions="Auto,Auto"
-                                  ColumnDefinitions="*,Auto">
-                                
-                                <VerticalStackLayout Grid.Row="0" 
-                                                   Grid.Column="0" 
-                                                   Spacing="5">
-                                    <HorizontalStackLayout>
-                                        <Label Text="Name: " 
-                                               FontAttributes="Bold" />
-                                        <Label Text="{Binding Name}" />
-                                    </HorizontalStackLayout>
-                                    
-                                    <HorizontalStackLayout>
-                                        <Label Text="Type: " 
-                                               FontAttributes="Bold" />
-                                        <Label Text="{Binding SensorType.Name}" />
-                                    </HorizontalStackLayout>
-                                    
-                                    <HorizontalStackLayout>
-                                        <Label Text="Status: " 
-                                               FontAttributes="Bold" />
-                                        <Label Text="{Binding IsActive, Converter={StaticResource BoolToActiveConverter}}" />
-                                    </HorizontalStackLayout>
-                                </VerticalStackLayout>
-                                
-                                <Button Grid.Row="0"
-                                        Grid.Column="1"
-                                        Text="View Details"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllSensorsViewModel}}, Path=ViewSensorDetailsCommand}"
-                                        CommandParameter="{Binding}"
-                                        Margin="0,0,0,0" />
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </ScrollView>
-</ContentPage>
+            </ScrollView>
+            </ContentPage>

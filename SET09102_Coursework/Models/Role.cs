@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SET09102_Coursework.Models;
 
-[Table("role")]
+[Table("roles")]
+[PrimaryKey(nameof(Id))]
 public class Role
 {
-    [Key]
-    [Column("role_id")]
-    public int RoleId { get; set; }
+    [Column("id")]
+    public int Id { get; set; }
 
     [Required]
-    [Column("role_name")]
-    public string RoleName { get; set; }
+    [Column("name")]
+    public string Name { get; set; }
 }
