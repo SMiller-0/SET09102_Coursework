@@ -1,35 +1,51 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Views;
 using SET09102_Coursework.Data;
-using System.Windows.Input;
-using System.Collections.Generic;
+using SET09102_Coursework.Services;
 
 namespace SET09102_Coursework.ViewModels;
 
-public class AllUsersViewModel : IQueryAttributable
+public partial class AllUsersViewModel : ObservableObject, IQueryAttributable
 {
+    private readonly AppDbContext _context;
+    private readonly ICurrentUserService _currentUserService;
+
     public ObservableCollection<UserViewModel> AllUsers { get; }
-    public ICommand NewCommand { get; }
+    //public ICommand NewCommand { get; }
     public ICommand SelectUserCommand { get; }
-    private AppDbContext _context;
-    
-    public AllUsersViewModel(AppDbContext appDbContext)
+
+    public bool IsAdmin => _currentUserService.IsAdmin;
+
+
+    public AllUsersViewModel(AppDbContext appDbContext, ICurrentUserService currentUserService)
     {
         _context = appDbContext;
+        _currentUserService = currentUserService;
+        _currentUserService.UserChanged += OnUserChanged;
 
-        AllUsers = new ObservableCollection<UserViewModel>(
-        _context.Users.ToList().Select(u => new UserViewModel(_context, u))
-        );
-        NewCommand = new AsyncRelayCommand(NewUserAsync);
+        AllUsers = new ObservableCollection<UserViewModel>();
+        RefreshUserList();
+
+        //NewCommand = new AsyncRelayCommand(NewUserAsync);
         SelectUserCommand = new AsyncRelayCommand<UserViewModel>(SelectUserAsync);
     }
 
-    private async Task NewUserAsync()
+    private void OnUserChanged(object? sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(Views.UserPage));
+        OnPropertyChanged(nameof(IsAdmin)); 
+    }
+
+
+    [RelayCommand]
+    private async Task AddUser()
+    {
+         await Shell.Current.GoToAsync(nameof(CreateUserPage));
     }
 
 
@@ -37,40 +53,33 @@ public class AllUsersViewModel : IQueryAttributable
     {
         if (user != null)
         {
-            await Shell.Current.GoToAsync($"{nameof(Views.UserPage)}?load={user.Id}");
+            await Shell.Current.Navigation.PushAsync(new UserPage(user));        
         }
     }
 
 
     void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.ContainsKey("deleted"))
+        if (query.ContainsKey("deleted") || query.ContainsKey("saved") || query.ContainsKey("created"))
         {
-            string userId = query["deleted"].ToString();
-            var matchedUser = AllUsers.FirstOrDefault(u => u.Id == int.Parse(userId));
-
-            if (matchedUser != null)
-                AllUsers.Remove(matchedUser);
-        }
-        else if (query.ContainsKey("saved"))
-        {
-            string userId = query["saved"].ToString();
-            var matchedUser = AllUsers.FirstOrDefault(u => u.Id == int.Parse(userId));
-
-            if (matchedUser != null)
-            {
-                matchedUser.Reload();
-                AllUsers.Move(AllUsers.IndexOf(matchedUser), 0);
-            }
-            else
-            {
-                var newUser = _context.Users.Single(u => u.Id == int.Parse(userId));
-                AllUsers.Insert(0, new UserViewModel(_context, newUser));
-            }
+            RefreshUserList();
         }
     }
+    
+        
+    private void RefreshUserList()
+    {
+        AllUsers.Clear();
 
+        var sortedUsers = _context.Users
+        .Include(u => u.Role)
+        .OrderBy(u => u.Surname)
+        .ThenBy(u => u.FirstName)
+        .ToList();
 
-   
-
+        foreach (var user in sortedUsers)
+        {
+            AllUsers.Add(new UserViewModel(_context, user, _currentUserService));
+        }
+    }
 }

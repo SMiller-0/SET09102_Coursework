@@ -9,18 +9,62 @@ namespace SET09102_Coursework.ViewModels;
 public partial class SensorStatusViewModel : ObservableObject, IDisposable
 {
     private readonly ISensorRefreshService _refreshService;
+    private readonly ISensorFilterService _filterService;
     private const int REFRESH_INTERVAL_SECONDS = 5;
 
     public ObservableCollection<Sensor> Sensors { get; } = new();
+    public ObservableCollection<SensorStatusFilter> FilterOptions { get; } = new();
 
     [ObservableProperty]
     private bool isRefreshing;
 
-    public SensorStatusViewModel(ISensorRefreshService refreshService)
+    [ObservableProperty]
+    private SensorStatusFilter selectedFilter;
+
+    private IEnumerable<Sensor> _allSensors = new List<Sensor>();
+
+    public SensorStatusViewModel(
+        ISensorRefreshService refreshService,
+        ISensorFilterService filterService)
     {
         _refreshService = refreshService;
+        _filterService = filterService;
         _refreshService.SensorsRefreshed += OnSensorsRefreshed;
+        InitializeFilters();
         InitializeAsync();
+    }
+
+    private void InitializeFilters()
+    {
+        FilterOptions.Clear();
+        var filters = _filterService.GetStatusFilterOptions();
+        foreach (var filter in filters)
+        {
+            FilterOptions.Add(filter);
+        }
+        SelectedFilter = FilterOptions.First();
+    }
+
+    partial void OnSelectedFilterChanged(SensorStatusFilter value)
+    {
+        if (value != null)
+        {
+            ApplyFilter();
+        }
+    }
+
+    private void ApplyFilter()
+    {
+        var filteredSensors = _filterService.ApplyStatusFilter(_allSensors, SelectedFilter);
+        
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            Sensors.Clear();
+            foreach (var sensor in filteredSensors)
+            {
+                Sensors.Add(sensor);
+            }
+        });
     }
 
     private async void InitializeAsync()
@@ -31,14 +75,8 @@ public partial class SensorStatusViewModel : ObservableObject, IDisposable
 
     private void OnSensorsRefreshed(object? sender, IEnumerable<Sensor> sensors)
     {
-        MainThread.BeginInvokeOnMainThread(() =>
-        {
-            Sensors.Clear();
-            foreach (var sensor in sensors)
-            {
-                Sensors.Add(sensor);
-            }
-        });
+        _allSensors = sensors;
+        ApplyFilter();
     }
 
     [RelayCommand]
