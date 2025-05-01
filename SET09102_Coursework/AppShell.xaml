@@ -8,14 +8,28 @@
 
     <TabBar>
         <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate views:DashboardPage}"
+            Icon="home.png"
+            Route="DashboardPage" />
+
+        <ShellContent
             Title="Users"
             ContentTemplate="{DataTemplate views:AllUsersPage}"
-            Icon="user.png" />
+            Icon="user.png"
+            Route="AllUsersPage" />
 
         <ShellContent
             Title="Sensors"
-            ContentTemplate="{DataTemplate views:AllSensorsPage}"
-            Icon="sensor.png" />
+            ContentTemplate="{DataTemplate views:SensorDashboardPage}"
+            Icon="sensor.png"
+            Route="SensorDashboardPage" />
+
+        <ShellContent
+            Title="Logout"
+            ContentTemplate="{DataTemplate views:LoginPage}"
+            Icon="logout.png"
+            Route="LoginPage" />
 
         <ShellContent
             Title="Backup Database"
@@ -28,7 +42,7 @@
             ContentTemplate="{DataTemplate views:AnalyticalTestsEnviromental}"
             Icon="analysis.png"
             IsVisible="{Binding IsUserEnviScientist}"/>
-        
+
         <ShellContent
             Title="Check Anomalies"
             ContentTemplate="{DataTemplate views:OpsAnomalyManager}"
@@ -42,6 +56,4 @@
     </TabBar>
 
 </Shell>
-
-
 
