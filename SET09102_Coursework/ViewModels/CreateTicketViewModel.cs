@@ -48,7 +48,7 @@ public partial class CreateTicketViewModel : ObservableObject
             return;
         }
 
-        var openStatus = await _ticketService.GetStatusByNameAsync("Open");
+        var openStatus = await _ticketService.GetStatusByTypeAsync("Open");
         if (openStatus == null)
         {
             ErrorMessage = "Could not find 'Open' status in the system.";

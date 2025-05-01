@@ -33,12 +33,14 @@ public interface ITicketService
     /// <param name="ticketId">The ID of the ticket to update.</param>
     /// <param name="newStatus">The new status (e.g. Closed, In Progress).</param>
     /// <returns>True if the update succeeds; otherwise, false.</returns>
-    Task<bool> UpdateTicketStatusAsync(int ticketId, string newStatus);
+    //Task<bool> UpdateTicketStatusAsync(int ticketId, string newStatus);
 
     /// <summary>
     /// Retrieves all ticket status types. This method is used to fetch the details of a specific ticket status.
     /// /// </summary>
-    Task<TicketStatus?> GetStatusByNameAsync(string name);
+    Task<TicketStatus?> GetStatusByTypeAsync(string name);
 
+    
+    //Task<Enumerable<TicketStatus>> GetAllTicketStatusesAsync();
 
 }

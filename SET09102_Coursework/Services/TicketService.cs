@@ -52,6 +52,7 @@ private readonly AppDbContext _context;
         {
             return await _context.SensorTickets
                 .Include(t => t.Status)
+                .Include(t => t.Sensor)
                 .OrderBy(t =>
                     t.Status.StatusName == "Open" ? 1 :
                     t.Status.StatusName == "Under Investigation" ? 2 : 3)
@@ -65,7 +66,7 @@ private readonly AppDbContext _context;
         }
     }
 
-    public async Task<bool> UpdateTicketStatusAsync(int ticketId, string newStatus)
+   /*  public async Task<bool> UpdateTicketStatusAsync(int ticketId, string newStatus)
     {
         try
         {
@@ -84,12 +85,16 @@ private readonly AppDbContext _context;
             Console.WriteLine($"[Error] Failed to update ticket status: {ex.Message}");
             return false;
         }
-    }
+    } */
 
 
-    public async Task<TicketStatus?> GetStatusByNameAsync(string name)
-    {   
+   public async Task<TicketStatus?> GetStatusByTypeAsync(string name)
+   {   
         return await _context.TicketStatuses.FirstOrDefaultAsync(s => s.StatusName == name);
-    }
+  }
+
+    //public async Task<IEnumerable<TicketType>> GetTicketTypesAsync()
+    //{        return await _context.TicketTypes.OrderBy(st => st.Name).ToListAsync();
+    //}
 
 }
