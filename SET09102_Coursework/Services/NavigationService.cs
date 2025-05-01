@@ -60,6 +60,9 @@ public class NavigationService : INavigationService
         await Shell.Current.GoToAsync(nameof(CreateTicketPage), parameters);
     }
 
+    public async Task NavigateToViewAllTicketsAsync() =>
+        await Shell.Current.GoToAsync(nameof(AllTicketsPage));
+
 
 }
 
