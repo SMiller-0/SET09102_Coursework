@@ -22,20 +22,17 @@ public class SensorService : ISensorService
     {
         try
         {
+            _context.ChangeTracker.Clear();
+            
             var query = _context.Sensors
                 .Include(s => s.SensorType)
-                .OrderBy(s => s.Name)
-                .AsQueryable();
-
-            if (typeId.HasValue)
-            {
-                query = query.Where(s => s.SensorTypeId == typeId.Value);
-            }
-
-            return await query
+                .AsNoTracking()
                 .OrderByDescending(s => s.IsActive)
-                .ThenBy(s => s.Name)
-                .ToListAsync();
+                .ThenBy(s => s.Name);
+
+            return typeId.HasValue ? 
+                await query.Where(s => s.SensorTypeId == typeId.Value).ToListAsync() : 
+                await query.ToListAsync();
         }
         catch (Exception ex)
         {
@@ -74,14 +71,15 @@ public class SensorService : ISensorService
     {
         try
         {
-            foreach (var setting in settings)
+            var existingSettings = await _context.Settings
+                .Where(s => settings.Select(x => x.Id).Contains(s.Id))
+                .ToListAsync();
+
+            foreach (var setting in existingSettings)
             {
-                var existingSetting = await _context.Settings.FindAsync(setting.Id);
-                if (existingSetting != null)
-                {
-                    existingSetting.MinimumValue = setting.MinimumValue;
-                    existingSetting.MaximumValue = setting.MaximumValue;
-                }
+                var newSetting = settings.First(s => s.Id == setting.Id);
+                setting.MinimumValue = newSetting.MinimumValue;
+                setting.MaximumValue = newSetting.MaximumValue;
             }
             
             await _context.SaveChangesAsync();
@@ -112,7 +110,15 @@ public class SensorService : ISensorService
     {
         try
         {
-            _context.Sensors.Update(sensor);
+            _context.ChangeTracker.Clear(); // Clear any tracked entities
+        
+            var existingSensor = await _context.Sensors
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Id == sensor.Id);
+            
+            if (existingSensor == null) return false;
+
+            _context.Entry(sensor).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return true;
         }
@@ -141,7 +147,4 @@ public class SensorService : ISensorService
             return false;
         }
     }
-
 }
-
-

@@ -6,6 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <converters:BoolToActiveConverter x:Key="BoolToActiveConverter"/>
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />

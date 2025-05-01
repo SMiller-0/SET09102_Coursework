@@ -24,6 +24,12 @@ public partial class SensorDashboardViewModel : ObservableObject
     {
         await _navigationService.NavigateToAddNewSensorAsync();
     }
+
+    [RelayCommand]
+    private async Task ViewSensorStatus()
+    {
+        await _navigationService.NavigateToSensorStatusAsync();
+    }
 }
 
 
