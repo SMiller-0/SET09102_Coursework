@@ -8,14 +8,14 @@
 
     <Grid>
         <Label 
-        Text="{Binding currentTable}"
+        Text="{Binding CurrentTableName}"
         VerticalOptions="Center" 
         HorizontalOptions="Center"
         FontSize="20"
         TextColor="{StaticResource Primary}"/>
 
         <CollectionView x:Name="tableData"
-            ItemsSource="{Binding currentTableData}"
+            ItemsSource="{Binding AllData}"
             Margin="10"
             SelectionMode="None">
             <CollectionView.ItemsLayout>
@@ -39,7 +39,7 @@
                             Text="{Binding FlagColumn}"
                             FontSize="14" TextColor="{StaticResource Primary}">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding FlagRow}" CommandParameter="{Binding .}">
+                                <TapGestureRecognizer Command="{Binding FlagColumn}" CommandParameter="{Binding .}">
                                 </TapGestureRecognizer>
                             </Label.GestureRecognizers>
                         </Label>
@@ -50,45 +50,19 @@
 
         <Grid>
             <Button
-        Grid.Row="1"
-        Grid.Column="0"
-        Margin="10"
-        Command="{Binding PreviousTable}"
-        IsEnabled="{Binding IsNotFirst}"
-        Style="{StaticResource ButtonSecondary}"
-        Text="Previous" />
-            <Button
-        Grid.Row="1"
-        Grid.Column="1"
-        Margin="10"
-        Command="{Binding NextTable}"
-        IsEnabled="{Binding IsNotLast}"
-        Style="{StaticResource ButtonSecondary}"
-        Text="Next" />
-        </Grid>
-
-        <Grid>
-            <Button
-            Grid.Row="1"
+            Grid.Row="0"
             Grid.Column="0"
-            Margin="15"
-            Command="{Binding SaveFlags}"
-            Style="{StaticResource ButtonPrimary}"
-            Text="SaveFlags"/>
+            Margin="10"
+            Command="{Binding previousPage}"
+            Style="{StaticResource ButtonSecondary}"
+            Text="Previous" />
             <Button
-            Grid.Row="1"
+            Grid.Row="0"
             Grid.Column="1"
-            Margin="15"
-            Command="{Binding CheckAnomalies}"
-            Style="{StaticResource ButtonPrimary}"
-            Text="Check for Anomalies"/>
-            <Button
-            Grid.Row="1"
-            Grid.Column="2"
-            Margin="15"
-            Command="{Binding ReturnToHome}"
-            Style="{StaticResource ButtonPrimary}"
-            Text="Back"/>
+            Margin="10"
+            Command="{Binding nextPage}"
+            Style="{StaticResource ButtonSecondary}"
+            Text="Next" />
         </Grid>
     </Grid>
 </ContentPage>

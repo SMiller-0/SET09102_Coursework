@@ -13,6 +13,9 @@ namespace SET09102_Coursework.ViewModels
         /*! \brief Creates an index to keep track of which table is currently being displayed.*/
         public int CurrentTable = 0;
 
+        /*! \brief Stores the name of the currently displayed table.*/
+        public string CurrentTableName = "Name";
+
         /*! \brief Sets a default value of "Normal" for the anomaly column in the table, used to flag missing or probable incorrect values in the database.*/
         public string FlagColumn { get; set; } = "Normal";
 
@@ -89,11 +92,18 @@ namespace SET09102_Coursework.ViewModels
             if (dataLoaders.ContainsKey(CurrentTable))
             {
                 dataLoaders[CurrentTable]();
+                CurrentTableName = CurrentTable switch
+                {
+                    0 => "Air Quality Data",
+                    1 => "Water Quality Data",
+                    2 => "Weather Data",
+                    _ => "Unknown Table"
+                };
             }
             else
             {
                 /*! \brief An error message for if the table index would go out of bounds.*/
-                _alertService.DisplayAlert("Error! Out of bounds table value.",
+                Shell.Current.DisplayAlert("Error! Out of bounds table value.",
                     "If this issue persists, please contact our customer support team.", "OK");
                 CurrentTable = 0;
             }

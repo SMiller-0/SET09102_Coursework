@@ -20,6 +20,9 @@ namespace SET09102_Coursework.ViewModels
         /*! \brief Creates a model of the application's associated database using Data/AppDbContext class.*/
         private AppDbContext _context;
 
+        /*! \brief Stores the name of the currently displayed table.*/
+        public string CurrentTableName = "Name";
+
         /*! \brief This collection is used to display the correct data to users.
          * Due to the use of different data models depending on table, a generic object is used as the type.*/
         public ObservableCollection<System.Object> AllData { get; set; } = new();
@@ -41,7 +44,7 @@ namespace SET09102_Coursework.ViewModels
         
         public List<string[]> DisplayDataList
         {
-            get => DisplayDataList;
+            get => displayDataList;
             set => SetProperty(ref displayDataList, value);
         }
 
@@ -53,17 +56,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcHighestNitrogenAir()
         {
-            var outputAirQData = _context.AirQData
-                .GroupBy(data => data.Date)
-                .Select(group => new
-                {
-                    HighestNitrogenId = group.OrderByDescending(item => item.Nitrogen).First().Id,
-                    HighestNitrogen = group.Max(item => item.Nitrogen)
-                })
-                .Select(result => new int[] { result.HighestNitrogenId, result.HighestNitrogen })
-                .ToList();
-
-            // Display outputAirQData on-screen:
+            CurrentTableName = "Highest Nitrogen (Air Quality)";
+            var arrayAirQData = _context.AirQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
+            foreach (AirQData item in arrayAirQData)
+            {
+                DateTime itemDate = item.Date;
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Nitrogen);
+            }
+            CalcHighest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the lowest nitrogen level in the air quality data and then recreates a table of the data, displaying it onscreen.
@@ -74,31 +79,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcLowestNitrogenAir()
         {
-            int lowestNitrogenId = 0;
-            int lowestNitrogen = 0;
-            var outputAirQData = new List<int[]>();
+            CurrentTableName = "Lowest Nitrogen (Air Quality)";
             var arrayAirQData = _context.AirQData.ToArray();
-            foreach (var item in arrayAirQData)
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
+            foreach (AirQData item in arrayAirQData)
             {
                 DateTime itemDate = item.Date;
-                lowestNitrogenId = item.Id;
-                lowestNitrogen = item.Nitrogen;
-
-                foreach (var item2 in arrayAirQData.Where(item2 => item2.Date == itemDate))
-                {
-                    if (item2.Nitrogen < lowestNitrogen)
-                    {
-                        lowestNitrogenId = item2.Id;
-                        lowestNitrogen = item2.Nitrogen;
-                    }
-                }
-
-                if (!outputAirQData.Any(data => data[0] == lowestNitrogenId))
-                {
-                    outputAirQData.Add(new[] { lowestNitrogenId, lowestNitrogen });
-                }
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Nitrogen);
             }
-            DisplayDataList = outputAirQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+            CalcLowest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the mean nitrogen level in the air quality data and then recreates a table of the data, displaying it onscreen.
@@ -110,36 +103,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcMeanNitrogenAir()
         {
-            int meanNitrogenId = 0;
-            int meanNitrogen = 0;
-            List<int[]> outputAirQData = new List<int[]>(); ;
-            Array arrayAirQData = _context.AirQData.ToArray();
-            List<int> arrayNitrogenPerDay = new List<int>();
-            int totalNitrogen = 0;
+            CurrentTableName = "Mean Nitrogen (Air Quality)";
+            var arrayAirQData = _context.AirQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (AirQData item in arrayAirQData)
             {
                 DateTime itemDate = item.Date;
-                meanNitrogenId = item.Id;
-                meanNitrogen = item.Nitrogen;
-                foreach (AirQData item2 in arrayAirQData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        totalNitrogen += item2.Nitrogen;
-                        arrayNitrogenPerDay.Add(item2.Nitrogen);
-                    }
-                    else
-                    {
-                        meanNitrogen = totalNitrogen / arrayNitrogenPerDay.Count;
-                        outputAirQData.Add(new int[] { meanNitrogenId, meanNitrogen });
-                        totalNitrogen = 0;
-                        arrayNitrogenPerDay.Clear();
-                        arrayNitrogenPerDay.Add(item2.Sulphur);
-                        break;
-                    }
-                }
-                DisplayDataList = outputAirQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Nitrogen);
             }
+            CalcMean(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the highest sulphur level in the air quality data and then recreates a table of the data, displaying it onscreen.
@@ -150,36 +126,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcHighestSulphurAir()
         {
-            int highestSulphurId = 0;
-            int highestSulphur = 0;
-            var outputAirQData = new List<int[]>();
+            CurrentTableName = "Highest Sulphur (Air Quality)";
             var arrayAirQData = _context.AirQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (AirQData item in arrayAirQData)
             {
                 DateTime itemDate = item.Date;
-                highestSulphurId = item.Id;
-                highestSulphur = item.Sulphur;
-                foreach (AirQData item2 in arrayAirQData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        if (item2.Sulphur > highestSulphur)
-                        {
-                            highestSulphurId = item2.Id;
-                            highestSulphur = item2.Sulphur;
-                        }
-                    }
-                    else
-                    {
-                        if (!outputAirQData.Any(data => data[0] == highestSulphurId))
-                        {
-                            outputAirQData.Add(new int[] { highestSulphurId, highestSulphur });
-                        }
-                        break;
-                    }
-                }
-                DisplayDataList = outputAirQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Sulphur);
             }
+            CalcHighest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the lowest sulphur level in the air quality data and then recreates a table of the data, displaying it onscreen.
@@ -190,30 +149,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcLowestSulphurAir()
         {
-            int lowestSulphurId = 0;
-            int lowestSulphur = 0;
-            List<int[]> outputAirQData = new List<int[]>(); ;
-            AirQData[] arrayAirQData = _context.AirQData.ToArray();
+            CurrentTableName = "Lowest Sulphur (Air Quality)";
+            var arrayAirQData = _context.AirQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (AirQData item in arrayAirQData)
             {
                 DateTime itemDate = item.Date;
-                lowestSulphurId = item.Id;
-                lowestSulphur = item.Sulphur;
-                foreach (AirQData item2 in arrayAirQData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        if (item2.Sulphur < lowestSulphur)
-                        {
-                            lowestSulphurId = item2.Id;
-                            lowestSulphur = item2.Sulphur;
-                        }
-                    }
-                    outputAirQData.Add(new int[] { lowestSulphurId, lowestSulphur });
-                    break;
-                }
-                DisplayDataList = outputAirQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Sulphur);
             }
+            CalcLowest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the mean sulphur level in the air quality data and then recreates a table of the data, displaying it onscreen.
@@ -225,37 +173,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcMeanSulphurAir()
         {
-            int meanSulphurId = 0;
-            int meanSulphur = 0;
-            List<int[]> outputAirQData = new List<int[]>(); ;
-            Array arrayAirQData = _context.AirQData.ToArray();
-            List<int> arraySulphurPerDay = new List<int>();
-            int totalSulphur = 0;
+            CurrentTableName = "Mean Sulphur (Air Quality)";
+            var arrayAirQData = _context.AirQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (AirQData item in arrayAirQData)
             {
                 DateTime itemDate = item.Date;
-                meanSulphurId = item.Id;
-                meanSulphur = item.Sulphur;
-                foreach (AirQData item2 in arrayAirQData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        totalSulphur += item2.Sulphur;
-                        arraySulphurPerDay.Add(item2.Sulphur);
-                    }
-                    else
-                    {
-                        meanSulphur = totalSulphur / arraySulphurPerDay.Count;
-                        outputAirQData.Add(new int[] { meanSulphurId, meanSulphur });
-                        totalSulphur = 0;
-                        arraySulphurPerDay.Clear();
-                        arraySulphurPerDay.Add(item2.Sulphur);
-                        break;
-                    }
-                }
-                DisplayDataList = outputAirQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
-
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Sulphur);
             }
+            CalcMean(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the highest nitrite level in the water quality data and then recreates a table of the data, displaying it onscreen.
@@ -266,30 +196,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcHighestNitriteWater()
         {
-            int highestNitriteId = 0;
-            int highestNitrite = 0;
-            List<int[]> outputWaterQData = new List<int[]>(); ;
-            WaterQData[] arrayWaterQData = _context.WaterQData.ToArray();
+            CurrentTableName = "Highest Nitrite (Water Quality)";
+            var arrayWaterQData = _context.WaterQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WaterQData item in arrayWaterQData)
             {
                 DateTime itemDate = item.Date;
-                highestNitriteId = item.Id;
-                highestNitrite = item.Nitrite;
-                foreach (WaterQData item2 in arrayWaterQData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        if (item2.Nitrite > highestNitrite)
-                        {
-                            highestNitriteId = item2.Id;
-                            highestNitrite = item2.Nitrite;
-                        }
-                        outputWaterQData.Add(new int[] { highestNitriteId, highestNitrite });
-                        break;
-                    }
-                }
-                DisplayDataList = outputWaterQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Nitrite);
             }
+            CalcHighest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the lowest nitrite level in the water quality data and then recreates a table of the data, displaying it onscreen.
@@ -300,30 +219,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcLowestNitriteWater()
         {
-            int lowestNitriteId = 0;
-            int lowestNitrite = 0;
-            WaterQData[] arrayWaterQData = _context.WaterQData.ToArray();
-            List<int[]> outputWaterQData = new List<int[]>();
+            CurrentTableName = "Lowest Nitrite (Water Quality)";
+            var arrayWaterQData = _context.WaterQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WaterQData item in arrayWaterQData)
             {
                 DateTime itemDate = item.Date;
-                lowestNitriteId = item.Id;
-                lowestNitrite = item.Nitrite;
-                foreach (WaterQData item2 in arrayWaterQData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        if (item2.Nitrite < lowestNitrite)
-                        {
-                            lowestNitriteId = item2.Id;
-                            lowestNitrite = item2.Nitrite;
-                        }
-                        outputWaterQData.Add(new int[] { lowestNitriteId, lowestNitrite });
-                        break;
-                    }
-                }
-                DisplayDataList = outputWaterQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Nitrite);
             }
+            CalcLowest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the mean nitrine level in the water quality data and then recreates a table of the data, displaying it onscreen.
@@ -335,36 +243,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcMeanNitriteWater()
         {
-                int meanNitriteId = 0;
-                int meanNitrite = 0;
-                List<int[]> outputWaterQData = new List<int[]>(); ;
-                Array arrayWaterQData = _context.WaterQData.ToArray();
-                List<int> arrayNitritePerDay = new List<int>();
-                int totalNitrite = 0;
-                foreach (WaterQData item in arrayWaterQData)
-                {
-                    DateTime itemDate = item.Date;
-                    meanNitriteId = item.Id;
-                    meanNitrite = item.Nitrite;
-                    foreach (WaterQData item2 in arrayWaterQData)
-                    {
-                        if (item2.Date == itemDate)
-                        {
-                            totalNitrite += item2.Nitrite;
-                            arrayNitritePerDay.Add(item2.Nitrite);
-                        }
-                        else
-                        {
-                            meanNitrite = totalNitrite / arrayNitritePerDay.Count;
-                            outputWaterQData.Add(new int[] { meanNitriteId, meanNitrite });
-                            totalNitrite = 0;
-                            arrayNitritePerDay.Clear();
-                            arrayNitritePerDay.Add(item2.Nitrite);
-                            break;
-                        }
-                    }
-                    DisplayDataList = outputWaterQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
-                }
+            CurrentTableName = "Mean Nitrite (Water Quality)";
+            var arrayWaterQData = _context.WaterQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
+            foreach (WaterQData item in arrayWaterQData)
+            {
+                DateTime itemDate = item.Date;
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Nitrite);
+            }
+            CalcMean(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the highest nitrate level in the water quality data and then recreates a table of the data, displaying it onscreen.
@@ -372,33 +263,23 @@ namespace SET09102_Coursework.ViewModels
         *  Only the nitrate value and record id are displayed for the sake of simplicity, but this could be expanded to include other values if needed.
         *  Each record is ordered by date, so the highest nitrate level for each day is displayed, allowing for a quick overview of the data.
         */
+
         [RelayCommand]
         public void CalcHighestNitrateWater()
         {
-            int highestNitrateId = 0;
-            int highestNitrate = 0;
-            List<int[]> outputWaterQData = new List<int[]>(); ;
-            Array arrayWaterQData = _context.WaterQData.ToArray();
+            CurrentTableName = "Highest Nitrate (Water Quality)";
+            var arrayWaterQData = _context.WaterQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WaterQData item in arrayWaterQData)
             {
                 DateTime itemDate = item.Date;
-                highestNitrateId = item.Id;
-                highestNitrate = item.Nitrate;
-                foreach (WaterQData item2 in arrayWaterQData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        if (item2.Nitrate > highestNitrate)
-                        {
-                            highestNitrateId = item2.Id;
-                            highestNitrate = item2.Nitrate;
-                        }
-                        outputWaterQData.Add(new int[] { highestNitrateId, highestNitrate });
-                        break;
-                    }
-                }
-                DisplayDataList = outputWaterQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Nitrate);
             }
+            CalcHighest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the lowest nitrate level in the water quality data and then recreates a table of the data, displaying it onscreen.
@@ -409,30 +290,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcLowestNitrateWater()
         {
-            int lowestNitrateId = 0;
-            int lowestNitrate = 0;
-            List<int[]> outputWaterQData = new List<int[]>(); ;
-            Array arrayWaterQData = _context.WaterQData.ToArray();
+            CurrentTableName = "Lowest Nitrate (Water Quality)";
+            var arrayWaterQData = _context.WaterQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WaterQData item in arrayWaterQData)
             {
                 DateTime itemDate = item.Date;
-                lowestNitrateId = item.Id;
-                lowestNitrate = item.Nitrate;
-                foreach (WaterQData item2 in arrayWaterQData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        if (item2.Nitrate < lowestNitrate)
-                        {
-                            lowestNitrateId = item2.Id;
-                            lowestNitrate = item2.Nitrate;
-                        }
-                        outputWaterQData.Add(new int[] { lowestNitrateId, lowestNitrate });
-                        break;
-                    }
-                }
-                DisplayDataList = outputWaterQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Nitrate);
             }
+            CalcLowest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the mean nitrate level in the water quality data and then recreates a table of the data, displaying it onscreen.
@@ -444,36 +314,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcMeanNitrateWater()
         {
-            int meanNitrateId = 0;
-            int meanNitrate = 0;
-            List<int[]> outputWaterQData = new List<int[]>(); ;
-            Array arrayWaterQData = _context.WaterQData.ToArray();
-            List<int> arrayNitratePerDay = new List<int>();
-            int totalNitrate = 0;
+            CurrentTableName = "Mean Nitrate (Water Quality)";
+            var arrayWaterQData = _context.WaterQData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WaterQData item in arrayWaterQData)
             {
-                DateTime itemDate = item.Date;
-                meanNitrateId = item.Id;
-                meanNitrate = item.Nitrate;
-                foreach (WaterQData item2 in arrayWaterQData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        totalNitrate += item2.Nitrate;
-                        arrayNitratePerDay.Add(item2.Nitrate);
-                    }
-                    else
-                    {
-                        meanNitrate = totalNitrate / arrayNitratePerDay.Count;
-                        outputWaterQData.Add(new int[] { meanNitrateId, meanNitrate });
-                        totalNitrate = 0;
-                        arrayNitratePerDay.Clear();
-                        arrayNitratePerDay.Add(item2.Nitrate);
-                        break;
-                    }
-                }
-                DisplayDataList = outputWaterQData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+              DateTime itemDate = item.Date;
+              dateList.Add(itemDate);
+              idList.Add(item.Id);
+              valueList.Add(item.Nitrate);
             }
+                CalcMean(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the highest air temperature in the weather data and then recreates a table of the data, displaying it onscreen.
@@ -484,30 +337,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcHighestAirTempWeather()
         {
-            int highestAirTempId = 0;
-            int highestAirTemp = 0;
-            List<int[]> outputWeatherData = new List<int[]>(); ;
-            WeatherData[] arrayWeatherData = _context.WeatherData.ToArray();
+            CurrentTableName = "Highest Air Temperature (Weather Data)";
+            var arrayWeatherData = _context.WeatherData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WeatherData item in arrayWeatherData)
             {
                 DateTime itemDate = item.Date;
-                highestAirTempId = item.Id;
-                highestAirTemp = item.AirTemp;
-                foreach (WeatherData item2 in arrayWeatherData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        if (item2.AirTemp > highestAirTemp)
-                        {
-                            highestAirTempId = item2.Id;
-                            highestAirTemp = item2.AirTemp;
-                        }
-                        outputWeatherData.Add(new int[] { highestAirTempId, highestAirTemp });
-                        break;
-                    }
-                }
-                DisplayDataList = outputWeatherData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.AirTemp);
             }
+            CalcHighest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the lowest air temperature in the weather data and then recreates a table of the data, displaying it onscreen.
@@ -518,30 +360,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcLowestAirTempWeather()
         {
-            int lowestAirTempId = 0;
-            int lowestAirTemp = 0;
-            WeatherData[] arrayWeatherData = _context.WeatherData.ToArray();
-            List<int[]> outputWeatherData = new List<int[]>();
+            CurrentTableName = "Lowest Air Temperature (Weather Data)";
+            var arrayWeatherData = _context.WeatherData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WeatherData item in arrayWeatherData)
             {
                 DateTime itemDate = item.Date;
-                lowestAirTempId = item.Id;
-                lowestAirTemp = item.AirTemp;
-                foreach (WeatherData item2 in arrayWeatherData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        if (item2.AirTemp < lowestAirTemp)
-                        {
-                            lowestAirTempId = item2.Id;
-                            lowestAirTemp = item2.AirTemp;
-                        }
-                        outputWeatherData.Add(new int[] { lowestAirTempId, lowestAirTemp });
-                        break;
-                    }
-                }
-                DisplayDataList = outputWeatherData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.AirTemp);
             }
+            CalcLowest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the mean air temperature level in the weather data and then recreates a table of the data, displaying it onscreen.
@@ -553,36 +384,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcMeanAirTempWeather()
         {
-            int meanAirTempId = 0;
-            int meanAirTemp = 0;
-            List<int[]> outputWeatherData = new List<int[]>(); ;
-            Array arrayWeatherData = _context.WeatherData.ToArray();
-            List<int> arrayAirTempPerDay = new List<int>();
-            int totalAirTemp = 0;
+            CurrentTableName = "Mean Air Temperature (Weather Data)";
+            var arrayWeatherData = _context.WeatherData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WeatherData item in arrayWeatherData)
             {
                 DateTime itemDate = item.Date;
-                meanAirTempId = item.Id;
-                meanAirTemp = item.AirTemp;
-                foreach (WeatherData item2 in arrayWeatherData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        totalAirTemp += item2.AirTemp;
-                        arrayAirTempPerDay.Add(item2.AirTemp);
-                    }
-                    else
-                    {
-                        meanAirTemp = totalAirTemp / arrayAirTempPerDay.Count;
-                        outputWeatherData.Add(new int[] { meanAirTempId, meanAirTemp });
-                        totalAirTemp = 0;
-                        arrayAirTempPerDay.Clear();
-                        arrayAirTempPerDay.Add(item2.AirTemp);
-                        break;
-                    }
-                }
-                DisplayDataList = outputWeatherData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.AirTemp);
             }
+            CalcMean(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the highest humidity level in the weather data and then recreates a table of the data, displaying it onscreen.
@@ -593,30 +407,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcHighestHumidityWeather()
         {
-            int highestHumidityId = 0;
-            int highestHumidity = 0;
-            List<int[]> outputWeatherData = new List<int[]>(); ;
-            Array arrayWeatherData = _context.WeatherData.ToArray();
+            CurrentTableName = "Highest Humidity (Weather Data)";
+            var arrayWeatherData = _context.WeatherData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WeatherData item in arrayWeatherData)
-            {
-                DateTime itemDate = item.Date;
-                highestHumidityId = item.Id;
-                highestHumidity = item.Humidity;
-                foreach (WeatherData item2 in arrayWeatherData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        if (item2.Humidity > highestHumidity)
-                        {
-                            highestHumidityId = item2.Id;
-                            highestHumidity = item2.Humidity;
-                        }
-                        outputWeatherData.Add(new int[] { highestHumidityId, highestHumidity });
-                        break;
-                    }
-                }
-                DisplayDataList = outputWeatherData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
-            }
+        {
+             DateTime itemDate = item.Date;
+            dateList.Add(itemDate);
+            idList.Add(item.Id);
+            valueList.Add(item.Humidity);
+        }
+        CalcHighest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the lowest humidity level in the weather data and then recreates a table of the data, displaying it onscreen.
@@ -627,30 +430,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcLowestHumidityWeather()
         {
-            int lowestHumidityId = 0;
-            int lowestHumidity = 0;
-            List<int[]> outputWeatherData = new List<int[]>(); ;
-            Array arrayWeatherData = _context.WeatherData.ToArray();
+            CurrentTableName = "Lowest Humidity (Weather Data)";
+            var arrayWeatherData = _context.WeatherData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WeatherData item in arrayWeatherData)
             {
                 DateTime itemDate = item.Date;
-                lowestHumidityId = item.Id;
-                lowestHumidity = item.Humidity;
-                foreach (WeatherData item2 in arrayWeatherData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        if (item2.Humidity < lowestHumidity)
-                        {
-                            lowestHumidityId = item2.Id;
-                            lowestHumidity = item2.Humidity;
-                        }
-                        outputWeatherData.Add(new int[] { lowestHumidityId, lowestHumidity });
-                        break;
-                    }
-                }
-                DisplayDataList = outputWeatherData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Humidity);
             }
+            CalcLowest(idList, valueList, dateList);
         }
 
         /*! \brief A function that calulates the mean humidity level in the weather data and then recreates a table of the data, displaying it onscreen.
@@ -662,36 +454,19 @@ namespace SET09102_Coursework.ViewModels
         [RelayCommand]
         public void CalcMeanHumidityWeather()
         {
-            int meanHumidityId = 0;
-            int meanHumidity = 0;
-            List<int[]> outputWeatherData = new List<int[]>(); ;
-            Array arrayWeatherData = _context.WeatherData.ToArray();
-            List<int> arrayHumidityPerDay = new List<int>();
-            int totalHumidity = 0;
+            CurrentTableName = "Mean Humidity (Weather Data)";
+            var arrayWeatherData = _context.WeatherData.ToArray();
+            var idList = new List<int>();
+            var valueList = new List<int>();
+            var dateList = new List<DateTime>();
             foreach (WeatherData item in arrayWeatherData)
             {
                 DateTime itemDate = item.Date;
-                meanHumidityId = item.Id;
-                meanHumidity = item.Humidity;
-                foreach (WeatherData item2 in arrayWeatherData)
-                {
-                    if (item2.Date == itemDate)
-                    {
-                        totalHumidity += item2.Humidity;
-                        arrayHumidityPerDay.Add(item2.Humidity);
-                    }
-                    else
-                    {
-                        meanHumidity = totalHumidity / arrayHumidityPerDay.Count;
-                        outputWeatherData.Add(new int[] { meanHumidityId, meanHumidity });
-                        totalHumidity = 0;
-                        arrayHumidityPerDay.Clear();
-                        arrayHumidityPerDay.Add(item2.Humidity);
-                        break;
-                    }
-                }
-                DisplayDataList = outputWeatherData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+                dateList.Add(itemDate);
+                idList.Add(item.Id);
+                valueList.Add(item.Humidity);
             }
+            CalcMean(idList, valueList, dateList);
         }
 
         /*! \brief A function that navigates the AllUsersPage; the current homepage for the application.
@@ -737,6 +512,99 @@ namespace SET09102_Coursework.ViewModels
             else
             {
                 Console.WriteLine("Failed to clear AllData. Aborting data load to prevent duplicates.");
+            }
+        }
+
+        private void CalcHighest(List<int> idList, List<int> valueList, List<DateTime> dateList)
+        {
+            var outputData = new List<int[]>();
+            for (int i = 0; i < idList.Count; i++)
+            {
+                DateTime itemDate = dateList[i];
+                int highestId = idList[i];
+                int highestValue = valueList[i];
+                for(int j = 0; j < idList.Count; j++)
+                {
+                    if (dateList[j] == dateList[i])
+                    {
+                        if (valueList[j] > highestValue)
+                        {
+                            highestId = idList[j];
+                            highestValue = valueList[j];
+                        }
+                    }
+                    else
+                    {
+                        if (!outputData.Any(data => data[0] == highestId))
+                        {
+                            outputData.Add(new int[] { highestId, highestValue });
+                        }
+                        break;
+                    }
+                }
+                DisplayDataList = outputData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+            }
+        }
+
+        private void CalcLowest(List<int> idList, List<int> valueList, List<DateTime> dateList)
+        {
+            var outputData = new List<int[]>();
+            for (int i = 0; i < idList.Count; i++)
+            {
+                DateTime itemDate = dateList[i];
+                int lowestId = idList[i];
+                int lowestValue = valueList[i];
+                for (int j = 0; j < idList.Count; j++)
+                {
+                    if (dateList[j] == dateList[i])
+                    {
+                        if (valueList[j] < lowestValue)
+                        {
+                            lowestId = idList[j];
+                            lowestValue = valueList[j];
+                        }
+                    }
+                    else
+                    {
+                        if (!outputData.Any(data => data[0] == lowestId))
+                        {
+                            outputData.Add(new int[] { lowestId, lowestValue });
+                        }
+                        break;
+                    }
+                }
+                DisplayDataList = outputData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
+            }
+        }
+
+        public void CalcMean(List<int> idList, List<int> valueList, List<DateTime> dateList)
+        {
+            var outputData = new List<int[]>();
+            List<int> arrayPerDay = new List<int>();
+            int totalValue = 0;
+            for (int i = 0; i < idList.Count; i++)
+            {
+                DateTime itemDate = dateList[i];
+                int meanId = idList[i];
+                int meanValue = valueList[i];
+                for (int j = 0; j < idList.Count; j++)
+                {
+                    if (dateList[j] == itemDate)
+                    {
+                        totalValue += valueList[j];
+                        arrayPerDay.Add(valueList[j]);
+                    }
+                    else
+                    {
+                        int meanTotalValue = totalValue / arrayPerDay.Count;
+                        outputData.Add(new int[] { meanId, meanTotalValue });
+                        totalValue = 0;
+                        arrayPerDay.Clear();
+                        arrayPerDay.Add(valueList[j]);
+                        break;
+                    }
+                }
+                DisplayDataList = outputData.Select(data => new string[] { data[0].ToString(), data[1].ToString() }).ToList();
             }
         }
     }

@@ -7,14 +7,13 @@
 
     <Grid>
         <Label 
-        Text="{Binding currentTable}"
+        Text="{Binding CurrentTableName}"
         VerticalOptions="Center" 
         HorizontalOptions="Center"
         FontSize="20"
         TextColor="{StaticResource Primary}"/>
 
-        <CollectionView x:Name="displayDataList"
-        ItemsSource="{Binding analysisData}"
+        <CollectionView x:Name="DisplayDataList"
         Margin="10"
         SelectionMode="None">
             <CollectionView.ItemsLayout>
@@ -24,8 +23,8 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                        <Label Text="{Binding displayDataList[0]}" FontSize="14" TextColor="{StaticResource Secondary}"/>
-                        <Label Text="{Binding displayDataList[1]}" FontSize="14" TextColor="{StaticResource Secondary}"/>
+                        <Label Text="{Binding DisplayDataList[0]}" FontSize="14" TextColor="{StaticResource Secondary}"/>
+                        <Label Text="{Binding DisplayDataList[1]}" FontSize="14" TextColor="{StaticResource Secondary}"/>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

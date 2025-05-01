@@ -22,6 +22,9 @@ namespace SET09102_Coursework.ViewModels
         /*! \brief Creates an index to keep track of which table is currently being displayed.*/
         private int _currentTable = 0;
 
+        /*! \brief Stores the name of the currently displayed table.*/
+        public string CurrentTableName = "Name";
+
         public int currentTable
         {
             /*! \brief The current table being displayed is set to the index of the table in the tableNames array.*/
@@ -197,6 +200,8 @@ namespace SET09102_Coursework.ViewModels
                 { 5, () => _context.WaterQData.ToList() },
                 { 6, () => _context.WeatherData.ToList() }
             };
+
+            CurrentTableName = tableNames[currentTable];
 
             if (tableDataLoaders.TryGetValue(currentTable, out var loadData))
             {

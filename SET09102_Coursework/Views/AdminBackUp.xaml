@@ -8,7 +8,7 @@
 
     <Grid>
         <Label 
-        Text="{Binding currentTable}"
+        Text="{Binding CurrentTableName}"
         VerticalOptions="Center" 
         HorizontalOptions="Center"
         FontSize="20"
@@ -22,7 +22,7 @@
         TextColor="{StaticResource Secondary}"/>
 
         <CollectionView x:Name="tableData"
-                ItemsSource="{Binding currentTableData}"
+                ItemsSource="{Binding currentData}"
                 Margin="10"
                 SelectionMode="None">
             <CollectionView.ItemsLayout>
@@ -52,16 +52,14 @@
             Grid.Row="1"
             Grid.Column="0"
             Margin="10"
-            Command="{Binding PreviousTable}"
-            IsEnabled="{Binding IsNotFirst}"
+            Command="{Binding previousPage}"
             Style="{StaticResource ButtonSecondary}"
             Text="Previous" />
             <Button
             Grid.Row="1"
             Grid.Column="1"
             Margin="10"
-            Command="{Binding NextTable}"
-            IsEnabled="{Binding IsNotLast}"
+            Command="{Binding nextPage}"
             Style="{StaticResource ButtonSecondary}"
             Text="Next" />
         </Grid>
@@ -81,13 +79,6 @@
             Command="{Binding CopyDatabase}"
             Style="{StaticResource ButtonPrimary}"
             Text="Copy Database"/>
-            <Button
-            Grid.Row="1"
-            Grid.Column="2"
-            Margin="15"
-            Command="{Binding ReturnToHome}"
-            Style="{StaticResource ButtonPrimary}"
-            Text="Back"/>
         </Grid>
     </Grid>
 </ContentPage>
