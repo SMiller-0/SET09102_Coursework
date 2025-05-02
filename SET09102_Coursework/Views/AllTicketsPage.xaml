@@ -61,7 +61,7 @@
                                     TextColor="Gray"/>
                                     <Button Grid.Row="2" Grid.Column="1"
                                         Text="Details"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllTicketsViewModel}},Path=SelectTicketCommand}"
+                                        Command="{Binding SelectTicketCommand}"
                                         CommandParameter="{Binding}" />
                             </Grid>
                         </Frame>

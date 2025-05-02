@@ -20,7 +20,7 @@ public interface ITicketService
     /// <summary>
     /// Retrieves a ticket by its ID. This method is used to fetch the details of a specific ticket.
     /// </summary>
-    /// <param name="ticketId">The ID of the sensor to retrieve tickets for.</param> 
+    /// <param name="sensorId">The ID of the sensor to retrieve tickets for.</param> 
     /// <returns>A list of matching tickets.</returns>
     Task<IEnumerable<SensorTicket>> GetTicketsBySensorAsync(int sensorId);
 
@@ -51,5 +51,13 @@ public interface ITicketService
     /// </summary>
     /// <returns>A list of all ticket statuses.</returns>
     Task<IEnumerable<TicketStatus>> GetAllTicketStatusesAsync();
+
+
+    /// <summary>
+    /// Retrieves a ticket by its ID. This method is used to fetch the details of a specific ticket status.
+    /// /// </summary>
+    /// <param name="ticketId">The ID of the status to retrieve.</param>
+    /// <returns>The ticket status that matches the specified ID.</returns>
+    //Task<SensorTicket?> GetTicketByIdAsync(int ticketId);
 
 }

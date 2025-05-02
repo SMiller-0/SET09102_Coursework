@@ -6,6 +6,10 @@ using System.Collections.ObjectModel;
 
 namespace SET09102_Coursework.ViewModels;
 
+/// <summary>
+/// ViewModel for displaying all tickets.
+/// Handles ticket loading, filtering by status, and navigation to ticket details page.
+/// </summary>
 public partial class AllTicketsViewModel: ObservableObject
 {
     private readonly ITicketService _ticketService;
@@ -20,6 +24,7 @@ public partial class AllTicketsViewModel: ObservableObject
 
     [ObservableProperty]
     private TicketStatus selectedStatus;
+
 
     public AllTicketsViewModel(ITicketService ticketService, INavigationService navigationService)
     {
@@ -37,6 +42,8 @@ public partial class AllTicketsViewModel: ObservableObject
         _ = InitializeAsync();
     }
 
+
+    
     private async Task InitializeAsync()
     {
         // Load all statuses into the picker
@@ -52,18 +59,28 @@ public partial class AllTicketsViewModel: ObservableObject
         await LoadByStatusAsync();
     }
 
+
+    /// <summary>
+    /// Loads tickets based on the selected status.
+    
+    ///  
+    /// If "All" is selected, all tickets are loaded.
+    /// If a specific status is selected, only tickets with that status are loaded.
+    /// </summary>
+    /// <returns>Task representing the asynchronous operation.</returns>
+    
     [RelayCommand]
     private async Task LoadByStatusAsync()
     {
         IEnumerable<SensorTicket> list;
         if (SelectedStatus.Id == 0)
         {
-            // “All”
+            
             list = await _ticketService.GetAllTicketsAsync();
         }
         else
         {
-            // only that status
+            
             list = await _ticketService.GetTicketsByStatusAsync(SelectedStatus.Id);
         }
 
@@ -72,5 +89,12 @@ public partial class AllTicketsViewModel: ObservableObject
             Tickets.Add(t);
     }
     
+
+    [RelayCommand]
+    private async Task ViewSensorDetails(Sensor sensor)
+    {
+        if (sensor == null) return;
+        await _navigationService.NavigateToSensorDetailsAsync(sensor);
+    }
 
 }

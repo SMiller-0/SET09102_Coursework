@@ -64,6 +64,8 @@ public class NavigationService : INavigationService
         await Shell.Current.GoToAsync(nameof(AllTicketsPage));
 
 
+    //public async Task NavigateToTicketDetailsAsync(int ticketId) =>
+      //  await Shell.Current.GoToAsync($"{nameof(TicketDetailsPage)}?ticketId={ticketId}");  
 }
 
 
