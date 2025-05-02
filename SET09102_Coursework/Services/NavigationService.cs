@@ -79,14 +79,25 @@ public class NavigationService : INavigationService
             return;
         }
 
-        // allowed → push onto the current tab’s stack
         await Shell.Current.GoToAsync(
             $"{nameof(TicketDetailsPage)}?ticketId={ticket.Id}"
         );
     }
+/* 
+    public async Task NavigateToViewAllTicketsAsync()
+{
+    if (!_user.IsOperationsManager)
+    {
+        await Shell.Current.DisplayAlert(
+            "Access Denied",
+            "Only Operations Managers can view all tickets.",
+            "OK"
+        );
+        return;
+    }
 
-    public async Task NavigateToViewAllTicketsAsync() =>
-        await Shell.Current.GoToAsync(nameof(AllTicketsPage));
+    await Shell.Current.GoToAsync(nameof(AllTicketsPage));
+} */
 }
 
 
