@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace SET09102_Coursework.Services;
 
+/// <summary>
+/// Defines operations for creating and retrieving sensor tickets and their statuses.
+/// </summary>
 public interface ITicketService
 {
 
@@ -36,19 +39,17 @@ public interface ITicketService
     //Task<bool> UpdateTicketStatusAsync(int ticketId, string newStatus);
 
     /// <summary>
-    /// Retrieves all ticket status types. This method is used to fetch the details of a specific ticket status.
-    /// /// </summary>
-    Task<TicketStatus?> GetStatusByTypeAsync(string name);
-
-
-    /// <summary>
-    /// Gets tickets by their status ID (e.g. Open, Closed, Under Investigation).
+    /// Retrieves tickets by their status. This method is used to fetch tickets that match a specific status.
     /// </summary>
+    /// <param name="statusId">The ID of the status to filter tickets by.</param>
+    /// <returns>A list of tickets that match the specified status.</returns>
+    /// <remarks>Note: The status ID is typically an integer that corresponds to a specific status type.</remarks>
     Task<IEnumerable<SensorTicket>> GetTicketsByStatusAsync(int statusId);
 
     /// <summary>
-    /// Gets all possible ticket statuses (so the UI can offer “Open”, “Closed”, etc).
+    /// Retrieves all ticket statuses. This method is used to fetch the list of all possible ticket statuses.
     /// </summary>
+    /// <returns>A list of all ticket statuses.</returns>
     Task<IEnumerable<TicketStatus>> GetAllTicketStatusesAsync();
 
 }

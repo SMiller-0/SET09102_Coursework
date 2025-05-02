@@ -7,15 +7,26 @@ using SET09102_Coursework.Data;
 
 namespace SET09102_Coursework.Services;
 
+/// <summary>
+/// Service for managing sensor tickets and their statuses.
+/// </summary>
 public class TicketService : ITicketService
 {
-private readonly AppDbContext _context;
+    private readonly AppDbContext _context;
 
     public TicketService(AppDbContext context)
     {
         _context = context;
     }
 
+   
+    /// <summary>
+    /// Creates a new ticket for a sensor. This method is used to log issues or requests related to a specific sensor.
+    /// The ticket will be created with the status "Open" by default.
+    /// </summary>
+    /// <param name="ticket">The ticket to create.</param>
+    /// <returns>True if creation succeeds; otherwise, false.</returns>
+    /// <remarks>Note: The ticket is expected to have a valid sensor ID and status ID.</remarks>
     public async Task<bool> CreateTicketAsync(SensorTicket ticket)
     {
         try
@@ -31,6 +42,12 @@ private readonly AppDbContext _context;
         }
     }
 
+
+    /// <summary>
+    /// Retrieves a ticket by its ID. This method is used to fetch the details of a specific ticket.
+    /// </summary>
+    /// <param name="ticketId">The ID of the sensor to retrieve tickets for.</param>
+    /// <returns>A list of matching tickets.</returns>
     public async Task<IEnumerable<SensorTicket>> GetTicketsBySensorAsync(int sensorId)
     {
         try
@@ -46,6 +63,12 @@ private readonly AppDbContext _context;
         }
     }
 
+
+    /// <summary>
+    /// Retrieves all tickets. This method is used to fetch the details of all tickets in the system.
+    /// </summary>
+    /// <returns>A list of all tickets is returned.</returns>
+    /// <remarks>Note: The tickets are ordered by status and then by creation date.</remarks>
     public async Task<IEnumerable<SensorTicket>> GetAllTicketsAsync()
     {
         try
@@ -66,6 +89,12 @@ private readonly AppDbContext _context;
         }
     }
 
+    /// <summary>
+    /// Updates the status of a ticket. This method is used to change the status of a specific ticket.
+    /// /// </summary>
+    /// <param name="ticketId">The ID of the ticket to update.</param>
+    /// <param name="newStatus">The new status (e.g. Closed, In Progress).</param>
+    /// <returns>True if the update succeeds; otherwise, false.</returns>
    /*  public async Task<bool> UpdateTicketStatusAsync(int ticketId, string newStatus)
     {
         try
@@ -88,15 +117,17 @@ private readonly AppDbContext _context;
     } */
 
 
-   public async Task<TicketStatus?> GetStatusByTypeAsync(string name)
-   {   
-        return await _context.TicketStatuses.FirstOrDefaultAsync(s => s.StatusName == name);
-   }
-
-    //public async Task<IEnumerable<TicketType>> GetTicketTypesAsync()
-    //{        return await _context.TicketTypes.OrderBy(st => st.Name).ToListAsync();
-    //}
-
+    /// <summary>
+    /// Retrieves tickets by their status. This method is used to fetch tickets that match a specific status.
+    /// </summary>
+    /// <param name="statusId">The ID of the status to filter tickets by.</param>
+    /// <returns>A list of tickets that match the specified status.</returns>
+    /// <remarks>
+    /// - The status ID corresponds to the specific <see cref="TicketStatus"/> type.
+    /// - Tickets are ordered by creation date.
+    /// - Tickets can be filtered by status ID.
+    /// - Each ticket includes its `Status` and `Sensor` information.
+    /// </remarks>
     public async Task<IEnumerable<SensorTicket>> GetTicketsByStatusAsync(int statusId)
     {
         return await _context.SensorTickets
@@ -107,6 +138,14 @@ private readonly AppDbContext _context;
             .ToListAsync();
     }
 
+    /// <summary>
+    /// Retrieves all ticket statuses. This method is used to fetch the list of all possible ticket statuses.
+    /// </summary>
+    /// <returns>A list of all ticket statuses.</returns>
+    /// <remarks>
+    /// - The statuses are ordered by their name.
+    /// - Each status is represented by its `Id` and `StatusName` properties.
+    /// </remarks>
     public async Task<IEnumerable<TicketStatus>> GetAllTicketStatusesAsync()
     {
         return await _context.TicketStatuses
