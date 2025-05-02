@@ -40,7 +40,15 @@ public interface ITicketService
     /// /// </summary>
     Task<TicketStatus?> GetStatusByTypeAsync(string name);
 
-    
-    //Task<Enumerable<TicketStatus>> GetAllTicketStatusesAsync();
+
+    /// <summary>
+    /// Gets tickets by their status ID (e.g. Open, Closed, Under Investigation).
+    /// </summary>
+    Task<IEnumerable<SensorTicket>> GetTicketsByStatusAsync(int statusId);
+
+    /// <summary>
+    /// Gets all possible ticket statuses (so the UI can offer “Open”, “Closed”, etc).
+    /// </summary>
+    Task<IEnumerable<TicketStatus>> GetAllTicketStatusesAsync();
 
 }

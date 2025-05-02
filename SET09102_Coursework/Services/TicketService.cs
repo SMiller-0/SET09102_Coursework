@@ -91,10 +91,29 @@ private readonly AppDbContext _context;
    public async Task<TicketStatus?> GetStatusByTypeAsync(string name)
    {   
         return await _context.TicketStatuses.FirstOrDefaultAsync(s => s.StatusName == name);
-  }
+   }
 
     //public async Task<IEnumerable<TicketType>> GetTicketTypesAsync()
     //{        return await _context.TicketTypes.OrderBy(st => st.Name).ToListAsync();
     //}
 
+    public async Task<IEnumerable<SensorTicket>> GetTicketsByStatusAsync(int statusId)
+    {
+        return await _context.SensorTickets
+            .Include(t => t.Status)
+            .Include(t => t.Sensor)
+            .Where(t => t.StatusId == statusId)
+            .OrderByDescending(t => t.CreatedAt)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<TicketStatus>> GetAllTicketStatusesAsync()
+    {
+        return await _context.TicketStatuses
+            .OrderBy(s => s.StatusName)
+            .ToListAsync();
+    }
+
+    
+    
 }

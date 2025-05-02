@@ -5,66 +5,73 @@
              xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
              xmlns:models="clr-namespace:SET09102_Coursework.Models"
              Title="Tickets">
-
+             
     <ScrollView>
-    <VerticalStackLayout Padding="20" Spacing="20">
-        <Label Text="All Tickets" 
-               FontSize="28" 
-               FontAttributes="Bold" 
-               HorizontalOptions="Center"/>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <!-- Heading -->
+            <Label Text="All Tickets" 
+                FontSize="28" 
+                FontAttributes="Bold" 
+                HorizontalOptions="Center"/>
 
-        <Label Text="View and manage all tickets" 
-               FontSize="16" 
-               HorizontalOptions="Center" 
-               TextColor="#666666"/>
+            <Label Text="View and manage all tickets" 
+                FontSize="16" 
+                HorizontalOptions="Center" 
+                TextColor="#666666"/>
 
-        <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
+            <!-- Type Filter -->
+            <Picker
+                Title="Filter by status"
+                ItemsSource="{Binding Statuses}"
+                ItemDisplayBinding="{Binding StatusName}"
+                SelectedItem="{Binding SelectedStatus}" />
+                
+            <!-- Tickets -->
+            <CollectionView ItemsSource="{Binding Tickets}">
+                <CollectionView.ItemTemplate> 
+                    <DataTemplate>
+                        <Frame Margin="0,5"
+                            Padding="10"
+                            CornerRadius="8"
+                            BorderColor="#DDD">
+                            <Grid RowDefinitions="Auto,Auto,Auto"
+                                ColumnDefinitions="*,Auto">
 
-        <CollectionView ItemsSource="{Binding AllTickets}">
-  <CollectionView.ItemTemplate>
-    <DataTemplate>
-      <Frame Margin="0,5"
-             Padding="10"
-             CornerRadius="8"
-             BorderColor="#DDD">
-        <Grid RowDefinitions="Auto,Auto,Auto"
-              ColumnDefinitions="*,Auto">
-          
-          <!-- Row 0: Sensor Name + Status pill -->
-          <Label Grid.Row="0" Grid.Column="0"
-                 Text="{Binding Sensor.Name}"
-                 FontAttributes="Bold"
-                 FontSize="16"/>
-          <Label Grid.Row="0" Grid.Column="1"
-                 Text="{Binding Status.StatusName}"
-                 FontAttributes="Italic"
-                 FontSize="14"
-                 HorizontalTextAlignment="End"/>
+                                <!-- Row 0: Sensor Name + Status -->
+                                <Label Grid.Row="0" Grid.Column="0"
+                                    Text="{Binding Sensor.Name}"
+                                    FontAttributes="Bold"
+                                    FontSize="16"/>
+                                    <Label Grid.Row="0" Grid.Column="1"
+                                        Text="{Binding Status.StatusName}"
+                                        FontAttributes="Italic"
+                                        FontSize="14"
+                                        HorizontalTextAlignment="End"/>
 
-          <!-- Row 1: Issue Description (trimmed) -->
-          <Label Grid.Row="1" Grid.ColumnSpan="2"
-                 Text="{Binding IssueDescription}"
-                 LineBreakMode="TailTruncation"
-                 MaxLines="1"/>
+                                <!-- Row 1: Issue Description (trimmed) -->
+                                <Label Grid.Row="1" Grid.ColumnSpan="2"
+                                    Text="{Binding IssueDescription}"
+                                    LineBreakMode="TailTruncation"
+                                    MaxLines="1"/>
 
-          <!-- Row 2: CreatedAt + Details button -->
-          <Label Grid.Row="2" Grid.Column="0"
-                 Text="{Binding CreatedAt, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}"
-                 FontSize="12"
-                 TextColor="Gray"/>
-          <Button Grid.Row="2" Grid.Column="1"
-                  Text="Details"
-                  Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllTicketsViewModel}},Path=SelectTicketCommand}"
-                  CommandParameter="{Binding}" />
-        </Grid>
-      </Frame>
-    </DataTemplate>
-  </CollectionView.ItemTemplate>
-</CollectionView>
+                                <!-- Row 2: CreatedAt + Details button -->
+                                <Label Grid.Row="2" Grid.Column="0"
+                                    Text="{Binding CreatedAt, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}"
+                                    FontSize="12"
+                                    TextColor="Gray"/>
+                                    <Button Grid.Row="2" Grid.Column="1"
+                                        Text="Details"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AllTicketsViewModel}},Path=SelectTicketCommand}"
+                                        CommandParameter="{Binding}" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-               
+            <!-- Divider -->
+            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
 
-        <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
-    </VerticalStackLayout>
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
