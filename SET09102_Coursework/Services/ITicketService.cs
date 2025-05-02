@@ -58,6 +58,6 @@ public interface ITicketService
     /// /// </summary>
     /// <param name="ticketId">The ID of the status to retrieve.</param>
     /// <returns>The ticket status that matches the specified ID.</returns>
-    //Task<SensorTicket?> GetTicketByIdAsync(int ticketId);
+    Task<SensorTicket?> GetTicketByIdAsync(int ticketId);
 
 }

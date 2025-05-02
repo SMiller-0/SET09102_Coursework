@@ -89,12 +89,12 @@ public partial class AllTicketsViewModel: ObservableObject
             Tickets.Add(t);
     }
     
-
+    
     [RelayCommand]
-    private async Task ViewSensorDetails(Sensor sensor)
+    private async Task ViewTicketDetails(SensorTicket ticket)
     {
-        if (sensor == null) return;
-        await _navigationService.NavigateToSensorDetailsAsync(sensor);
+        if (ticket == null) return;
+        await _navigationService.NavigateToTicketDetailsAsync(ticket);
     }
 
 }

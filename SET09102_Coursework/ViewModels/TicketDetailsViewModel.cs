@@ -10,25 +10,38 @@ namespace SET09102_Coursework.ViewModels;
 /// <summary>
 /// ViewModel for displaying details of a single SensorTicket.
 /// </summary> 
-//[QueryProperty(nameof(TicketId), "ticketId")]
-public partial class TicketDetailsViewModel //: ObservableObject, IQueryAttributable
+[QueryProperty(nameof(TicketId), "ticketId")]
+public partial class TicketDetailsViewModel : ObservableObject
 {
-/*     private readonly INavigationService _navigationService;
+    //private readonly INavigationService _navigationService;
     private readonly ITicketService _ticketService;
 
     /// <summary>The ID passed in via Shell navigation query.</summary>
     [ObservableProperty] private int ticketId;
     /// <summary>The loaded ticket, once fetched.</summary>
-    [ObservableProperty] private SensorTicket? ticket;
+    [ObservableProperty] private SensorTicket ticket;
 
 
     public TicketDetailsViewModel(ITicketService ticketService, INavigationService navigationService)
     {
         _ticketService = ticketService;
-        _navigationService = navigationService;
+        //_navigationService = navigationService;
     }
 
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
+
+    private async Task LoadTicketAsync(int id)
+        {
+            Ticket = await _ticketService.GetTicketByIdAsync(id);
+        }
+
+        // when TicketId is set by the Shell…
+        partial void OnTicketIdChanged(int value)
+        {
+            _ = LoadTicketAsync(value);
+        }
+
+
+ /*    public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query.TryGetValue("ticketId", out var raw) &&
                 int.TryParse(raw?.ToString(), out var id))
@@ -36,8 +49,8 @@ public partial class TicketDetailsViewModel //: ObservableObject, IQueryAttribut
                 TicketId = id;
                 _ = LoadTicketAsync();
             }
-        }
- */
+        } */
+
         /// <summary>
         /// Pulls the SensorTicket from the service using TicketId.
         /// </summary>

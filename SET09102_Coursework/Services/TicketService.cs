@@ -159,13 +159,13 @@ public class TicketService : ITicketService
     /// </summary>
     /// <param name="ticketId">The ID of the ticket to retrieve.</param>
     /// <returns>The ticket with the specified ID, including its status and sensor information.</returns>
-   /*  public async Task<SensorTicket?> GetTicketByIdAsync(int ticketId)
+    public async Task<SensorTicket?> GetTicketByIdAsync(int ticketId)
     {
         return await _context.SensorTickets
             .Include(t => t.Status)
             .Include(t => t.Sensor)
             .FirstOrDefaultAsync(t => t.Id == ticketId);
-    } */
+    }
 
     
     
