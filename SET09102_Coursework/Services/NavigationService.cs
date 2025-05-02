@@ -1,3 +1,4 @@
+using Microsoft.Maui.Controls;   
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Views;
 
@@ -5,6 +6,12 @@ namespace SET09102_Coursework.Services;
 
 public class NavigationService : INavigationService
 {
+    readonly ICurrentUserService _user;
+    public NavigationService(ICurrentUserService user)
+    {
+        _user = user;
+    }
+
     private Dictionary<string, object> CreateSensorParameters(Sensor sensor) =>
         new() { { "sensor", sensor } };
 
@@ -60,14 +67,26 @@ public class NavigationService : INavigationService
         await Shell.Current.GoToAsync(nameof(CreateTicketPage), parameters);
     }
 
-   public async Task NavigateToViewAllTicketsAsync() =>
-    await Shell.Current.GoToAsync(nameof(AllTicketsPage));
+    public async Task NavigateToTicketDetailsAsync(SensorTicket ticket)
+    {
+        if (!_user.IsOperationsManager)
+        {
+            await Shell.Current.DisplayAlert(
+                "Access Denied",
+                "Only Operations Managers can view ticket details.",
+                "OK"
+            );
+            return;
+        }
 
-public async Task NavigateToTicketDetailsAsync(SensorTicket ticket) =>
-    await Shell.Current.GoToAsync(
-        $"{nameof(TicketDetailsPage)}?ticketId={ticket.Id}"
-    );
+        // allowed → push onto the current tab’s stack
+        await Shell.Current.GoToAsync(
+            $"{nameof(TicketDetailsPage)}?ticketId={ticket.Id}"
+        );
+    }
 
+    public async Task NavigateToViewAllTicketsAsync() =>
+        await Shell.Current.GoToAsync(nameof(AllTicketsPage));
 }
 
 
