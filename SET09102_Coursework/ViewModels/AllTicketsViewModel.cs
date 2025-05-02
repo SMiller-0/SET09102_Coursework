@@ -97,4 +97,5 @@ public partial class AllTicketsViewModel: ObservableObject
         await _navigationService.NavigateToTicketDetailsAsync(ticket);
     }
 
+
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Controls; 
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Services;
 
@@ -13,7 +14,6 @@ namespace SET09102_Coursework.ViewModels;
 [QueryProperty(nameof(TicketId), "ticketId")]
 public partial class TicketDetailsViewModel : ObservableObject
 {
-    //private readonly INavigationService _navigationService;
     private readonly ITicketService _ticketService;
 
     /// <summary>The ID passed in via Shell navigation query.</summary>
@@ -25,7 +25,6 @@ public partial class TicketDetailsViewModel : ObservableObject
     public TicketDetailsViewModel(ITicketService ticketService, INavigationService navigationService)
     {
         _ticketService = ticketService;
-        //_navigationService = navigationService;
     }
 
 
@@ -34,32 +33,14 @@ public partial class TicketDetailsViewModel : ObservableObject
             Ticket = await _ticketService.GetTicketByIdAsync(id);
         }
 
-        // when TicketId is set by the Shell…
         partial void OnTicketIdChanged(int value)
         {
             _ = LoadTicketAsync(value);
         }
 
-
- /*    public void ApplyQueryAttributes(IDictionary<string, object> query)
+       [RelayCommand]
+        public async Task GoBack()
         {
-            if (query.TryGetValue("ticketId", out var raw) &&
-                int.TryParse(raw?.ToString(), out var id))
-            {
-                TicketId = id;
-                _ = LoadTicketAsync();
-            }
-        } */
-
-        /// <summary>
-        /// Pulls the SensorTicket from the service using TicketId.
-        /// </summary>
-       // private async Task LoadTicketAsync()
-       //{
-         //   Ticket = await _ticketService.GetTicketByIdAsync(TicketId);
-       // }
-//
-
-    
-
+            await Shell.Current.GoToAsync("..");
+        }
 }

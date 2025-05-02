@@ -1,19 +1,28 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SET09102_Coursework.Views.TicketDetailsPage"
-             Title="Ticket Details">
-    <VerticalStackLayout>
-        <Label Text="Sensor:" FontAttributes="Bold" />
-        <Label Text="{Binding Ticket.Sensor.Name}" />
+<ContentPage
+  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  x:Class="SET09102_Coursework.Views.TicketDetailsPage"
+  Title="Ticket Details">
 
-        <Label Text="Status:" FontAttributes="Bold" />
-        <Label Text="{Binding Ticket.Status.StatusName}" />
 
-        <Label Text="Created At:" FontAttributes="Bold" />
-        <Label Text="{Binding Ticket.CreatedAt, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}" />
 
-        <Label Text="Issue:" FontAttributes="Bold" />
-        <Label Text="{Binding Ticket.IssueDescription}" />            
-    </VerticalStackLayout>
+  <VerticalStackLayout Padding="20" Spacing="10">
+    <Label Text="Sensor:" FontAttributes="Bold" />
+    <Label Text="{Binding Ticket.Sensor.Name}" />
+
+    <Label Text="Status:" FontAttributes="Bold" />
+    <Label Text="{Binding Ticket.Status.StatusName}" />
+
+    <Label Text="Created At:" FontAttributes="Bold" />
+    <Label Text="{Binding Ticket.CreatedAt, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}" />
+
+    <Label Text="Issue:" FontAttributes="Bold" />
+    <Label Text="{Binding Ticket.IssueDescription}" />
+
+     <Button
+        Text="Back"
+        FontAttributes="Bold"
+        Command="{Binding GoBackCommand}"
+        VerticalOptions="Center" />
+  </VerticalStackLayout>
 </ContentPage>
