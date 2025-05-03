@@ -26,12 +26,19 @@ public partial class AllTicketsViewModel: ObservableObject
     private TicketStatus selectedStatus;
 
 
+    /// <summary>
+    /// Constructor for AllTicketsViewModel.
+    /// Initializes the ticket service and navigation service.
+    /// Subscribes to property changes to reload tickets when the selected status changes.
+    /// </summary>
+    /// <param name="ticketService">Service for managing tickets.</param>
+    /// <param name="navigationService">Service for handling navigation.</param>
     public AllTicketsViewModel(ITicketService ticketService, INavigationService navigationService)
     {
         _ticketService = ticketService;
         _navigationService = navigationService;
 
-        // whenever the user picks a new status, reload that slice
+        // Reload tickets when the selected status changes
         PropertyChanged += async (s, e) =>
         {
             if (e.PropertyName == nameof(SelectedStatus))
@@ -43,7 +50,10 @@ public partial class AllTicketsViewModel: ObservableObject
     }
 
 
-    
+    /// <summary>
+    /// Initialises the ViewModel by loading all ticket statuses and the initial set of tickets.
+    /// </summary>
+    /// <returns>Task representing the asynchronous operation.</returns>
     private async Task InitializeAsync()
     {
         // Load all statuses into the picker
@@ -62,13 +72,10 @@ public partial class AllTicketsViewModel: ObservableObject
 
     /// <summary>
     /// Loads tickets based on the selected status.
-    
-    ///  
     /// If "All" is selected, all tickets are loaded.
     /// If a specific status is selected, only tickets with that status are loaded.
     /// </summary>
     /// <returns>Task representing the asynchronous operation.</returns>
-    
     [RelayCommand]
     private async Task LoadByStatusAsync()
     {
@@ -89,7 +96,11 @@ public partial class AllTicketsViewModel: ObservableObject
             Tickets.Add(t);
     }
     
-    
+    /// <summary>
+    /// Navigates to the ticket details page for the selected ticket.
+    /// </summary>
+    /// <param name="ticket">The ticket to view details for.</param>
+    /// <returns>Task representing the asynchronous operation.</returns>
     [RelayCommand]
     private async Task ViewTicketDetails(SensorTicket ticket)
     {

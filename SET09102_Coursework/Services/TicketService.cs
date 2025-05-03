@@ -91,30 +91,25 @@ public class TicketService : ITicketService
 
     /// <summary>
     /// Updates the status of a ticket. This method is used to change the status of a specific ticket.
-    /// /// </summary>
-    /// <param name="ticketId">The ID of the ticket to update.</param>
-    /// <param name="newStatus">The new status (e.g. Closed, In Progress).</param>
+    /// </summary>
     /// <returns>True if the update succeeds; otherwise, false.</returns>
-   /*  public async Task<bool> UpdateTicketStatusAsync(int ticketId, string newStatus)
+    public async Task<bool> ChangeTicketStatusAsync(int ticketId, int newStatusId)
     {
         try
         {
             var ticket = await _context.SensorTickets.FindAsync(ticketId);
             if (ticket == null) return false;
 
-            var statusObj = await _context.TicketStatuses.FirstOrDefaultAsync(s => s.StatusName == newStatus);
-            if (statusObj == null) return false;
-
-            ticket.Status = statusObj;
+            ticket.StatusId = newStatusId;
             await _context.SaveChangesAsync();
             return true;
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"[Error] Failed to update ticket status: {ex.Message}");
             return false;
         }
-    } */
+    }
+
 
 
     /// <summary>

@@ -60,4 +60,13 @@ public interface ITicketService
     /// <returns>The ticket status that matches the specified ID.</returns>
     Task<SensorTicket?> GetTicketByIdAsync(int ticketId);
 
+    /// <summary>
+    /// Change the status of a single ticket.
+    /// </summary>
+    /// <param name="ticketId">The ID of the ticket to update.</param>
+    /// <param name="newStatusId">The ID of the new status.</param>
+    /// <returns>True if the update succeeds; otherwise false.</returns>
+    Task<bool> ChangeTicketStatusAsync(int ticketId, int newStatusId);
+
+
 }
