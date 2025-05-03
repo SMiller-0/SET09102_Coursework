@@ -39,7 +39,7 @@ public partial class SensorReportViewModel : ObservableObject, IQueryAttributabl
         query.Clear();
     }
 
-    private async void InitializeFilterOptions()
+    private async Task InitializeFilterOptions()
     {
         var types = await _sensorService.GetSensorTypesAsync();
         var filters = _filterService.GetTypeFilterOptions(types);
