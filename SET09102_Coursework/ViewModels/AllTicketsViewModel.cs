@@ -25,6 +25,9 @@ public partial class AllTicketsViewModel: ObservableObject
     [ObservableProperty]
     private TicketStatus selectedStatus;
 
+    [ObservableProperty]
+    private string searchText = string.Empty;
+
 
     /// <summary>
     /// Constructor for AllTicketsViewModel.
@@ -43,6 +46,9 @@ public partial class AllTicketsViewModel: ObservableObject
         {
             if (e.PropertyName == nameof(SelectedStatus))
                 await LoadByStatusAsync();
+
+            if (e.PropertyName == nameof(SearchText))
+                ApplySearchFilter();
         };
 
         // initial load
@@ -79,23 +85,33 @@ public partial class AllTicketsViewModel: ObservableObject
     [RelayCommand]
     private async Task LoadByStatusAsync()
     {
-        IEnumerable<SensorTicket> list;
-        if (SelectedStatus.Id == 0)
-        {
-            
-            list = await _ticketService.GetAllTicketsAsync();
-        }
-        else
-        {
-            
-            list = await _ticketService.GetTicketsByStatusAsync(SelectedStatus.Id);
-        }
+        IEnumerable<SensorTicket> list = SelectedStatus.Id == 0
+            ? await _ticketService.GetAllTicketsAsync()
+            : await _ticketService.GetTicketsByStatusAsync(SelectedStatus.Id);
 
-        Tickets.Clear();
-        foreach (var t in list)
-            Tickets.Add(t);
+        // refresh the master list
+        allTickets.Clear();
+        foreach (var t in list) allTickets.Add(t);
+
+        // now apply the text‐search on top of that
+        ApplySearchFilter();
     }
     
+   
+
+    private void ApplySearchFilter()
+    {
+        var query = allTickets.AsEnumerable();
+
+        if (!string.IsNullOrWhiteSpace(SearchText))
+            query = query.Where(t =>
+                t.Sensor.Name
+                 .Contains(SearchText.Trim(), StringComparison.OrdinalIgnoreCase));
+
+        Tickets.Clear();
+        foreach (var t in query) Tickets.Add(t);
+    }
+
     /// <summary>
     /// Navigates to the ticket details page for the selected ticket.
     /// </summary>
@@ -107,6 +123,5 @@ public partial class AllTicketsViewModel: ObservableObject
         if (ticket == null) return;
         await _navigationService.NavigateToTicketDetailsAsync(ticket);
     }
-
 
 }
