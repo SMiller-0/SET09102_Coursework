@@ -4,6 +4,8 @@ DROP TABLE IF EXISTS sensor;
 DROP TABLE IF EXISTS sensor_type;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS sensor_ticket
+DROP TABLE IF EXISTS ticket_response
 
 CREATE TABLE role (
     role_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -135,6 +137,37 @@ INSERT INTO settings(id, setting_type_id, sensor_id, minimum_value, maximum_valu
 SET IDENTITY_INSERT settings OFF;
 
 
+
+
+CREATE TABLE ticket_status
+(
+    id           INT            IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    status_name  NVARCHAR(50)   NOT NULL
+);
+
+INSERT INTO ticket_status (status_name)
+VALUES
+  ('Open'),
+  ('Under Investigation'),
+  ('Closed');
+
+
+CREATE TABLE sensor_ticket
+(
+    id                 INT            IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    sensor_id          INT            NOT NULL,
+    issue_description  NVARCHAR(500)  NOT NULL,
+    status_id          INT            NOT NULL,
+    created_at         DATETIME2      NULL    DEFAULT SYSUTCDATETIME(),
+
+    CONSTRAINT FK_sensor_ticket_sensor
+       FOREIGN KEY(sensor_id)
+       REFERENCES sensor(id)
+       ON DELETE CASCADE,
+
+);
+
+
 CREATE TABLE ticket_response
 (
     id          INT           IDENTITY(1,1)    NOT NULL PRIMARY KEY,
@@ -149,3 +182,5 @@ CREATE TABLE ticket_response
        REFERENCES sensor_ticket(id)
        ON DELETE CASCADE
 );
+
+
