@@ -17,13 +17,8 @@ public partial class SensorReportViewModel : ObservableObject, IQueryAttributabl
     [ObservableProperty]
     private SensorFilter selectedFilter;
 
-    partial void OnSelectedFilterChanged(SensorFilter value)
-    {
-        if (value != null)
-        {
-            LoadSensorsCommand.Execute(null);
-        }
-    }
+    [ObservableProperty]
+    private bool isLoading;
 
     public SensorReportViewModel(
         ISensorService sensorService,
@@ -32,45 +27,72 @@ public partial class SensorReportViewModel : ObservableObject, IQueryAttributabl
         _sensorService = sensorService;
         _filterService = filterService;
         
-        // Load sensors immediately when ViewModel is created
-        LoadSensors().ConfigureAwait(false);
+        InitializeFilterOptions();
     }
 
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        LoadSensors().ConfigureAwait(false);
+        if (query.ContainsKey("deleted") || query.ContainsKey("saved") || query.ContainsKey("created"))
+        {
+            RefreshSensorList();
+        }
         query.Clear();
     }
 
-    private async Task InitializeFilterOptionsAsync()
+    private async void InitializeFilterOptions()
     {
-        if (FilterOptions.Count == 0)
+        var types = await _sensorService.GetSensorTypesAsync();
+        var filters = _filterService.GetTypeFilterOptions(types);
+        
+        FilterOptions.Clear();
+        foreach (var filter in filters)
         {
-            var types = await _sensorService.GetSensorTypesAsync();
-            var filters = _filterService.GetTypeFilterOptions(types);
-            
-            FilterOptions.Clear();
-            foreach (var filter in filters)
-            {
-                FilterOptions.Add(filter);
-            }
-
+            FilterOptions.Add(filter);
+        }
+        
+        if (FilterOptions.Count > 0)
+        {
             SelectedFilter = FilterOptions.First();
         }
     }
 
-    [RelayCommand]
-    private async Task LoadSensors()
+    partial void OnSelectedFilterChanged(SensorFilter value)
     {
-        await InitializeFilterOptionsAsync();
-        var sensorList = await _sensorService.GetSensorsByTypeAsync(null);
-        var filteredSensors = _filterService.ApplyTypeFilter(sensorList, SelectedFilter);
-        
-        Sensors.Clear();
-        foreach (var sensor in filteredSensors)
+        if (value != null)
         {
-            Sensors.Add(sensor);
+            RefreshSensorList();
         }
+    }
+    
+    [RelayCommand]
+    private async Task RefreshSensorList()
+    {
+        try
+        {
+            IsLoading = true;
+            var sensors = await _sensorService.GetSensorsByTypeAsync(null);
+            var filtered = _filterService.ApplyTypeFilter(sensors, SelectedFilter);
+            
+            Sensors.Clear();
+            foreach (var s in filtered)
+            {
+                Sensors.Add(s);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error refreshing sensors: {ex.Message}");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    [RelayCommand]
+    private void LoadSensors()
+    {
+        RefreshSensorList();
     }
 
     [RelayCommand]
@@ -78,8 +100,6 @@ public partial class SensorReportViewModel : ObservableObject, IQueryAttributabl
     {
         if (sensor == null) return;
         
-        // Here you would implement the report generation logic
-        // For now, just show an alert
         await Shell.Current.DisplayAlert("Report Generated", 
             $"Report for sensor {sensor.Name} has been generated.", "OK");
     }
