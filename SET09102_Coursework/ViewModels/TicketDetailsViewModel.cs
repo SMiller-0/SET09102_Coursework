@@ -95,5 +95,29 @@ private async Task LoadResponsesAsync()
         foreach (var r in history) Responses.Add(r);
     }
 
+    [RelayCommand]
+private async Task DeleteTicketAsync(SensorTicket ticket)
+{
+    if (Ticket == null) return;
+
+    bool confirmed = await Shell.Current.DisplayAlert(
+        "Confirm Delete",
+        $"Delete ticket #{Ticket.Id} and all its responses?",
+        "Delete", "Cancel");
+    if (!confirmed) return;
+
+    var success = await _ticketService.DeleteTicketAsync(Ticket.Id);
+    if (!success)
+    {
+        await Shell.Current.DisplayAlert("Error",
+            "Could not delete the ticket. Please try again.", "OK");
+        return;
+    }
+
+    // 1) pop this details page off the nav stack
+   await Shell.Current.GoToAsync($"///AllTicketsPage");
+}
+
+
 
 }

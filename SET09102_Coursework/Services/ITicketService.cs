@@ -79,4 +79,6 @@ public interface ITicketService
     /// </summary>
     Task<IEnumerable<TicketResponse>> GetTicketResponsesAsync(int ticketId);
 
+    Task<bool> DeleteTicketAsync(int ticketId);
+
 }

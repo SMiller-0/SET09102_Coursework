@@ -182,5 +182,25 @@ public class TicketService : ITicketService
                     .OrderBy(r => r.CreatedAt)
                     .ToListAsync();
     }
+
+    public async Task<bool> DeleteTicketAsync(int ticketId)
+{
+    try
+    {
+        var ticket = await _context.SensorTickets.FindAsync(ticketId);
+        if (ticket == null) return false;
+
+        _context.SensorTickets.Remove(ticket);
+        // DB should cascade-delete the associated responses
+        await _context.SaveChangesAsync();  
+        return true;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Error] DeleteTicketAsync: {ex.Message}");
+        return false;
+    }
+}
+
     
 }
