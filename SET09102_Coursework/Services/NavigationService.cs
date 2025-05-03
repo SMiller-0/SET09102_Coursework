@@ -53,6 +53,17 @@ public class NavigationService : INavigationService
 
     public async Task NavigateToSensorReportAsync() =>
         await Shell.Current.GoToAsync(nameof(SensorReportPage));
+
+    public async Task NavigateToTrendReportAsync(Sensor sensor)
+    {
+        if (sensor == null) return;
+        
+        var parameters = new Dictionary<string, object>
+        {
+            { "sensor", sensor }
+        };
+        await Shell.Current.GoToAsync(nameof(TrendReportPage), parameters);
+    }
 }
 
 

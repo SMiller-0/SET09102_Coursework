@@ -16,8 +16,6 @@ public class AppDbContext : DbContext
     public DbSet<SensorType> SensorTypes { get; set; }
     public DbSet<SettingType> SettingTypes { get; set; }
     public DbSet<Settings> Settings { get; set; }
-    
-    // Add measurement tables
     public DbSet<AirMeasurement> AirMeasurements { get; set; }
     public DbSet<WaterMeasurement> WaterMeasurements { get; set; }
     public DbSet<WeatherMeasurement> WeatherMeasurements { get; set; }
