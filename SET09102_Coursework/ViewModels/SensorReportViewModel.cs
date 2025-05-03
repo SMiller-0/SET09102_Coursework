@@ -10,6 +10,7 @@ public partial class SensorReportViewModel : ObservableObject, IQueryAttributabl
 {
     private readonly ISensorService _sensorService;
     private readonly ISensorFilterService _filterService;
+    private readonly INavigationService _navigationService;
 
     public ObservableCollection<Sensor> Sensors { get; } = new();
     public ObservableCollection<SensorFilter> FilterOptions { get; } = new();
@@ -22,10 +23,12 @@ public partial class SensorReportViewModel : ObservableObject, IQueryAttributabl
 
     public SensorReportViewModel(
         ISensorService sensorService,
-        ISensorFilterService filterService)
+        ISensorFilterService filterService,
+        INavigationService navigationService)
     {
         _sensorService = sensorService;
         _filterService = filterService;
+        _navigationService = navigationService;
         
         InitializeFilterOptions();
     }
@@ -100,7 +103,6 @@ public partial class SensorReportViewModel : ObservableObject, IQueryAttributabl
     {
         if (sensor == null) return;
         
-        await Shell.Current.DisplayAlert("Report Generated", 
-            $"Report for sensor {sensor.Name} has been generated.", "OK");
+        await _navigationService.NavigateToTrendReportAsync(sensor);
     }
 }
