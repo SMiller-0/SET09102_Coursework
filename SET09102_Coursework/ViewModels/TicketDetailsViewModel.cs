@@ -114,8 +114,7 @@ private async Task DeleteTicketAsync(SensorTicket ticket)
         return;
     }
 
-    // 1) pop this details page off the nav stack
-   await Shell.Current.GoToAsync($"///AllTicketsPage");
+   await Shell.Current.Navigation.PopAsync();
 }
 
 

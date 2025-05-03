@@ -14,7 +14,7 @@ public partial class AllTicketsViewModel: ObservableObject
 {
     private readonly ITicketService _ticketService;
     private readonly INavigationService _navigationService;
-
+    
     public ObservableCollection<SensorTicket> Tickets { get; } = new();
     public ObservableCollection<TicketStatus> Statuses { get; } = new();
 
@@ -41,6 +41,12 @@ public partial class AllTicketsViewModel: ObservableObject
         _ticketService = ticketService;
         _navigationService = navigationService;
 
+    _ticketService.TicketDeleted += async (deletedId) =>
+        {
+            // you can even ignore deletedId or use it to remove from allTickets
+            await LoadByStatusAsync();
+        };
+        
         // Reload tickets when the selected status changes
         PropertyChanged += async (s, e) =>
         {

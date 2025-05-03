@@ -183,6 +183,10 @@ public class TicketService : ITicketService
                     .ToListAsync();
     }
 
+
+        public event Action<int>? TicketDeleted;
+
+        
     public async Task<bool> DeleteTicketAsync(int ticketId)
 {
     try
@@ -192,7 +196,10 @@ public class TicketService : ITicketService
 
         _context.SensorTickets.Remove(ticket);
         // DB should cascade-delete the associated responses
-        await _context.SaveChangesAsync();  
+        await _context.SaveChangesAsync();
+
+        TicketDeleted?.Invoke(ticketId);
+
         return true;
     }
     catch (Exception ex)

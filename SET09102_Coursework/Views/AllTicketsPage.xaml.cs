@@ -9,4 +9,6 @@ public partial class AllTicketsPage : ContentPage
 		InitializeComponent();
 		BindingContext = viewModel;
 	}
+
+	
 }

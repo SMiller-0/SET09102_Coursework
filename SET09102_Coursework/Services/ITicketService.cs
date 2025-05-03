@@ -81,4 +81,9 @@ public interface ITicketService
 
     Task<bool> DeleteTicketAsync(int ticketId);
 
+    /// <summary>
+    /// Raised whenever a ticket is deleted (passes the deleted ticket’s ID).
+    /// </summary>
+    event Action<int> TicketDeleted;
+
 }
