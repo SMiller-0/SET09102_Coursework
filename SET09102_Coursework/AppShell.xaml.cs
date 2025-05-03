@@ -15,15 +15,15 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(DashboardPage), typeof(DashboardPage));
 		Routing.RegisterRoute(nameof(EditUserPage), typeof(EditUserPage));
 		Routing.RegisterRoute(nameof(SensorDashboardPage), typeof(SensorDashboardPage));
-        Routing.RegisterRoute(nameof(UpdateFirmwarePage), typeof(UpdateFirmwarePage));
-        Routing.RegisterRoute(nameof(SensorSettingsPage), typeof(SensorSettingsPage));
-        Routing.RegisterRoute(nameof(UpdateSettingsPage), typeof(UpdateSettingsPage));
+		Routing.RegisterRoute(nameof(UpdateFirmwarePage), typeof(UpdateFirmwarePage));
+		Routing.RegisterRoute(nameof(SensorSettingsPage), typeof(SensorSettingsPage));
+		Routing.RegisterRoute(nameof(UpdateSettingsPage), typeof(UpdateSettingsPage));
 		Routing.RegisterRoute(nameof(CreateUserPage), typeof(CreateUserPage));
 		Routing.RegisterRoute(nameof(AddSensorPage), typeof(AddSensorPage));
 		Routing.RegisterRoute(nameof(EditSensorPage), typeof(EditSensorPage));
 		Routing.RegisterRoute(nameof(SensorStatusPage), typeof(SensorStatusPage));
 		Routing.RegisterRoute(nameof(SensorReportPage), typeof(SensorReportPage));
-
-    }
+		Routing.RegisterRoute(nameof(TrendReportPage), typeof(TrendReportPage));
+	}
 }
 
