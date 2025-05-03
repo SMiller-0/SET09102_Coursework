@@ -18,5 +18,7 @@ public class AppDbContext : DbContext
     public DbSet<Settings> Settings { get; set; }
     public DbSet<SensorTicket> SensorTickets { get; set; }
     public DbSet<TicketStatus> TicketStatuses { get; set; }
+    public DbSet<TicketResponse> TicketResponses { get; set; }
+
 
 }

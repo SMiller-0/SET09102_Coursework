@@ -1,83 +1,99 @@
-using System.Collections.Generic;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Maui.Controls; 
-using System.Collections.ObjectModel;
-using System.Linq;
+
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Services;
 
-namespace SET09102_Coursework.ViewModels;
-
-/// <summary>
-/// ViewModel for displaying details of a single SensorTicket.
-/// </summary> 
 [QueryProperty(nameof(TicketId), "ticketId")]
 public partial class TicketDetailsViewModel : ObservableObject
 {
     private readonly ITicketService _ticketService;
-
-    [ObservableProperty] 
-    private int ticketId;
-
-    [ObservableProperty] 
-    private SensorTicket? ticket;
-
-    /// <summary>All possible statuses for the dropdown</summary>
-    public ObservableCollection<TicketStatus> Statuses { get; } = new();
-
-    [ObservableProperty]
-    private TicketStatus selectedStatus;
 
     public TicketDetailsViewModel(ITicketService ticketService)
     {
         _ticketService = ticketService;
     }
 
-        // called whenever TicketId is set from the Shell query.
-    partial void OnTicketIdChanged(int value)
+    [ObservableProperty] private int ticketId;
+    [ObservableProperty] private SensorTicket? ticket;
+    public ObservableCollection<TicketStatus> Statuses { get; } = new();
+    [ObservableProperty] private TicketStatus selectedStatus;
+    [ObservableProperty] private string note = string.Empty;
+    public ObservableCollection<TicketResponse> Responses { get; } = new();
+
+    partial void OnTicketIdChanged(int value) 
+        => _ = LoadAllAsync(value);
+
+    private async Task LoadAllAsync(int id)
     {
-        _ = LoadTicketAsync(value);
+        // load statuses
+        Statuses.Clear();
+        foreach (var s in await _ticketService.GetAllTicketStatusesAsync())
+            Statuses.Add(s);
+
+        // load ticket
+        Ticket = await _ticketService.GetTicketByIdAsync(id);
+        if (Ticket != null)
+            SelectedStatus = Statuses.First(s => s.Id == Ticket.StatusId);
+
+        // load history
+        Responses.Clear();
+        foreach (var r in await _ticketService.GetTicketResponsesAsync(id))
+            Responses.Add(r);
     }
 
-    private async Task LoadTicketAsync(int id)
-        {
-            // 1) load statuses
-        Statuses.Clear();
-        var sts = await _ticketService.GetAllTicketStatusesAsync();
-        foreach (var s in sts) Statuses.Add(s);
-
-        // 2) load the ticket
-        Ticket = await _ticketService.GetTicketByIdAsync(id);
-
-        // 3) set the picker to current status
-        if (Ticket != null)
-        {
-            SelectedStatus = Statuses
-                .FirstOrDefault(s => s.Id == Ticket.StatusId)
-                ?? Statuses.First();
-        }
-        }
-
-[RelayCommand]
-    private async Task UpdateStatusAsync()
+    [RelayCommand]
+    private async Task SaveAsync()
     {
         if (Ticket == null) return;
 
-        var ok = await _ticketService.ChangeTicketStatusAsync(
-            Ticket.Id, SelectedStatus.Id);
-
-        if (!ok)
+        // 1) status change?
+        if (Ticket.StatusId != SelectedStatus.Id)
         {
-            await Shell.Current.DisplayAlert(
-                "Error", "Failed to update status", "OK");
+            var ok = await _ticketService.ChangeTicketStatusAsync(
+                Ticket.Id, SelectedStatus.Id);
+            if (!ok)
+            {
+                await Shell.Current.DisplayAlert("Error", 
+                    "Failed to update status", "OK");
+                return;
+            }
+            Ticket.StatusId = SelectedStatus.Id;
+        }
+
+        // 2) always log a response (even if Note blank)
+        var resp = new TicketResponse
+        {
+            TicketId  = Ticket.Id,
+            StatusId  = SelectedStatus.Id,
+            Note      = Note.Trim(),
+            CreatedAt = DateTime.UtcNow
+        };
+        if (! await _ticketService.AddTicketResponseAsync(resp))
+        {
+            await Shell.Current.DisplayAlert("Error", 
+                "Failed to log response", "OK");
             return;
         }
 
-        // refresh the ticket so UI shows new Status nav-prop
-        Ticket = await _ticketService.GetTicketByIdAsync(Ticket.Id);
-        await Shell.Current.DisplayAlert(
-            "Updated", "Ticket status updated.", "OK");
+        // 3) reload everything
+        Note = string.Empty;
+        await LoadAllAsync(Ticket.Id);
+        await Shell.Current.DisplayAlert("Saved", 
+            "Status & response recorded.", "OK");
     }
+
+private async Task LoadResponsesAsync()
+    {
+        if (Ticket == null) return;
+        Responses.Clear();
+        var history = await _ticketService.GetTicketResponsesAsync(Ticket.Id);
+        foreach (var r in history) Responses.Add(r);
+    }
+
+
 }

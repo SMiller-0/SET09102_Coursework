@@ -133,3 +133,19 @@ INSERT INTO settings(id, setting_type_id, sensor_id, minimum_value, maximum_valu
 (14, 10, 147, 0.00, 3.00, 1.33),
 (15, 11, 147, 0.00, 1.00, 0.07);
 SET IDENTITY_INSERT settings OFF;
+
+
+CREATE TABLE ticket_response
+(
+    id          INT           IDENTITY(1,1)    NOT NULL PRIMARY KEY,
+    ticket_id   INT           NOT NULL,
+    status_id   INT           NULL,
+    note        NVARCHAR(MAX) NULL,
+    created_at  DATETIME2     NOT NULL DEFAULT (SYSUTCDATETIME()),
+
+    -- foreign keys
+    CONSTRAINT FK_ticket_response_sensor_ticket
+       FOREIGN KEY(ticket_id)
+       REFERENCES sensor_ticket(id)
+       ON DELETE CASCADE
+);

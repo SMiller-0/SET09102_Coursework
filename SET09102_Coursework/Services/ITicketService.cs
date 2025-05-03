@@ -52,7 +52,6 @@ public interface ITicketService
     /// <returns>A list of all ticket statuses.</returns>
     Task<IEnumerable<TicketStatus>> GetAllTicketStatusesAsync();
 
-
     /// <summary>
     /// Retrieves a ticket by its ID. This method is used to fetch the details of a specific ticket status.
     /// /// </summary>
@@ -68,5 +67,16 @@ public interface ITicketService
     /// <returns>True if the update succeeds; otherwise false.</returns>
     Task<bool> ChangeTicketStatusAsync(int ticketId, int newStatusId);
 
+    /// <summary>
+    /// Logs a new response (status change + note) for the given ticket.
+    /// </summary>
+    /// <param name="response">The response to log.</param>
+    /// <returns>True if the response is logged successfully; otherwise false.</returns>
+    Task<bool> AddTicketResponseAsync(TicketResponse response);
+
+    /// <summary>
+    /// Fetches all responses/history entries for a ticket, ordered oldest first.
+    /// </summary>
+    Task<IEnumerable<TicketResponse>> GetTicketResponsesAsync(int ticketId);
 
 }

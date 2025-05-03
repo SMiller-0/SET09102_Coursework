@@ -19,7 +19,6 @@ public class TicketService : ITicketService
         _context = context;
     }
 
-   
     /// <summary>
     /// Creates a new ticket for a sensor. This method is used to log issues or requests related to a specific sensor.
     /// The ticket will be created with the status "Open" by default.
@@ -42,7 +41,6 @@ public class TicketService : ITicketService
         }
     }
 
-
     /// <summary>
     /// Retrieves a ticket by its ID. This method is used to fetch the details of a specific ticket.
     /// </summary>
@@ -62,7 +60,6 @@ public class TicketService : ITicketService
             return Enumerable.Empty<SensorTicket>();
         }
     }
-
 
     /// <summary>
     /// Retrieves all tickets. This method is used to fetch the details of all tickets in the system.
@@ -110,8 +107,6 @@ public class TicketService : ITicketService
         }
     }
 
-
-
     /// <summary>
     /// Retrieves tickets by their status. This method is used to fetch tickets that match a specific status.
     /// </summary>
@@ -148,7 +143,6 @@ public class TicketService : ITicketService
             .ToListAsync();
     }
 
-
     /// <summary>
     /// Retrieves a ticket by its ID. This method is used to fetch the details of a specific ticket.
     /// </summary>
@@ -162,6 +156,31 @@ public class TicketService : ITicketService
             .FirstOrDefaultAsync(t => t.Id == ticketId);
     }
 
-    
+    /// <summary>
+    /// Adds a response to a ticket. This method is used to log responses or updates related to a specific ticket.
+    /// </summary>
+    /// <param name="response">The response to add.</param>
+    /// <returns>True if the addition succeeds; otherwise, false.</returns>
+    public async Task<bool> AddTicketResponseAsync(TicketResponse response)
+    {
+        try
+        {
+            _context.TicketResponses.Add(response);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<IEnumerable<TicketResponse>> GetTicketResponsesAsync(int ticketId)
+    {
+        return await _context.TicketResponses
+                    .Where(r => r.TicketId == ticketId)
+                    .OrderBy(r => r.CreatedAt)
+                    .ToListAsync();
+    }
     
 }
