@@ -12,6 +12,7 @@ public interface INavigationService
     Task NavigateToAddNewSensorAsync();
     Task NavigateToEditSensorAsync(Sensor sensor);
     Task NavigateToSensorStatusAsync();
+    Task NavigateToSensorReportAsync();
 
 }
 

@@ -50,6 +50,9 @@ public class NavigationService : INavigationService
 
     public async Task NavigateToSensorStatusAsync() =>
         await Shell.Current.GoToAsync(nameof(SensorStatusPage));
+
+    public async Task NavigateToSensorReportAsync() =>
+        await Shell.Current.GoToAsync(nameof(SensorReportPage));
 }
 
 
