@@ -1,6 +1,6 @@
 using SET09102_Coursework.Models;
 
-namespace SET09102_Coursework.Services;
+namespace SET09102_Coursework.Strategies;
 
 public interface IMeasurementStrategy
 {

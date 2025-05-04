@@ -7,6 +7,7 @@ using SET09102_Coursework.ViewModels;
 using SET09102_Coursework.Views;
 using SET09102_Coursework.Services;
 using SET09102_Coursework.Validation;
+using SET09102_Coursework.Strategies;
 
 namespace SET09102_Coursework;
 

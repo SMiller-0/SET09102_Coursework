@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
+
 using SET09102_Coursework.Data;
 using SET09102_Coursework.Models;
-
+using SET09102_Coursework.Strategies;
 
 namespace SET09102_Coursework.Services;
 
@@ -24,7 +24,7 @@ public class MeasurementService : IMeasurementService
             return Enumerable.Empty<MeasurementStatistic>();
         
         var strategy = _strategies.FirstOrDefault(s => 
-            s.GetType().Name.ToLower().StartsWith(sensorType.ToLower()));
+            s.SensorType.Equals(sensorType, StringComparison.OrdinalIgnoreCase));
         
         if (strategy == null)
             return Enumerable.Empty<MeasurementStatistic>();
