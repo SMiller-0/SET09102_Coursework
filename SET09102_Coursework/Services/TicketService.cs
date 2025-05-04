@@ -44,7 +44,6 @@ public class TicketService : ITicketService
     /// <summary>
     /// Retrieves a ticket by its ID. This method is used to fetch the details of a specific ticket.
     /// </summary>
-    /// <param name="ticketId">The ID of the sensor to retrieve tickets for.</param>
     /// <returns>A list of matching tickets.</returns>
     public async Task<IEnumerable<SensorTicket>> GetTicketsBySensorAsync(int sensorId)
     {

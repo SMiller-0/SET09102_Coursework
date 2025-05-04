@@ -110,7 +110,7 @@ public class SensorService : ISensorService
     {
         try
         {
-            _context.ChangeTracker.Clear(); // Clear any tracked entities
+            _context.ChangeTracker.Clear(); 
         
             var existingSensor = await _context.Sensors
                 .AsNoTracking()

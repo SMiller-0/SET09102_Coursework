@@ -43,6 +43,7 @@ public class NavigationService : INavigationService
         await Shell.Current.GoToAsync(nameof(UpdateSettingsPage), parameters);
     }
 
+
     public async Task NavigateToAddNewSensorAsync() =>
         await Shell.Current.GoToAsync(nameof(AddSensorPage));
 
@@ -67,6 +68,11 @@ public class NavigationService : INavigationService
         await Shell.Current.GoToAsync(nameof(CreateTicketPage), parameters);
     }
 
+    /// <summary>
+    /// Navigates to the ticket details page for a specific ticket.
+    /// Only accessible by Operations Managers.
+    /// </summary>
+    /// <param name="ticket">The ticket to view details for.</param>
     public async Task NavigateToTicketDetailsAsync(SensorTicket ticket)
     {
         if (!_user.IsOperationsManager)

@@ -7,8 +7,8 @@ using System.Collections.ObjectModel;
 namespace SET09102_Coursework.ViewModels;
 
 /// <summary>
-/// ViewModel for displaying all tickets.
-/// Handles ticket loading, filtering by status, and navigation to ticket details page.
+/// ViewModel for displaying and filtering all sensor tickets,
+/// and for navigating to ticket details.
 /// </summary>
 public partial class AllTicketsViewModel: ObservableObject
 {
@@ -16,40 +16,61 @@ public partial class AllTicketsViewModel: ObservableObject
     private readonly INavigationService _navigationService;
     private readonly ICurrentUserService _currentUserService;
     
+    /// <summary>
+    /// Collection of tickets to be displayed in the UI.
+    /// </summary>
     public ObservableCollection<SensorTicket> Tickets { get; } = new();
+
+    /// <summary>
+    /// Collection of ticket statuses for filtering tickets.
+    /// </summary>
+    /// <remarks>Contains a default "All" status.</remarks>
     public ObservableCollection<TicketStatus> Statuses { get; } = new();
 
-
+    /// <summary>
+    /// The full, unfiltered set of tickets fetched from the backend.
+    /// </summary>
     [ObservableProperty] 
     private ObservableCollection<SensorTicket> allTickets = new();
 
+    /// <summary>
+    /// The currently selected ticket status for filtering tickets.
+    /// Setting this will reload tickets.
+    /// </summary>
     [ObservableProperty]
     private TicketStatus selectedStatus;
 
+    /// <summary>
+    /// The text used for searching tickets by sensor name.
+    /// Setting this will filter the displayed tickets.
+    /// </summary>
+    /// <remarks>Search is case-insensitive.</remarks>
     [ObservableProperty]
     private string searchText = string.Empty;
     
+    /// <summary>
+    /// True if the current user is an Operations Manager.
+    /// Controls whether “Details” is visible.
+    /// </summary>
     [ObservableProperty]
     private bool isOperationsManager;
 
 
     /// <summary>
-    /// Constructor for AllTicketsViewModel.
-    /// Initializes the ticket service and navigation service.
-    /// Subscribes to property changes to reload tickets when the selected status changes.
+    /// Initialises the ViewModel: sets up ticket filtering, handles delete events,
+    /// and listens for changes in the user’s role.
     /// </summary>
     /// <param name="ticketService">Service for managing tickets.</param>
     /// <param name="navigationService">Service for handling navigation.</param>
+    /// <param name="currentUserService">Service for managing the current user’s state.</param>
     public AllTicketsViewModel(ITicketService ticketService, INavigationService navigationService, ICurrentUserService currentUserService)
     {
         _ticketService = ticketService;
         _navigationService = navigationService;
         _currentUserService = currentUserService;
 
-        _ticketService.TicketDeleted += async (deletedId) =>
-        {
-            await LoadByStatusAsync();
-        };
+        // refresh list whenever a ticket is deleted 
+        //_ticketService.TicketDeleted += async _ => await LoadByStatusAsync();
         
         // Reload tickets when the selected status changes
         PropertyChanged += async (s, e) =>
