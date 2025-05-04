@@ -55,7 +55,6 @@ public partial class AllTicketsViewModel: ObservableObject
     [ObservableProperty]
     private bool isOperationsManager;
 
-
     /// <summary>
     /// Initialises the ViewModel: sets up ticket filtering, handles delete events,
     /// and listens for changes in the user’s role.
@@ -68,11 +67,8 @@ public partial class AllTicketsViewModel: ObservableObject
         _ticketService = ticketService;
         _navigationService = navigationService;
         _currentUserService = currentUserService;
-
-        // refresh list whenever a ticket is deleted 
-        //_ticketService.TicketDeleted += async _ => await LoadByStatusAsync();
         
-        // Reload tickets when the selected status changes
+        // Reload or refilter when status or search text changes
         PropertyChanged += async (s, e) =>
         {
             if (e.PropertyName == nameof(SelectedStatus))
@@ -82,17 +78,13 @@ public partial class AllTicketsViewModel: ObservableObject
                 ApplySearchFilter();
         };
 
-         IsOperationsManager = _currentUserService.IsOperationsManager;
-_currentUserService.UserChanged += (_,__)=>
-    IsOperationsManager = _currentUserService.IsOperationsManager;
+        // Listen for changes in the current user’s role
+        IsOperationsManager = _currentUserService.IsOperationsManager;
+        _currentUserService.UserChanged += (_,__)=>
+            IsOperationsManager = _currentUserService.IsOperationsManager;
 
         // initial load
         _ = InitializeAsync();
-    }
-
-    private void OnUserChanged(object? sender, EventArgs e)
-    {
-        IsOperationsManager = _currentUserService.IsAdmin;
     }
 
     /// <summary>
@@ -107,20 +99,19 @@ _currentUserService.UserChanged += (_,__)=>
         Statuses.Add(new TicketStatus { Id = 0, StatusName = "All" });
         foreach (var st in sts) Statuses.Add(st);
 
-        // default selection
+        // default to "All"
         SelectedStatus = Statuses.First();
 
-        // initial ticket load
+        // Load all tickets
         await LoadByStatusAsync();
     }
-
 
     /// <summary>
     /// Loads tickets based on the selected status.
     /// If "All" is selected, all tickets are loaded.
     /// If a specific status is selected, only tickets with that status are loaded.
+    /// Also applies the current search filter to the loaded tickets.
     /// </summary>
-    /// <returns>Task representing the asynchronous operation.</returns>
     [RelayCommand]
     private async Task LoadByStatusAsync()
     {
@@ -128,15 +119,18 @@ _currentUserService.UserChanged += (_,__)=>
             ? await _ticketService.GetAllTicketsAsync()
             : await _ticketService.GetTicketsByStatusAsync(SelectedStatus.Id);
 
-        // refresh the master list
         allTickets.Clear();
         foreach (var t in list) allTickets.Add(t);
 
-        // now apply the text‐search on top of that
         ApplySearchFilter();
     }
     
-
+    /// <summary>
+    /// Applies the current search filter to the list of tickets.
+    /// Filters tickets based on the sensor name.
+    /// </summary>
+    /// <remarks>Search is case-insensitive.</remarks>
+    /// <remarks>Search is performed on the sensor name.</remarks>
     private void ApplySearchFilter()
     {
         var query = allTickets.AsEnumerable();
@@ -152,9 +146,10 @@ _currentUserService.UserChanged += (_,__)=>
 
     /// <summary>
     /// Navigates to the ticket details page for the selected ticket.
+    /// Invoked when the user clicks on the details button.
+    /// Only visibile to those with the role Operations Manager.
     /// </summary>
-    /// <param name="ticket">The ticket to view details for.</param>
-    /// <returns>Task representing the asynchronous operation.</returns>
+    /// <param name="ticket">The ticket to view.</param>
     [RelayCommand]
     private async Task ViewTicketDetails(SensorTicket ticket)
     {
