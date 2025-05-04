@@ -1,8 +1,5 @@
 using SET09102_Coursework.Data;
 using SET09102_Coursework.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SET09102_Coursework.Services;
 

@@ -1,9 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SET09102_Coursework.Data;
 using SET09102_Coursework.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SET09102_Coursework.Services;
 
