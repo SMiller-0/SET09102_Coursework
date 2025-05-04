@@ -19,6 +19,7 @@ public class AppDbContext : DbContext
     public DbSet<SensorTicket> SensorTickets { get; set; }
     public DbSet<TicketStatus> TicketStatuses { get; set; }
     public DbSet<TicketResponse> TicketResponses { get; set; }
-
-
+    public DbSet<AirMeasurement> AirMeasurements { get; set; }
+    public DbSet<WaterMeasurement> WaterMeasurements { get; set; }
+    public DbSet<WeatherMeasurement> WeatherMeasurements { get; set; }
 }

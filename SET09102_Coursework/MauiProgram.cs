@@ -7,6 +7,7 @@ using SET09102_Coursework.ViewModels;
 using SET09102_Coursework.Views;
 using SET09102_Coursework.Services;
 using SET09102_Coursework.Validation;
+using SET09102_Coursework.Strategies;
 
 namespace SET09102_Coursework;
 
@@ -47,6 +48,12 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ISensorFilterService, SensorFilterService>();
 
 
+		builder.Services.AddTransient<IMeasurementService, MeasurementService>();
+		builder.Services.AddSingleton<IReportService, ReportService>();
+		builder.Services.AddTransient<IMeasurementStrategy, AirMeasurementStrategy>();
+		builder.Services.AddTransient<IMeasurementStrategy, WaterMeasurementStrategy>();
+		builder.Services.AddTransient<IMeasurementStrategy, WeatherMeasurementStrategy>();
+
 		// ViewModels
 		builder.Services.AddSingleton<AllUsersViewModel>();
 		builder.Services.AddTransient<UserViewModel>();
@@ -65,7 +72,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<SensorStatusViewModel>();
 		builder.Services.AddTransient<AllTicketsViewModel>();
 		builder.Services.AddTransient<TicketDetailsViewModel>();
-
+		builder.Services.AddTransient<SensorReportViewModel>();
+		builder.Services.AddTransient<TrendReportViewModel>();
 
 		// Views
 		builder.Services.AddSingleton<AllUsersPage>();
@@ -85,6 +93,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<SensorStatusPage>();
 		builder.Services.AddTransient<AllTicketsPage>();
 		builder.Services.AddTransient<TicketDetailsPage>();
+		builder.Services.AddTransient<SensorReportPage>();
+		builder.Services.AddTransient<TrendReportPage>();
 
 		builder
 			.UseMauiApp<App>()
@@ -97,6 +107,9 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+
+		// Register route
+		Routing.RegisterRoute(nameof(TrendReportPage), typeof(TrendReportPage));
 
 		return builder.Build();
 	}

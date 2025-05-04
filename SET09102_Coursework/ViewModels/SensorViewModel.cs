@@ -8,7 +8,6 @@ namespace SET09102_Coursework.ViewModels;
 [QueryProperty(nameof(Sensor), "sensor")]
 public partial class SensorViewModel : ObservableObject
 {
-    private readonly ISensorService _sensorService;
     private readonly INavigationService _navigationService;
     private readonly ICurrentUserService _currentUserService;
 
@@ -19,11 +18,9 @@ public partial class SensorViewModel : ObservableObject
     private bool isAdmin;
 
     public SensorViewModel(
-        ISensorService sensorService, 
         INavigationService navigationService,
         ICurrentUserService currentUserService)
     {
-        _sensorService = sensorService;
         _navigationService = navigationService;
         _currentUserService = currentUserService;
         
