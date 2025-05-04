@@ -10,7 +10,7 @@ namespace SET09102_Coursework.ViewModels;
 
 public partial class TrendReportViewModel : ObservableObject, IQueryAttributable
 {
-    private readonly IMeasurementService _measurementService;
+    private readonly IReportService _reportService;
 
     [ObservableProperty]
     private Sensor sensor;
@@ -23,9 +23,9 @@ public partial class TrendReportViewModel : ObservableObject, IQueryAttributable
 
     public ObservableCollection<MeasurementStatistic> Statistics { get; } = new();
 
-    public TrendReportViewModel(IMeasurementService measurementService)
+    public TrendReportViewModel(IReportService reportService)
     {
-        _measurementService = measurementService;
+        _reportService = reportService;
     }
 
     void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
@@ -48,8 +48,7 @@ public partial class TrendReportViewModel : ObservableObject, IQueryAttributable
             IsLoading = true;
             Statistics.Clear();
 
-            var sensorType = Sensor.SensorType.Name.ToLower();
-            var statistics = await _measurementService.GetSensorStatisticsAsync(Sensor.Id, sensorType);
+            var statistics = await _reportService.GenerateTrendReportAsync(Sensor);
 
             foreach (var stat in statistics)
             {

@@ -32,7 +32,7 @@
                         Command="{Binding ViewSensorStatusCommand}"
                         FontAttributes="Bold"/>
                 
-                <Button Text="Sensor Report"
+                <Button Text="Generate Sensor Report"
                         Command="{Binding SensorReportCommand}"
                         FontAttributes="Bold"/>
             </VerticalStackLayout>

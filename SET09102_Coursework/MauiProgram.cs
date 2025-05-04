@@ -44,6 +44,10 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ISensorRefreshService, SensorRefreshService>();
 		builder.Services.AddSingleton<ISensorFilterService, SensorFilterService>();
 		builder.Services.AddTransient<IMeasurementService, MeasurementService>();
+		builder.Services.AddSingleton<IReportService, ReportService>();
+		builder.Services.AddTransient<IMeasurementStrategy, AirMeasurementStrategy>();
+		builder.Services.AddTransient<IMeasurementStrategy, WaterMeasurementStrategy>();
+		builder.Services.AddTransient<IMeasurementStrategy, WeatherMeasurementStrategy>();
 
 		// ViewModels
 		builder.Services.AddSingleton<AllUsersViewModel>();
