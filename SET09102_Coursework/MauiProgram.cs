@@ -41,9 +41,12 @@ public static class MauiProgram
 		builder.Services.AddSingleton<INavigationService, NavigationService>();
 		builder.Services.AddSingleton<ISettingsValidator, SettingsValidator>();
 		builder.Services.AddSingleton<ISensorValidator, SensorValidator>();
+		builder.Services.AddSingleton<ITicketService, TicketService>();
+		builder.Services.AddSingleton<ITicketValidator, TicketValidator>();
 		builder.Services.AddSingleton<ITimerService, TimerService>();
 		builder.Services.AddSingleton<ISensorRefreshService, SensorRefreshService>();
 		builder.Services.AddSingleton<ISensorFilterService, SensorFilterService>();
+
 		builder.Services.AddTransient<IMeasurementService, MeasurementService>();
 		builder.Services.AddSingleton<IReportService, ReportService>();
 		builder.Services.AddTransient<IMeasurementStrategy, AirMeasurementStrategy>();
@@ -64,7 +67,11 @@ public static class MauiProgram
 		builder.Services.AddTransient<CreateUserViewModel>();
 		builder.Services.AddTransient<AddSensorViewModel>();
 		builder.Services.AddTransient<EditSensorViewModel>();
+		builder.Services.AddTransient<CreateTicketViewModel>();
 		builder.Services.AddTransient<SensorStatusViewModel>();
+		builder.Services.AddTransient<AllTicketsViewModel>();
+		builder.Services.AddTransient<TicketDetailsViewModel>();
+
 		builder.Services.AddTransient<SensorReportViewModel>();
 		builder.Services.AddTransient<TrendReportViewModel>();
 
@@ -82,7 +89,10 @@ public static class MauiProgram
 		builder.Services.AddTransient<CreateUserPage>();
 		builder.Services.AddTransient<AddSensorPage>();
 		builder.Services.AddTransient<EditSensorPage>();
+		builder.Services.AddTransient<CreateTicketPage>();
 		builder.Services.AddTransient<SensorStatusPage>();
+		builder.Services.AddTransient<AllTicketsPage>();
+		builder.Services.AddTransient<TicketDetailsPage>();
 		builder.Services.AddTransient<SensorReportPage>();
 		builder.Services.AddTransient<TrendReportPage>();
 

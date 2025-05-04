@@ -8,5 +8,6 @@ public interface ICurrentUserService
     void SetUser(User user);
     void Logout();
     bool IsAdmin { get; }
+    bool IsOperationsManager { get; }
     event EventHandler? UserChanged;
 }

@@ -79,5 +79,11 @@
 	  <Folder Include="Documentation/UML/" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Views/AllTicketsPage.xaml.cs">
+	    <DependentUpon>AllTicketsPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
 
 </Project>

@@ -6,6 +6,7 @@ public class CurrentUserService : ICurrentUserService
 {
     public User? LoggedInUser { get; private set; }
     public bool IsAdmin => LoggedInUser?.Role?.RoleName == "Administrator";
+    public bool IsOperationsManager => LoggedInUser?.Role?.RoleName == "Operations Manager";
     public event EventHandler? UserChanged;
 
     public void SetUser(User user)

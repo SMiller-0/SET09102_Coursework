@@ -6,8 +6,8 @@
              xmlns:models="clr-namespace:SET09102_Coursework.Models"
              Title="All System Users">
 
-<ScrollView>
-<VerticalStackLayout Padding="20" Spacing="20">
+    <ScrollView>
+    <VerticalStackLayout Padding="20" Spacing="20">
     
         <!-- Buttons -->
         <Button Text="Add New User" 
@@ -41,5 +41,5 @@
         <!-- Divider -->
         <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
     </VerticalStackLayout>
-</ScrollView>
+    </ScrollView>
 </ContentPage>
