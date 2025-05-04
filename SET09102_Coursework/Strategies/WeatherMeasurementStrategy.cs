@@ -6,6 +6,7 @@ namespace SET09102_Coursework.Services;
 
 public class WeatherMeasurementStrategy : BaseMeasurementStrategy, IMeasurementStrategy
 {
+    public string SensorType => "Weather";
     public WeatherMeasurementStrategy(AppDbContext context) : base(context)
     {
     }

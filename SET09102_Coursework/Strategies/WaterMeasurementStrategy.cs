@@ -6,6 +6,7 @@ namespace SET09102_Coursework.Services;
 
 public class WaterMeasurementStrategy : BaseMeasurementStrategy, IMeasurementStrategy
 {
+    public string SensorType => "Water";
     public WaterMeasurementStrategy(AppDbContext context) : base(context)
     {
     }

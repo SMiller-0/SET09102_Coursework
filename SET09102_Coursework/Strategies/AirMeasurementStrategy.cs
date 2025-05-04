@@ -6,6 +6,8 @@ namespace SET09102_Coursework.Services;
 
 public class AirMeasurementStrategy : BaseMeasurementStrategy, IMeasurementStrategy
 {
+    public string SensorType => "Air";
+    
     public AirMeasurementStrategy(AppDbContext context) : base(context)
     {
     }
