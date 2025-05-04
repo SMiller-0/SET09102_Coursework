@@ -32,6 +32,7 @@ public partial class SensorDashboardViewModel : ObservableObject
     }
 
 
+
     [RelayCommand]
     private async Task SensorReport()
     {

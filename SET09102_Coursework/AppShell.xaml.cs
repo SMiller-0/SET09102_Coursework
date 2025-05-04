@@ -24,6 +24,8 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(SensorStatusPage), typeof(SensorStatusPage));
 		Routing.RegisterRoute(nameof(CreateTicketPage), typeof(CreateTicketPage));
 		//Routing.RegisterRoute(nameof(AllTicketsPage), typeof(AllTicketsPage));
+		Routing.RegisterRoute(nameof(TicketDetailsPage), typeof(TicketDetailsPage));		Routing.RegisterRoute(nameof(CreateTicketPage), typeof(CreateTicketPage));
+		//Routing.RegisterRoute(nameof(AllTicketsPage), typeof(AllTicketsPage));
 		Routing.RegisterRoute(nameof(TicketDetailsPage), typeof(TicketDetailsPage));		Routing.RegisterRoute(nameof(SensorReportPage), typeof(SensorReportPage));
 		Routing.RegisterRoute(nameof(TrendReportPage), typeof(TrendReportPage));
 	}

@@ -32,6 +32,7 @@
                         Command="{Binding ViewSensorStatusCommand}"
                         FontAttributes="Bold"/>
 
+
                 
                 <Button Text="Generate Sensor Report"
                         Command="{Binding SensorReportCommand}"
