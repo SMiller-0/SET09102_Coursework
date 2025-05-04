@@ -8,26 +8,49 @@ using System.Threading.Tasks;
 
 namespace SET09102_Coursework.ViewModels;
 
+/// <summary>
+/// ViewModel for displaying trend reports and statistical analysis for sensor data.
+/// </summary>
 public partial class TrendReportViewModel : ObservableObject, IQueryAttributable
 {
     private readonly IReportService _reportService;
 
+    /// <summary>
+    /// The sensor for which the trend report is being generated.
+    /// </summary>
     [ObservableProperty]
     private Sensor sensor;
 
+    /// <summary>
+    /// Indicates whether data is currently being loaded.
+    /// </summary>
     [ObservableProperty]
     private bool isLoading;
 
+    /// <summary>
+    /// The title of the report.
+    /// </summary>
     [ObservableProperty]
     private string reportTitle;
 
+    /// <summary>
+    /// Collection of measurement statistics to display in the report.
+    /// </summary>
     public ObservableCollection<MeasurementStatistic> Statistics { get; } = new();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TrendReportViewModel"/> class.
+    /// </summary>
+    /// <param name="reportService">The report service used to generate trend reports.</param>
     public TrendReportViewModel(IReportService reportService)
     {
         _reportService = reportService;
     }
 
+    /// <summary>
+    /// Applies query attributes when navigating to this page.
+    /// </summary>
+    /// <param name="query">The query parameters passed during navigation.</param>
     void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.TryGetValue("sensor", out var sensorObj) && sensorObj is Sensor sensorValue)
@@ -38,6 +61,9 @@ public partial class TrendReportViewModel : ObservableObject, IQueryAttributable
         }
     }
 
+    /// <summary>
+    /// Loads statistics for the current sensor.
+    /// </summary>
     [RelayCommand]
     private async Task LoadStatistics()
     {
@@ -66,6 +92,9 @@ public partial class TrendReportViewModel : ObservableObject, IQueryAttributable
         }
     }
 
+    /// <summary>
+    /// Navigates back to the previous page.
+    /// </summary>
     [RelayCommand]
     private async Task GoBack()
     {
