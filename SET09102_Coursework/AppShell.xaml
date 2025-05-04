@@ -26,6 +26,12 @@
             Route="SensorDashboardPage" />
 
         <ShellContent
+            Title="Tickets"
+            Icon="ticket.png"
+            Route="AllTicketsPage"
+            ContentTemplate="{DataTemplate views:AllTicketsPage}" />
+
+        <ShellContent
             Title="Logout"
             ContentTemplate="{DataTemplate views:LoginPage}"
             Icon="logout.png"

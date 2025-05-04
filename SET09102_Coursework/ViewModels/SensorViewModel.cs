@@ -52,8 +52,14 @@ public partial class SensorViewModel : ObservableObject
     private async Task EditSensor()
     {
         await _navigationService.NavigateToEditSensorAsync(Sensor);
-    }   
+    }  
 
+    [RelayCommand]
+    private async Task CreateTicket()
+    {
+        await _navigationService.NavigateToCreateTicketAsync(Sensor);
+    }
+ 
 }
 
 

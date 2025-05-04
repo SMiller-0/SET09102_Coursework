@@ -4,6 +4,8 @@ DROP TABLE IF EXISTS sensor;
 DROP TABLE IF EXISTS sensor_type;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS sensor_ticket
+DROP TABLE IF EXISTS ticket_response
 
 CREATE TABLE role (
     role_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -92,10 +94,10 @@ SET IDENTITY_INSERT sensor_type OFF;
 -- Insert sensor data
 SET IDENTITY_INSERT sensor ON;
 INSERT INTO sensor(id, name, longitude, latitude, is_active, sensor_type_id, firmware_version) VALUES
-(100, 'Test Sensor One', 55.937311, -3.173388, 1, 3, '1.0.0'),
-(147, 'Test Sensor Two', 55.941703006439475, -3.194724823439316, 1, 2, '1.0.0'),
-(243, 'Test Sensor Four', 55.946803, -3.294777, 1, 1, '1.0.0'),
-(431, 'Test Sensor Five', 55.979452, -3.274524, 1, 1, '1.0.0');
+(100, 'Test Sensor 1', 55.937311, -3.173388, 1, 3, '1.0.0'),
+(147, 'Test Sensor 2', 55.941703006439475, -3.194724823439316, 1, 2, '1.0.0'),
+(243, 'Test Sensor 3', 55.946803, -3.294777, 1, 1, '1.0.0'),
+(431, 'Test Sensor 4', 55.979452, -3.274524, 1, 1, '1.0.0');
 SET IDENTITY_INSERT sensor OFF;
 
 -- Insert setting_type data
@@ -133,3 +135,87 @@ INSERT INTO settings(id, setting_type_id, sensor_id, minimum_value, maximum_valu
 (14, 10, 147, 0.00, 3.00, 1.33),
 (15, 11, 147, 0.00, 1.00, 0.07);
 SET IDENTITY_INSERT settings OFF;
+
+
+
+
+CREATE TABLE ticket_status
+(
+    id           INT            IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    status_name  NVARCHAR(50)   NOT NULL
+);
+
+INSERT INTO ticket_status (status_name)
+VALUES
+  ('Open'),
+  ('Under Investigation'),
+  ('Closed');
+
+
+CREATE TABLE sensor_ticket
+(
+    id                 INT            IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    sensor_id          INT            NOT NULL,
+    issue_description  NVARCHAR(500)  NOT NULL,
+    status_id          INT            NOT NULL,
+    created_at         DATETIME2      NULL    DEFAULT SYSUTCDATETIME(),
+
+    CONSTRAINT FK_sensor_ticket_sensor
+       FOREIGN KEY(sensor_id)
+       REFERENCES sensor(id)
+       ON DELETE CASCADE,
+
+);
+
+
+CREATE TABLE ticket_response
+(
+    id          INT           IDENTITY(1,1)    NOT NULL PRIMARY KEY,
+    ticket_id   INT           NOT NULL,
+    status_id   INT           NULL,
+    note        NVARCHAR(MAX) NULL,
+    created_at  DATETIME2     NOT NULL DEFAULT (SYSUTCDATETIME()),
+
+    -- foreign keys
+    CONSTRAINT FK_ticket_response_sensor_ticket
+       FOREIGN KEY(ticket_id)
+       REFERENCES sensor_ticket(id)
+       ON DELETE CASCADE
+);
+
+
+Alter the settings table to create cascade delete
+-- 1) drop the old FK
+ALTER TABLE dbo.settings
+  DROP CONSTRAINT FK__settings__sensor__5070F446;
+
+-- 2) add it back with ON DELETE CASCADE
+ALTER TABLE dbo.settings
+  ADD CONSTRAINT FK_Settings_Sensor
+    FOREIGN KEY(sensor_id)
+    REFERENCES dbo.sensor(id)
+    ON DELETE CASCADE;
+
+
+Insert tickets for sensors
+INSERT INTO sensor_ticket (sensor_id, issue_description, status_id)
+VALUES
+  (243, 'Readings above threshold for 2 hours',           2),  
+  (431, 'Intermittent connectivity detected',             2),  
+  (100, 'Firmware version outdated',                      3),  
+  (147, 'Physical damage to sensor on front panel',       1); 
+
+Insert responses to tickets
+INSERT INTO ticket_response (ticket_id, status_id, note)
+VALUES
+  -- Ticket #1 (sensor 243)
+  (1, 2, 'Monitoring readings for 24h before recalibration'),  
+  (1, 3, 'Calibration complete; readings back within normal range. To be monitored for 24 hours.'),
+
+  -- Ticket #2 (sensor 431)
+  (2, 2, 'Performed soft reset on sensor.'),  
+  (2, 3, 'Battery pack replaced and verified.'),
+
+  -- Ticket #3 (sensor 100)
+  (3, 3, 'Firmware updated to v1.1.0 and verified.');
+

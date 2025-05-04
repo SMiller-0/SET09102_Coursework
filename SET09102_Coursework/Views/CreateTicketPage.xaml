@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SET09102_Coursework.Views.CreateTicketPage"
+             Title="Create Ticket">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Describe the issue with this sensor:"
+                   FontAttributes="Bold" />
+
+            <Editor Placeholder="Issue description..."
+                    AutoSize="TextChanges"
+                    HeightRequest="150"
+                    Text="{Binding IssueDescription}" />
+
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="Red"
+                   FontAttributes="Bold"
+                   IsVisible="{Binding HasError}" />
+
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Button Text="Submit" Command="{Binding SubmitCommand}" BackgroundColor="Green" TextColor="White"/>
+                <Button Text="Cancel" Command="{Binding CancelCommand}" BackgroundColor="LightGray" TextColor="Black"/>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

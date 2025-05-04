@@ -30,6 +30,7 @@ public partial class SensorDashboardViewModel : ObservableObject
     {
         await _navigationService.NavigateToSensorStatusAsync();
     }
+
 }
 
 

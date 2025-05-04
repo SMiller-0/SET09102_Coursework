@@ -31,6 +31,7 @@
                 <Button Text="View Sensor Status"
                         Command="{Binding ViewSensorStatusCommand}"
                         FontAttributes="Bold"/>
+
             </VerticalStackLayout>
 
             <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>

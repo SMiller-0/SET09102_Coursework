@@ -1,3 +1,4 @@
+using Microsoft.Maui.Controls;   
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Views;
 
@@ -5,6 +6,12 @@ namespace SET09102_Coursework.Services;
 
 public class NavigationService : INavigationService
 {
+    readonly ICurrentUserService _user;
+    public NavigationService(ICurrentUserService user)
+    {
+        _user = user;
+    }
+
     private Dictionary<string, object> CreateSensorParameters(Sensor sensor) =>
         new() { { "sensor", sensor } };
 
@@ -36,6 +43,7 @@ public class NavigationService : INavigationService
         await Shell.Current.GoToAsync(nameof(UpdateSettingsPage), parameters);
     }
 
+
     public async Task NavigateToAddNewSensorAsync() =>
         await Shell.Current.GoToAsync(nameof(AddSensorPage));
 
@@ -50,6 +58,37 @@ public class NavigationService : INavigationService
 
     public async Task NavigateToSensorStatusAsync() =>
         await Shell.Current.GoToAsync(nameof(SensorStatusPage));
+
+    public async Task NavigateToCreateTicketAsync(Sensor sensor)
+    {
+        var parameters = new Dictionary<string, object>
+        {
+            { "Sensor", sensor }
+        };
+        await Shell.Current.GoToAsync(nameof(CreateTicketPage), parameters);
+    }
+
+    /// <summary>
+    /// Navigates to the ticket details page for a specific ticket.
+    /// Only accessible by Operations Managers.
+    /// </summary>
+    /// <param name="ticket">The ticket to view details for.</param>
+    public async Task NavigateToTicketDetailsAsync(SensorTicket ticket)
+    {
+        if (!_user.IsOperationsManager)
+        {
+            await Shell.Current.DisplayAlert(
+                "Access Denied",
+                "Only Operations Managers can view ticket details.",
+                "OK"
+            );
+            return;
+        }
+
+        await Shell.Current.GoToAsync(
+            $"{nameof(TicketDetailsPage)}?ticketId={ticket.Id}"
+        );
+    }
 }
 
 

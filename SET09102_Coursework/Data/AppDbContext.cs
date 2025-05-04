@@ -16,4 +16,9 @@ public class AppDbContext : DbContext
     public DbSet<SensorType> SensorTypes { get; set; }
     public DbSet<SettingType> SettingTypes { get; set; }
     public DbSet<Settings> Settings { get; set; }
+    public DbSet<SensorTicket> SensorTickets { get; set; }
+    public DbSet<TicketStatus> TicketStatuses { get; set; }
+    public DbSet<TicketResponse> TicketResponses { get; set; }
+
+
 }
