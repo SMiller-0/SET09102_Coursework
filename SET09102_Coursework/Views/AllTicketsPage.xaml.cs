@@ -17,7 +17,6 @@ public partial class AllTicketsPage : ContentPage
         
         try
         {
-            // if it’s an async command, ExecuteAsync will return a Task we can await
             if (_vm.LoadByStatusCommand is IAsyncRelayCommand asyncCmd)
             {
                 await asyncCmd.ExecuteAsync(null);
@@ -29,7 +28,6 @@ public partial class AllTicketsPage : ContentPage
         }
         catch (Exception ex)
         {
-            // swallow or log so a failure in load doesn’t crash the UI
             System.Diagnostics.Debug.WriteLine($"Failed to refresh tickets: {ex}");
         }
     }

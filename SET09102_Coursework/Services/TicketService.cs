@@ -7,25 +7,22 @@ using SET09102_Coursework.Data;
 
 namespace SET09102_Coursework.Services;
 
-/// <summary>
-/// Service for managing sensor tickets and their statuses.
-/// </summary>
+/// <inheritdoc/>
 public class TicketService : ITicketService
 {
+  
     private readonly AppDbContext _context;
 
+    /// <summary>
+    /// Initialises a new instance of <see cref="TicketService"/>.
+    /// </summary>
+    /// <param name="context">EF Core database context.</param>  
     public TicketService(AppDbContext context)
     {
         _context = context;
     }
 
-    /// <summary>
-    /// Creates a new ticket for a sensor. This method is used to log issues or requests related to a specific sensor.
-    /// The ticket will be created with the status "Open" by default.
-    /// </summary>
-    /// <param name="ticket">The ticket to create.</param>
-    /// <returns>True if creation succeeds; otherwise, false.</returns>
-    /// <remarks>Note: The ticket is expected to have a valid sensor ID and status ID.</remarks>
+    /// <inheritdoc/>
     public async Task<bool> CreateTicketAsync(SensorTicket ticket)
     {
         try
@@ -41,10 +38,7 @@ public class TicketService : ITicketService
         }
     }
 
-    /// <summary>
-    /// Retrieves a ticket by its ID. This method is used to fetch the details of a specific ticket.
-    /// </summary>
-    /// <returns>A list of matching tickets.</returns>
+    /// <inheritdoc/>
     public async Task<IEnumerable<SensorTicket>> GetTicketsBySensorAsync(int sensorId)
     {
         try
@@ -60,11 +54,7 @@ public class TicketService : ITicketService
         }
     }
 
-    /// <summary>
-    /// Retrieves all tickets. This method is used to fetch the details of all tickets in the system.
-    /// </summary>
-    /// <returns>A list of all tickets is returned.</returns>
-    /// <remarks>Note: The tickets are ordered by status and then by creation date.</remarks>
+    /// <inheritdoc/>
     public async Task<IEnumerable<SensorTicket>> GetAllTicketsAsync()
     {
         try
@@ -85,10 +75,7 @@ public class TicketService : ITicketService
         }
     }
 
-    /// <summary>
-    /// Updates the status of a ticket. This method is used to change the status of a specific ticket.
-    /// </summary>
-    /// <returns>True if the update succeeds; otherwise, false.</returns>
+    /// <inheritdoc/>
     public async Task<bool> ChangeTicketStatusAsync(int ticketId, int newStatusId)
     {
         try
@@ -106,17 +93,7 @@ public class TicketService : ITicketService
         }
     }
 
-    /// <summary>
-    /// Retrieves tickets by their status. This method is used to fetch tickets that match a specific status.
-    /// </summary>
-    /// <param name="statusId">The ID of the status to filter tickets by.</param>
-    /// <returns>A list of tickets that match the specified status.</returns>
-    /// <remarks>
-    /// - The status ID corresponds to the specific <see cref="TicketStatus"/> type.
-    /// - Tickets are ordered by creation date.
-    /// - Tickets can be filtered by status ID.
-    /// - Each ticket includes its `Status` and `Sensor` information.
-    /// </remarks>
+    /// <inheritdoc/>
     public async Task<IEnumerable<SensorTicket>> GetTicketsByStatusAsync(int statusId)
     {
         return await _context.SensorTickets
@@ -127,14 +104,7 @@ public class TicketService : ITicketService
             .ToListAsync();
     }
 
-    /// <summary>
-    /// Retrieves all ticket statuses. This method is used to fetch the list of all possible ticket statuses.
-    /// </summary>
-    /// <returns>A list of all ticket statuses.</returns>
-    /// <remarks>
-    /// - The statuses are ordered by their name.
-    /// - Each status is represented by its `Id` and `StatusName` properties.
-    /// </remarks>
+    /// <inheritdoc/>
     public async Task<IEnumerable<TicketStatus>> GetAllTicketStatusesAsync()
     {
         return await _context.TicketStatuses
@@ -142,11 +112,7 @@ public class TicketService : ITicketService
             .ToListAsync();
     }
 
-    /// <summary>
-    /// Retrieves a ticket by its ID. This method is used to fetch the details of a specific ticket.
-    /// </summary>
-    /// <param name="ticketId">The ID of the ticket to retrieve.</param>
-    /// <returns>The ticket with the specified ID, including its status and sensor information.</returns>
+    /// <inheritdoc/>
     public async Task<SensorTicket?> GetTicketByIdAsync(int ticketId)
     {
         return await _context.SensorTickets
@@ -155,11 +121,7 @@ public class TicketService : ITicketService
             .FirstOrDefaultAsync(t => t.Id == ticketId);
     }
 
-    /// <summary>
-    /// Adds a response to a ticket. This method is used to log responses or updates related to a specific ticket.
-    /// </summary>
-    /// <param name="response">The response to add.</param>
-    /// <returns>True if the addition succeeds; otherwise, false.</returns>
+    /// <inheritdoc/>
     public async Task<bool> AddTicketResponseAsync(TicketResponse response)
     {
         try
@@ -174,6 +136,7 @@ public class TicketService : ITicketService
         }
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<TicketResponse>> GetTicketResponsesAsync(int ticketId)
     {
         return await _context.TicketResponses
@@ -183,31 +146,27 @@ public class TicketService : ITicketService
                     .ToListAsync();
     }
 
+    /// <inheritdoc/>
+    public event Action<int>? TicketDeleted;
 
-        public event Action<int>? TicketDeleted;
-
-        
+    /// <inheritdoc/>
     public async Task<bool> DeleteTicketAsync(int ticketId)
-{
-    try
     {
-        var ticket = await _context.SensorTickets.FindAsync(ticketId);
-        if (ticket == null) return false;
+        try
+        {
+            var ticket = await _context.SensorTickets.FindAsync(ticketId);
+            if (ticket == null) return false;
 
-        _context.SensorTickets.Remove(ticket);
-        // DB should cascade-delete the associated responses
-        await _context.SaveChangesAsync();
+            _context.SensorTickets.Remove(ticket);
+            await _context.SaveChangesAsync();
 
-        TicketDeleted?.Invoke(ticketId);
-
-        return true;
+            TicketDeleted?.Invoke(ticketId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Error] DeleteTicketAsync: {ex.Message}");
+            return false;
+        }
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"[Error] DeleteTicketAsync: {ex.Message}");
-        return false;
-    }
-}
-
-    
 }

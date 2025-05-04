@@ -5,10 +5,10 @@
              x:Name="RootPage"
              xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
              xmlns:models="clr-namespace:SET09102_Coursework.Models"
-             Title="Tickets">
-             
+             Title="Tickets">            
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
+            
             <!-- Heading -->
             <Label Text="Support Requests" 
                 FontSize="28" 
