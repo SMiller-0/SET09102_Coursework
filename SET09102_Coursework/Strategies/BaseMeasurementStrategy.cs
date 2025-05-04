@@ -33,7 +33,7 @@ public abstract class BaseMeasurementStrategy
             ParameterName = parameterName,
             MaximumValue = valuesList.Max(),            
             MinimumValue = valuesList.Min(),
-            AverageValue = Math.Round(valuesList.Average(), 2),            
+            AverageValue = valuesList.Average(),          
             ModeValue = CalculateMode(valuesList),
             LatestValue = valuesList.LastOrDefault()
         };
@@ -42,16 +42,12 @@ public abstract class BaseMeasurementStrategy
     protected static double CalculateMode(List<double> values)
     {
         if (values == null || !values.Any())
-        {
             return 0;
-        }
-
-        var roundedValues = values.Select(v => Math.Round(v, 2));
         
-        var groupedValues = roundedValues
+        return values
             .GroupBy(v => v)
-            .OrderByDescending(g => g.Count());
-        
-        return groupedValues.Any() ? groupedValues.First().Key : values[0];
+            .OrderByDescending(g => g.Count())
+            .Select(g => g.Key)
+            .FirstOrDefault(defaultValue: values[0]);
     }
 }
