@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
 using SET09102_Coursework.Models;
 using SET09102_Coursework.Services;
 

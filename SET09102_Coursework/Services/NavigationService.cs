@@ -83,21 +83,6 @@ public class NavigationService : INavigationService
             $"{nameof(TicketDetailsPage)}?ticketId={ticket.Id}"
         );
     }
-/* 
-    public async Task NavigateToViewAllTicketsAsync()
-{
-    if (!_user.IsOperationsManager)
-    {
-        await Shell.Current.DisplayAlert(
-            "Access Denied",
-            "Only Operations Managers can view all tickets.",
-            "OK"
-        );
-        return;
-    }
-
-    await Shell.Current.GoToAsync(nameof(AllTicketsPage));
-} */
 }
 
 

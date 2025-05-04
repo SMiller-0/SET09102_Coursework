@@ -14,6 +14,7 @@ public partial class AllTicketsViewModel: ObservableObject
 {
     private readonly ITicketService _ticketService;
     private readonly INavigationService _navigationService;
+    private readonly ICurrentUserService _currentUserService;
     
     public ObservableCollection<SensorTicket> Tickets { get; } = new();
     public ObservableCollection<TicketStatus> Statuses { get; } = new();
@@ -27,6 +28,9 @@ public partial class AllTicketsViewModel: ObservableObject
 
     [ObservableProperty]
     private string searchText = string.Empty;
+    
+    [ObservableProperty]
+    private bool isOperationsManager;
 
 
     /// <summary>
@@ -36,14 +40,14 @@ public partial class AllTicketsViewModel: ObservableObject
     /// </summary>
     /// <param name="ticketService">Service for managing tickets.</param>
     /// <param name="navigationService">Service for handling navigation.</param>
-    public AllTicketsViewModel(ITicketService ticketService, INavigationService navigationService)
+    public AllTicketsViewModel(ITicketService ticketService, INavigationService navigationService, ICurrentUserService currentUserService)
     {
         _ticketService = ticketService;
         _navigationService = navigationService;
+        _currentUserService = currentUserService;
 
-    _ticketService.TicketDeleted += async (deletedId) =>
+        _ticketService.TicketDeleted += async (deletedId) =>
         {
-            // you can even ignore deletedId or use it to remove from allTickets
             await LoadByStatusAsync();
         };
         
@@ -57,10 +61,18 @@ public partial class AllTicketsViewModel: ObservableObject
                 ApplySearchFilter();
         };
 
+         IsOperationsManager = _currentUserService.IsOperationsManager;
+_currentUserService.UserChanged += (_,__)=>
+    IsOperationsManager = _currentUserService.IsOperationsManager;
+
         // initial load
         _ = InitializeAsync();
     }
 
+    private void OnUserChanged(object? sender, EventArgs e)
+    {
+        IsOperationsManager = _currentUserService.IsAdmin;
+    }
 
     /// <summary>
     /// Initialises the ViewModel by loading all ticket statuses and the initial set of tickets.
@@ -103,7 +115,6 @@ public partial class AllTicketsViewModel: ObservableObject
         ApplySearchFilter();
     }
     
-   
 
     private void ApplySearchFilter()
     {
