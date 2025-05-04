@@ -22,9 +22,7 @@
             <!-- Sensor‐name search -->
             <SearchBar
                 Placeholder="Filter by sensor…"
-                Text="{Binding SearchText}"
-                SearchCommand="{Binding LoadByFiltersCommand}"
-                SearchCommandParameter="{Binding SearchText}" />
+                Text="{Binding SearchText, Mode=TwoWay}" />
 
             <!-- Type Filter -->
             <Picker

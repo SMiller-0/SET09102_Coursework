@@ -30,5 +30,8 @@ namespace SET09102_Coursework.Models
         [ForeignKey(nameof(TicketId))]
         public SensorTicket Ticket { get; set; } = null!;
 
+        [ForeignKey(nameof(StatusId))]
+        public TicketStatus Status { get; set; } = null!;
+
     }
 }

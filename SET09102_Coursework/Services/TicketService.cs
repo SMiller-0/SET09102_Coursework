@@ -178,6 +178,7 @@ public class TicketService : ITicketService
     public async Task<IEnumerable<TicketResponse>> GetTicketResponsesAsync(int ticketId)
     {
         return await _context.TicketResponses
+                    .Include(r => r.Status) 
                     .Where(r => r.TicketId == ticketId)
                     .OrderBy(r => r.CreatedAt)
                     .ToListAsync();
