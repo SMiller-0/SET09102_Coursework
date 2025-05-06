@@ -30,8 +30,15 @@ public partial class SensorViewModel : ObservableObject
     private bool isAdmin;
 
     /// <summary>
+    /// Whether the current user has Environmental Scientist privileges.
+    /// Determines access to Environmental Scientist only commands.
+    /// </summary>
+    [ObservableProperty]
+    private bool isEnvScientist;
+
+    /// <summary>
     /// Initialises a new instance of the <see cref="SensorViewModel"/>.
-    /// Subscribes to user role changes to keep the admin status updated.
+    /// Subscribes to user role changes to keep the role status updated.
     /// </summary>
     public SensorViewModel(
         INavigationService navigationService,
@@ -41,6 +48,8 @@ public partial class SensorViewModel : ObservableObject
         _currentUserService = currentUserService;
         
         IsAdmin = _currentUserService.IsAdmin;
+        IsEnvScientist = _currentUserService.IsEnvScientist;
+
         _currentUserService.UserChanged += OnUserChanged;
     }
 
@@ -50,6 +59,7 @@ public partial class SensorViewModel : ObservableObject
     private void OnUserChanged(object? sender, EventArgs e)
     {
         IsAdmin = _currentUserService.IsAdmin;
+        IsEnvScientist = _currentUserService.IsEnvScientist;
     }
 
     /// <summary>

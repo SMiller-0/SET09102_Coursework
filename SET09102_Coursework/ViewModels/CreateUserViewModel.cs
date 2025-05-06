@@ -27,7 +27,7 @@ public partial class CreateUserViewModel: ObservableObject
     /// Middle name of the new user (optional).
     /// </summary>
     [ObservableProperty] 
-    rivate string middleName;
+    private string middleName;
 
     [ObservableProperty] 
     private string surname;

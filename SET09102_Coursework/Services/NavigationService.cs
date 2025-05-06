@@ -96,7 +96,7 @@ public class NavigationService : INavigationService
 
     /// <inheritdoc/>
     public async Task NavigateToSensorReportAsync() =>
-        await Shell.Current.GoToAsync(nameof(SensorReportPa
+        await Shell.Current.GoToAsync(nameof(SensorReportPage));
     
     /// <inheritdoc/>
     public async Task NavigateToTrendReportAsync(Sensor sensor)

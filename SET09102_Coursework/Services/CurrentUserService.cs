@@ -13,7 +13,10 @@ public class CurrentUserService : ICurrentUserService
 
     /// <inheritdoc/>
     public bool IsOperationsManager => LoggedInUser?.Role?.RoleName == "Operations Manager";
-    
+
+    /// <inheritdoc/>
+    public bool IsEnvScientist => LoggedInUser?.Role?.RoleName == "Environmental Scientist";
+
     /// <inheritdoc/>
     public event EventHandler? UserChanged;
 

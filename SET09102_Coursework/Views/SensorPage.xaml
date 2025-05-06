@@ -50,7 +50,8 @@
                 <Button Text="Edit Sensor"
                         Command="{Binding EditSensorCommand}"
                         BackgroundColor="{StaticResource Primary}"
-                        Margin="0,0,0,5"/>
+                        Margin="0,0,0,5"
+                        IsVisible="{Binding IsEnvScientist}"/>
                     
                 <Button Text="Update Firmware"
                         Command="{Binding UpdateFirmwareCommand}"
