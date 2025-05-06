@@ -11,18 +11,25 @@ using SET09102_Coursework.Services;
 
 namespace SET09102_Coursework.ViewModels;
 
+/// <summary>
+/// ViewModel for displaying and managing the list of users.
+/// Provides navigation to view or create users, and updates list when users change.
+/// </summary>
 public partial class AllUsersViewModel : ObservableObject, IQueryAttributable
 {
     private readonly AppDbContext _context;
     private readonly ICurrentUserService _currentUserService;
 
     public ObservableCollection<UserViewModel> AllUsers { get; }
-    //public ICommand NewCommand { get; }
+
     public ICommand SelectUserCommand { get; }
 
     public bool IsAdmin => _currentUserService.IsAdmin;
 
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AllUsersViewModel"/> class.
+    /// Loads the user list and sets up role-change tracking.
+    /// </summary>
     public AllUsersViewModel(AppDbContext appDbContext, ICurrentUserService currentUserService)
     {
         _context = appDbContext;
@@ -32,16 +39,20 @@ public partial class AllUsersViewModel : ObservableObject, IQueryAttributable
         AllUsers = new ObservableCollection<UserViewModel>();
         RefreshUserList();
 
-        //NewCommand = new AsyncRelayCommand(NewUserAsync);
         SelectUserCommand = new AsyncRelayCommand<UserViewModel>(SelectUserAsync);
     }
 
+    /// <summary>
+    /// Updates the <see cref="IsAdmin"/> property when the current user changes.
+    /// </summary>
     private void OnUserChanged(object? sender, EventArgs e)
     {
         OnPropertyChanged(nameof(IsAdmin)); 
     }
 
-
+    /// <summary>
+    /// Navigates to the page for creating a new user.
+    /// </summary>
     [RelayCommand]
     private async Task AddUser()
     {
@@ -49,6 +60,10 @@ public partial class AllUsersViewModel : ObservableObject, IQueryAttributable
     }
 
 
+    /// <summary>
+    /// Navigates to the selected user's detail page.
+    /// </summary>
+    /// <param name="user">The selected user.</param>
     private async Task SelectUserAsync(UserViewModel user)
     {
         if (user != null)
@@ -57,7 +72,11 @@ public partial class AllUsersViewModel : ObservableObject, IQueryAttributable
         }
     }
 
-
+    /// <summary>
+    /// Called when navigation query parameters indicate a user was created, edited, or deleted.
+    /// Refreshes the user list if needed.
+    /// </summary>
+    /// <param name="query">The navigation query parameters.</param>
     void IQueryAttributable.ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.ContainsKey("deleted") || query.ContainsKey("saved") || query.ContainsKey("created"))
@@ -66,7 +85,10 @@ public partial class AllUsersViewModel : ObservableObject, IQueryAttributable
         }
     }
     
-        
+    /// <summary>
+    /// Retrieves users from the database and populates the <see cref="AllUsers"/> collection.
+    /// Users are sorted by surname, then first name.
+    /// </summary>
     private void RefreshUserList()
     {
         AllUsers.Clear();

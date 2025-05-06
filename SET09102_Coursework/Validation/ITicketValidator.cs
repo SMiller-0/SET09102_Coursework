@@ -14,5 +14,10 @@ public interface ITicketValidator
     /// </summary>
     /// <param name="ticket">The sensor ticket to validate.</param>
     /// <returns>A tuple indicating whether the ticket is valid and an error message if invalid.</returns>
+    /// <remarks>
+    /// This method checks the following conditions:
+    /// - The issue description is not empty or null.
+    /// - The issue description is at least 10 characters long.
+    /// </remarks>
     (bool IsValid, string ErrorMessage) Validate(SensorTicket ticket);
 }

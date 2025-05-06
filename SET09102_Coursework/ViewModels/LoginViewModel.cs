@@ -8,27 +8,36 @@ using SET09102_Coursework.Views;
 using SET09102_Coursework.Data;
 using SET09102_Coursework.Services;
 
-
 namespace SET09102_Coursework.ViewModels;
 
 /// <summary>
-/// ViewModel for handling user login logic.
+/// ViewModel for handling user login and logout operations.
+/// Validates credentials and manages navigation after login.
 /// </summary>
 public partial class LoginViewModel : ObservableObject 
 {
     private readonly AppDbContext _context;
     private readonly ICurrentUserService _currentUserService;
 
+    [ObservableProperty] 
+    private string email;
 
-    [ObservableProperty] private string email;
+    [ObservableProperty] 
+    private string password;
 
-    [ObservableProperty] private string password;
+    [ObservableProperty] 
+    private string loginError;
 
-    [ObservableProperty] private string loginError;
-
+    /// <summary>
+    /// Flag that indicates whether login has failed.
+    // </summary>
     [ObservableProperty] private bool isLoginFailed;
 
-
+    /// <summary>
+    /// Constructs a new <see cref="LoginViewModel"/>.
+    /// </summary>
+    /// <param name="context">Database context used to fetch user credentials.</param>
+    /// <param name="currentUserService">Service for tracking current logged-in user state.</param>
     public LoginViewModel(AppDbContext context, ICurrentUserService currentUserService)
     {
         _context = context;
@@ -36,7 +45,8 @@ public partial class LoginViewModel : ObservableObject
     }
 
     /// <summary>
-    /// Command bound to the Login button. Attempts to validate user credentials.
+    /// Attempts to log in the user. Validates input, checks credentials,
+    /// and navigates to the dashboard on success. Otherwise, sets error state.
     /// </summary>
     [RelayCommand]
     private async Task Login()
@@ -91,6 +101,9 @@ public partial class LoginViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Logs the user out and navigates back to the login page.
+    /// </summary>
     [RelayCommand]
     private async Task Logout()
     {

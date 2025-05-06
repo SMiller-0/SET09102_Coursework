@@ -4,20 +4,27 @@ using SET09102_Coursework.Models;
 
 namespace SET09102_Coursework.Services;
 
+/// <inheritdoc/>
 public class SensorService : ISensorService
 {
     private readonly AppDbContext _context;
 
+    /// <summary>
+    /// Initialises a new instance of <see cref="SensorService"/>.
+    /// </summary>
+    /// <param name="context">EF Core database context.</param>
     public SensorService(AppDbContext context)
     {
         _context = context;
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<SensorType>> GetSensorTypesAsync()
     {
         return await _context.SensorTypes.OrderBy(st => st.Name).ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<Sensor>> GetSensorsByTypeAsync(int? typeId)
     {
         try
@@ -41,6 +48,7 @@ public class SensorService : ISensorService
         }
     }
 
+    /// <inheritdoc/>
     public async Task<bool> UpdateFirmwareVersionAsync(int sensorId, string newVersion)
     {
         try
@@ -58,6 +66,7 @@ public class SensorService : ISensorService
         }
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<Settings>> GetSensorSettingsAsync(int sensorId)
     {
         return await _context.Settings
@@ -67,6 +76,7 @@ public class SensorService : ISensorService
             .ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<bool> UpdateSensorSettingsAsync(IEnumerable<Settings> settings)
     {
         try
@@ -91,6 +101,7 @@ public class SensorService : ISensorService
         }
     }
 
+    /// <inheritdoc/>
     public async Task<bool> AddSensorAsync(Sensor sensor)
     {
         try
@@ -106,6 +117,7 @@ public class SensorService : ISensorService
         }
     }
 
+    /// <inheritdoc/>
     public async Task<bool> UpdateSensorAsync(Sensor sensor)
     {
         try
@@ -129,7 +141,7 @@ public class SensorService : ISensorService
         }
     }
 
-
+    /// <inheritdoc/>
     public async Task<bool> DeleteSensorAsync(int sensorId)
     {
         try

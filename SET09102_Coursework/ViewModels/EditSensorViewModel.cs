@@ -22,24 +22,53 @@ public partial class EditSensorViewModel : ObservableObject
     /// <summary>List of all available sensor types for selection.</summary>
     public ObservableCollection<SensorType> SensorTypes { get; } = new();
 
-    /// <summary>The sensor being edited. Passed from navigation.</summary>
-    [ObservableProperty] private Sensor sensor;
+    /// <summary>
+    /// The sensor being edited. set via navigation.
+    /// </summary>
+    [ObservableProperty] 
+    private Sensor sensor;
 
-    [ObservableProperty] private string name;
-    [ObservableProperty] private string firmwareVersion;
-    /// <summary>Latitude input as string to allow binding with Entry.</summary>
-    [ObservableProperty] private string latitudeInput;
-    /// <summary>Longitude input as string to allow binding with Entry.</summary>
-    [ObservableProperty] private string longitudeInput;
-    [ObservableProperty] private SensorType selectedSensorType;
-    [ObservableProperty] private bool isActive;
+    [ObservableProperty] 
+    private string name;
 
-    [ObservableProperty] private string errorMessage;
-    [ObservableProperty] private bool hasError;
+    [ObservableProperty] 
+    private string firmwareVersion;
+
+    /// <summary>
+    /// Latitude input as string to allow binding with Entry.
+    /// </summary>
+    [ObservableProperty] 
+    private string latitudeInput;
+    
+    /// <summary>
+    /// Longitude input as string to allow binding with Entry.
+    /// </summary>
+    [ObservableProperty] 
+    private string longitudeInput;
+
+    /// <summary>
+    /// Selected sensor type from the list of available types.
+    /// </summary>
+    /// <remarks>Bound to a Picker in the UI.</remarks>
+    [ObservableProperty] 
+    private SensorType selectedSensorType;
+
+    /// <summary>
+    /// Indicates if the sensor is active. Default is true.
+    /// </summary>
+    [ObservableProperty] 
+    private bool isActive;
+
+    [ObservableProperty] 
+    private string errorMessage;
+
+    [ObservableProperty] 
+    private bool hasError;
 
 
     /// <summary>
-    /// Initialises the EditSensorViewModel and loads sensor types.
+    /// Constructs a new instance of the <see cref="EditSensorViewModel"/>  
+    /// and loads the list of sensor types.
     /// </summary>
     public EditSensorViewModel(ISensorService sensorService, INavigationService navigationService, ISensorValidator sensorValidator)
     {
@@ -50,10 +79,9 @@ public partial class EditSensorViewModel : ObservableObject
         LoadSensorTypesAsync().ConfigureAwait(false);
     }
 
-
     /// <summary>
-    /// Called when the Sensor property is set.
-    /// Pre-fills the editable fields with the sensor's current values.
+    /// Called when the <see cref="Sensor"/> property is set.  
+    /// Pre-fills form fields with the current sensor values.
     /// </summary>
     partial void OnSensorChanged(Sensor value)
     {
@@ -65,9 +93,8 @@ public partial class EditSensorViewModel : ObservableObject
         IsActive = value.IsActive;
     }
 
-
     /// <summary>
-    /// Loads available sensor types from the service and populates the SensorTypes collection.
+    /// Loads sensor types from the database and updates the <see cref="SensorTypes"/> list.
     /// </summary>
     private async Task LoadSensorTypesAsync()
     {
@@ -84,10 +111,9 @@ public partial class EditSensorViewModel : ObservableObject
         }
     }
 
-
     /// <summary>
-    /// Saves the updated sensor. Validates input using the sensor validator
-    /// and calls the update service. Shows success or error feedback to the user.
+    /// Saves the sensor after validating inputs.  
+    /// Updates the sensor in the database and shows success or error feedback.
     /// </summary>
     [RelayCommand]
     private async Task Save()
@@ -157,8 +183,8 @@ public partial class EditSensorViewModel : ObservableObject
 
 
     /// <summary>
-    /// Deletes the sensor after confirming with the user.
-    /// Navigates back to the sensor list on success.
+    /// Confirms and deletes the current sensor from the database.  
+    /// Navigates back to the sensor list after deletion.
     /// </summary>
     [RelayCommand]
     private async Task Delete()

@@ -3,8 +3,10 @@ using SET09102_Coursework.Models;
 
 namespace SET09102_Coursework.Validation;
 
+/// <inheritdoc/>
 public class SensorValidator: ISensorValidator
 {
+    /// <inheritdoc/>
     public ValidationResult Validate(Sensor sensor)
     {
         if (sensor == null)

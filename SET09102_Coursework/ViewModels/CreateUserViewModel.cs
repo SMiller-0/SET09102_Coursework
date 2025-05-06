@@ -17,20 +17,20 @@ namespace SET09102_Coursework.ViewModels;
 public partial class CreateUserViewModel: ObservableObject
 
 {   
-    /// <summary>Database context for accessing user data.</summary>
     private readonly AppDbContext _context;
-
-    /// <summary> Service that provides information about the current user.</summary>
     private readonly ICurrentUserService _currentUserService;
     
-    // <summary>First name of the new user.</summary>
-    [ObservableProperty] private string firstName;
+    [ObservableProperty] 
+    private string firstName;
 
-    /// <summary>Middle name of the new user (optional).</summary>
-    [ObservableProperty] private string middleName;
+    /// <summary>
+    /// Middle name of the new user (optional).
+    /// </summary>
+    [ObservableProperty] 
+    rivate string middleName;
 
-    /// <summary>Last name (surname) of the new user.</summary>
-    [ObservableProperty] private string surname;
+    [ObservableProperty] 
+    private string surname;
     
     /// <summary>
     /// The new user’s corporate email address.  
@@ -38,29 +38,43 @@ public partial class CreateUserViewModel: ObservableObject
     /// the user only needs to type the local part (e.g. “j.doe”)
     /// to form “j.doe@smartsense.com”.  
     /// </summary> 
-    [ObservableProperty] private string email = "@smartsense.com";
+    [ObservableProperty] 
+    private string email = "@smartsense.com";
     
-    /// <summary>Phone number of the new user (optional).</summary>
-    [ObservableProperty] private string phoneNumber;
+    /// <summary>
+    /// Phone number of the new user (optional).
+    /// </summary>
+    [ObservableProperty] 
+    private string phoneNumber;
     
-    /// <summary>Street address of the new user.</summary>
-    [ObservableProperty] private string street;
+    [ObservableProperty] 
+    private string street;
    
-    /// <summary>City of the new user.</summary>
-    [ObservableProperty] private string city;
+    [ObservableProperty] 
+    private string city;
     
-    /// <summary>Postcode of the new user.</summary>
-    [ObservableProperty] private string postcode;
+    [ObservableProperty] 
+    private string postcode;
     
-    /// <summary>Password for the new user (must match <see cref="ConfirmPassword"/>).</summary>
+    /// <summary>
+    /// Password for the new user (must match <see cref="ConfirmPassword"/>).
+    /// </summary>
     [ObservableProperty] private string password;
     
-    /// <summary>Confirmation of the password.</summary>
+    /// <summary>
+    /// Confirmation of the password.
+    /// </summary>
     [ObservableProperty] private string confirmPassword;
     
-    /// <summary>List of available roles to choose from.</summary>
-    [ObservableProperty] private List<Role> availableRoles;
-    /// <summary>The role selected for the new user.</summary>
+    /// <summary>
+    // List of available roles to choose from.
+    // </summary>
+    [ObservableProperty] 
+    private List<Role> availableRoles;
+
+    /// <summary>
+    // The role selected for the new user.
+    // </summary>
     [ObservableProperty] private Role selectedRole;
     
     /// <summary>
@@ -77,8 +91,7 @@ public partial class CreateUserViewModel: ObservableObject
     /// <param name="context">Database context for accessing user data <see cref="AppDbContext"/>.</param>
     /// <param name="currentUserService">Service that provides info about the currently logged‑in user (for IsAdmin).
     /// </param>
-    public CreateUserViewModel(AppDbContext context,
-                               ICurrentUserService currentUserService)
+    public CreateUserViewModel(AppDbContext context,ICurrentUserService currentUserService)
     {
         _context = context;
         _currentUserService = currentUserService;
@@ -86,28 +99,24 @@ public partial class CreateUserViewModel: ObservableObject
     }
 
 
-    /// <summary>
+   /// <summary>
     /// Command to create a new user.  
     /// Validates inputs, hashes the password, writes to the database,
     /// and navigates back to the all‑users page on success.
-    /// On success, displays a confirmation and navigates back to the AllUsersPage.
     /// </summary>
-    /// <returns>
-    /// A <see cref="Task"/> that completes when the creation flow (including alerts and navigation)
-    /// has finished.
-    /// </returns>
-    /// <exception cref="DbUpdateException">
-    /// Thrown internally if the database rejects the insert (e.g. unique‑constraint on email).
-    /// This is caught and translated into a user alert.
-    /// </exception>
-    /// <exception cref="Exception">
-    /// Catches any other unexpected errors and displays a generic alert.
-    /// </exception>
+    /// <returns>A <see cref="Task"/> that completes when the creation flow finishes.</returns>
+    /// <remarks>
+    /// This method performs several validation checks on the user input:
+    /// 1) Required fields and matching password.
+    /// 2) Email format.
+    /// 3) Postcode format.
+    /// 4) Optional phone number format.
+    /// 5) Password strength: minimum 8 characters, at least one uppercase letter, one lowercase letter, and one digit.
+    /// </remarks>
     [RelayCommand]
     private async Task Create()
     {
         // Validation checks:
-        // 1) Required fields and matching password
         if (string.IsNullOrWhiteSpace(FirstName)
         || string.IsNullOrWhiteSpace(Surname)
         || string.IsNullOrWhiteSpace(Email)
@@ -120,7 +129,6 @@ public partial class CreateUserViewModel: ObservableObject
             return;
         }
 
-        // 2) Email format
         var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         if (!Regex.IsMatch(Email, emailPattern))
         {
@@ -129,7 +137,6 @@ public partial class CreateUserViewModel: ObservableObject
             return;
         }
 
-        // 3) Postcode format
         var postcodePattern = @"^[A-Z0-9 ]{3,20}$";
         if (!Regex.IsMatch(Postcode.ToUpper(), postcodePattern))
         {
@@ -138,7 +145,6 @@ public partial class CreateUserViewModel: ObservableObject
             return;
         }
 
-        // 4) Optional phone number format
         if (!string.IsNullOrWhiteSpace(PhoneNumber))
         {
             var phonePattern = @"^[\d\+\-\s]{5,20}$";
@@ -150,7 +156,6 @@ public partial class CreateUserViewModel: ObservableObject
             }
         }
 
-        // 5) Password strength: min 8 chars, uppercase, lowercase, digit
         var pwdPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$";
         if (!Regex.IsMatch(Password, pwdPattern))
         {
@@ -161,7 +166,7 @@ public partial class CreateUserViewModel: ObservableObject
             return;
         }
 
-        // Apply BCrypt hashing and build the new user entity
+        // Hash password with BCrypt and create user entity
         var hashed = BCrypt.Net.BCrypt.HashPassword(Password);
 
         var user = new User
@@ -218,13 +223,10 @@ public partial class CreateUserViewModel: ObservableObject
         await Shell.Current.GoToAsync($"///AllUsersPage?created={user.Id}");
     }
 
-
     /// <summary>
     /// Cancels user creation and navigates back to the All Users page.
     /// </summary>
-    /// <returns>
-    /// A <see cref="Task"/> that completes when the navigation has finished.
-    /// </returns>
+    /// <returns>A <see cref="Task"/> that completes when navigation finishes.</returns>
     [RelayCommand]
     private async Task Cancel()
     {

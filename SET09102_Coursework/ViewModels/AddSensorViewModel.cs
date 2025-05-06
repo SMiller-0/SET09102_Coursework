@@ -6,12 +6,11 @@ using SET09102_Coursework.Models;
 using SET09102_Coursework.Services;
 using SET09102_Coursework.Validation;
 
-
 namespace SET09102_Coursework.ViewModels;
 
 /// <summary>
 /// ViewModel for adding a new sensor. 
-/// Handles input fields, validation, and saving the sensor via the sensor service.
+/// Handles input fields, performs validation, and saves the sensor using the sensor service.
 /// </summary>
 public partial class AddSensorViewModel : ObservableObject
 {
@@ -22,22 +21,43 @@ public partial class AddSensorViewModel : ObservableObject
     /// <summary>List of all available sensor types for selection.</summary>
     public ObservableCollection<SensorType> SensorTypes { get; } = new(); 
 
-    [ObservableProperty] private string name;
-    [ObservableProperty] private SensorType selectedSensorType;
-    [ObservableProperty] private string firmwareVersion;
-    /// <summary>Longitude input as string to allow binding with Entry.</summary>
-    [ObservableProperty] private string longitudeInput;
-    /// <summary>Latitude input as string to allow binding with Entry.</summary>
-    [ObservableProperty] private string latitudeInput;
-    [ObservableProperty] private bool isActive = true; 
+    [ObservableProperty] 
+    private string name;
+    
+    [ObservableProperty] 
+    private SensorType selectedSensorType;
 
-    [ObservableProperty] private string errorMessage;
-    [ObservableProperty] private bool hasError;
+    [ObservableProperty] 
+    private string firmwareVersion;
+
+    /// <summary>
+    /// Longitude input as a string, allowing binding to an Entry field.
+    // </summary>
+    [ObservableProperty] 
+    private string longitudeInput;
+
+    /// <summary>
+    /// Latitude input as a string, allowing binding to an Entry field.
+    /// </summary>
+    [ObservableProperty] 
+    private string latitudeInput;
+    
+    [ObservableProperty] 
+    private bool isActive = true; 
+
+    [ObservableProperty] 
+    private string errorMessage;
+
+    [ObservableProperty] 
+    private bool hasError;
 
     
     /// <summary>
     /// Initialises the viewmodel and loads sensor types.
     /// </summary> 
+    /// <param name="sensorService">Service for managing sensors.</param>
+    /// <param name="navigationService">Service for navigating between pages.</param>
+    /// <param name="sensorValidator">Validator for sensor data.</param>
     public AddSensorViewModel(
         ISensorService sensorService, 
         INavigationService navigationService, 
@@ -49,7 +69,6 @@ public partial class AddSensorViewModel : ObservableObject
 
         LoadSensorTypesAsync().ConfigureAwait(false);
     }
-
 
     /// <summary>
     /// Loads available sensor types from the service and populates the SensorTypes collection.    
@@ -67,7 +86,7 @@ public partial class AddSensorViewModel : ObservableObject
     /// <summary>
     /// Checks whether any of the required input fields are missing or null.
     /// </summary>
-    /// <returns>True if any required fields are missing; otherwise, false.</returns>
+    /// <returns><c>true</c> if any required fields are empty or null; otherwise, <c>false</c>.</returns>    
     private bool AreRequiredFieldsMissing()
     {
         return string.IsNullOrWhiteSpace(Name)
@@ -77,11 +96,10 @@ public partial class AddSensorViewModel : ObservableObject
             || string.IsNullOrWhiteSpace(LongitudeInput);
     }
 
-
     /// <summary>
-    /// Validates and saves a new sensor to the database.
-    /// Displays an error if the operation fails.
-    /// </summary> 
+    /// Validates input, creates a new sensor object, and attempts to save it.
+    /// Displays error messages or success notifications as appropriate.
+    /// </summary>
     [RelayCommand]
     private async Task SaveSensor()
     {
@@ -141,9 +159,8 @@ public partial class AddSensorViewModel : ObservableObject
         }
     }
 
-
     /// <summary>
-    /// Cancel and return to the previous page.
+    /// Cancels the operation and navigates back to the previous page.
     /// </summary>
     [RelayCommand]
     private async Task Cancel()

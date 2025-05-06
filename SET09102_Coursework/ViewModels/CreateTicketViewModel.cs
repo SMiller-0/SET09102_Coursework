@@ -21,11 +21,30 @@ public partial class CreateTicketViewModel : ObservableObject
     private readonly ITicketValidator _ticketValidator;
 
 
-    [ObservableProperty] private Sensor sensor;
-    [ObservableProperty] private string issueDescription;
-    [ObservableProperty] private string errorMessage;
-    [ObservableProperty] private bool hasError;
-    [ObservableProperty] private ObservableCollection<TicketStatus> statuses = new();
+    /// <summary>
+    // Sensor associated with the ticket.
+    // </summary>
+    [ObservableProperty] 
+    private Sensor sensor;
+
+    /// <summary>
+    /// Description of the issue entered by the user.
+    /// </summary>
+    [ObservableProperty] 
+    private string issueDescription;
+
+    [ObservableProperty] 
+    private string errorMessage;
+    
+    [ObservableProperty] 
+    private bool hasError;
+
+    /// <summary>
+    /// List of ticket statuses (e.g. Open, Closed) used for display or assignment.
+    /// </summary>
+    /// <remarks>Includes a default "All" status.</remarks>
+    [ObservableProperty] 
+    private ObservableCollection<TicketStatus> statuses = new();
 
 
     /// <summary>
