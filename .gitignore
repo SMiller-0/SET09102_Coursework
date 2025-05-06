@@ -56,3 +56,7 @@ $RECYCLE.BIN/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Mac
+.DS_Store
+
