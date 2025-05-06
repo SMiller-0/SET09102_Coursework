@@ -6,7 +6,7 @@
    
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
-            
+            <!-- Heading -->
             <Label Text="Sensor Dashboard" 
                    FontSize="28" 
                    FontAttributes="Bold" 
@@ -19,6 +19,7 @@
 
             <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
 
+            <!-- Dashboard Action Buttons -->
             <VerticalStackLayout Spacing="10">
                 <Button Text="View All Sensors"
                         Command="{Binding ViewSensorsCommand}"
@@ -32,8 +33,6 @@
                         Command="{Binding ViewSensorStatusCommand}"
                         FontAttributes="Bold"/>
 
-
-                
                 <Button Text="Generate Sensor Report"
                         Command="{Binding SensorReportCommand}"
                         FontAttributes="Bold"/>

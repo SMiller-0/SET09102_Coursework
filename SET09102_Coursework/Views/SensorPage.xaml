@@ -8,6 +8,7 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
             
+            <!-- Header -->
             <Label Text="{Binding Sensor.Name}"
                    FontSize="28" 
                    FontAttributes="Bold" 
@@ -15,6 +16,7 @@
 
             <BoxView HeightRequest="1" BackgroundColor="Gray" />
 
+            <!-- Sensor Details Section -->
             <VerticalStackLayout Spacing="5">
                 <Label Text="ID" FontAttributes="Bold"/>
                 <Label Text="{Binding Sensor.Id}" />
@@ -38,9 +40,9 @@
                 <Label Text="{Binding Sensor.FirmwareVersion}" />
             </VerticalStackLayout>
 
-
             <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,5"/>
 
+            <!-- Action Buttons Section -->
             <VerticalStackLayout Spacing="10">
                 <Button Text="Threshold Settings"
                         Command="{Binding UpdateSettingsCommand}"

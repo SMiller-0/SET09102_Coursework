@@ -19,6 +19,7 @@
                    FontAttributes="Bold"
                    IsVisible="{Binding HasError}" />
 
+            <!-- Submit & Cancel Buttons -->
             <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
                 <Button Text="Submit" Command="{Binding SubmitCommand}" BackgroundColor="Green" TextColor="White"/>
                 <Button Text="Cancel" Command="{Binding CancelCommand}" BackgroundColor="LightGray" TextColor="Black"/>
