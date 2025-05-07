@@ -4,20 +4,38 @@ using SET09102_Coursework.Models;
 
 namespace SET09102_Coursework.Services;
 
+/// <summary>
+/// Service that provides CRUD operations for sensors and their related data.
+/// Implements ISensorService interface.
+/// </summary>
 public class SensorService : ISensorService
 {
     private readonly AppDbContext _context;
 
+    /// <summary>
+    /// Initializes a new instance of the SensorService class.
+    /// </summary>
+    /// <param name="context">Database context for accessing sensor data</param>
     public SensorService(AppDbContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Retrieves all sensor types from the database, ordered by name.
+    /// </summary>
+    /// <returns>A collection of sensor types</returns>
     public async Task<IEnumerable<SensorType>> GetSensorTypesAsync()
     {
         return await _context.SensorTypes.OrderBy(st => st.Name).ToListAsync();
     }
 
+    /// <summary>
+    /// Retrieves sensors from the database, optionally filtered by type.
+    /// Orders results with active sensors first, then by name.
+    /// </summary>
+    /// <param name="typeId">Optional sensor type ID to filter by</param>
+    /// <returns>A collection of sensors matching the criteria</returns>
     public async Task<IEnumerable<Sensor>> GetSensorsByTypeAsync(int? typeId)
     {
         try
@@ -41,6 +59,12 @@ public class SensorService : ISensorService
         }
     }
 
+    /// <summary>
+    /// Updates the firmware version of a specific sensor.
+    /// </summary>
+    /// <param name="sensorId">ID of the sensor to update</param>
+    /// <param name="newVersion">New firmware version string</param>
+    /// <returns>True if update was successful, false otherwise</returns>
     public async Task<bool> UpdateFirmwareVersionAsync(int sensorId, string newVersion)
     {
         try
@@ -58,6 +82,11 @@ public class SensorService : ISensorService
         }
     }
 
+    /// <summary>
+    /// Retrieves all settings for a specific sensor, including setting types.
+    /// </summary>
+    /// <param name="sensorId">ID of the sensor</param>
+    /// <returns>Collection of settings for the specified sensor</returns>
     public async Task<IEnumerable<Settings>> GetSensorSettingsAsync(int sensorId)
     {
         return await _context.Settings
@@ -67,6 +96,11 @@ public class SensorService : ISensorService
             .ToListAsync();
     }
 
+    /// <summary>
+    /// Updates multiple settings for a sensor in a single transaction.
+    /// </summary>
+    /// <param name="settings">Collection of settings to update</param>
+    /// <returns>True if all updates were successful, false otherwise</returns>
     public async Task<bool> UpdateSensorSettingsAsync(IEnumerable<Settings> settings)
     {
         try
