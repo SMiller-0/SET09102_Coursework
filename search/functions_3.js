@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['dashboardviewmodel_0',['DashboardViewModel',['../classSET09102__Coursework_1_1ViewModels_1_1DashboardViewModel.html#a5f191ed949530197e075574cb3d8d517',1,'SET09102_Coursework::ViewModels::DashboardViewModel']]],
+  ['deletesensorasync_1',['deletesensorasync',['../interfaceSET09102__Coursework_1_1Services_1_1ISensorService.html#ac467d6c2a3e2805ddac275dd5fee01ba',1,'SET09102_Coursework.Services.ISensorService.DeleteSensorAsync()'],['../classSET09102__Coursework_1_1Services_1_1SensorService.html#a3bab9423c3b2ab5f9cbdfe64bd96a72e',1,'SET09102_Coursework.Services.SensorService.DeleteSensorAsync()']]],
+  ['deleteticketasync_2',['deleteticketasync',['../interfaceSET09102__Coursework_1_1Services_1_1ITicketService.html#a6864df1ca3289fffd4c9aa39cde76961',1,'SET09102_Coursework.Services.ITicketService.DeleteTicketAsync()'],['../classSET09102__Coursework_1_1Services_1_1TicketService.html#a6f6f557ecf86ce41099e9dc7bc5397e5',1,'SET09102_Coursework.Services.TicketService.DeleteTicketAsync()']]],
+  ['dispose_3',['dispose',['../classSET09102__Coursework_1_1Services_1_1SensorRefreshService.html#ac824dc9f6a7c705377f43655ccaea9ec',1,'SET09102_Coursework.Services.SensorRefreshService.Dispose()'],['../classSET09102__Coursework_1_1Services_1_1TimerService.html#ac127cdf2b421623ab49fda2a9cea25fb',1,'SET09102_Coursework.Services.TimerService.Dispose()'],['../classSET09102__Coursework_1_1ViewModels_1_1SensorStatusViewModel.html#a1e35447d0184a68804f7088501c3e398',1,'SET09102_Coursework.ViewModels.SensorStatusViewModel.Dispose()']]]
+];

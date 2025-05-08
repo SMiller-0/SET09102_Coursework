@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['sensor_0',['Sensor',['../classSET09102__Coursework_1_1Models_1_1Sensor.html',1,'SET09102_Coursework::Models']]],
+  ['sensordashboardpage_1',['SensorDashboardPage',['../classSET09102__Coursework_1_1Views_1_1SensorDashboardPage.html',1,'SET09102_Coursework::Views']]],
+  ['sensordashboardviewmodel_2',['SensorDashboardViewModel',['../classSET09102__Coursework_1_1ViewModels_1_1SensorDashboardViewModel.html',1,'SET09102_Coursework::ViewModels']]],
+  ['sensorfilter_3',['SensorFilter',['../classSET09102__Coursework_1_1Models_1_1SensorFilter.html',1,'SET09102_Coursework::Models']]],
+  ['sensorfilterservice_4',['SensorFilterService',['../classSET09102__Coursework_1_1Services_1_1SensorFilterService.html',1,'SET09102_Coursework::Services']]],
+  ['sensorpage_5',['SensorPage',['../classSET09102__Coursework_1_1Views_1_1SensorPage.html',1,'SET09102_Coursework::Views']]],
+  ['sensorrefreshservice_6',['SensorRefreshService',['../classSET09102__Coursework_1_1Services_1_1SensorRefreshService.html',1,'SET09102_Coursework::Services']]],
+  ['sensorreportpage_7',['SensorReportPage',['../classSET09102__Coursework_1_1Views_1_1SensorReportPage.html',1,'SET09102_Coursework::Views']]],
+  ['sensorreportviewmodel_8',['SensorReportViewModel',['../classSET09102__Coursework_1_1ViewModels_1_1SensorReportViewModel.html',1,'SET09102_Coursework::ViewModels']]],
+  ['sensorservice_9',['SensorService',['../classSET09102__Coursework_1_1Services_1_1SensorService.html',1,'SET09102_Coursework::Services']]],
+  ['sensorsettingspage_10',['SensorSettingsPage',['../classSET09102__Coursework_1_1Views_1_1SensorSettingsPage.html',1,'SET09102_Coursework::Views']]],
+  ['sensorsettingsviewmodel_11',['SensorSettingsViewModel',['../classSET09102__Coursework_1_1ViewModels_1_1SensorSettingsViewModel.html',1,'SET09102_Coursework::ViewModels']]],
+  ['sensorstatusfilter_12',['SensorStatusFilter',['../classSET09102__Coursework_1_1Models_1_1SensorStatusFilter.html',1,'SET09102_Coursework::Models']]],
+  ['sensorstatuspage_13',['SensorStatusPage',['../classSET09102__Coursework_1_1Views_1_1SensorStatusPage.html',1,'SET09102_Coursework::Views']]],
+  ['sensorstatusviewmodel_14',['SensorStatusViewModel',['../classSET09102__Coursework_1_1ViewModels_1_1SensorStatusViewModel.html',1,'SET09102_Coursework::ViewModels']]],
+  ['sensorticket_15',['SensorTicket',['../classSET09102__Coursework_1_1Models_1_1SensorTicket.html',1,'SET09102_Coursework::Models']]],
+  ['sensortype_16',['SensorType',['../classSET09102__Coursework_1_1Models_1_1SensorType.html',1,'SET09102_Coursework::Models']]],
+  ['sensorvalidator_17',['SensorValidator',['../classSET09102__Coursework_1_1Validation_1_1SensorValidator.html',1,'SET09102_Coursework::Validation']]],
+  ['sensorviewmodel_18',['SensorViewModel',['../classSET09102__Coursework_1_1ViewModels_1_1SensorViewModel.html',1,'SET09102_Coursework::ViewModels']]],
+  ['settings_19',['Settings',['../classSET09102__Coursework_1_1Models_1_1Settings.html',1,'SET09102_Coursework::Models']]],
+  ['settingsvalidator_20',['SettingsValidator',['../classSET09102__Coursework_1_1Validation_1_1SettingsValidator.html',1,'SET09102_Coursework::Validation']]],
+  ['settingtype_21',['SettingType',['../classSET09102__Coursework_1_1Models_1_1SettingType.html',1,'SET09102_Coursework::Models']]],
+  ['stringnotnulloremptyconverter_22',['StringNotNullOrEmptyConverter',['../classSET09102__Coursework_1_1Converters_1_1StringNotNullOrEmptyConverter.html',1,'SET09102_Coursework::Converters']]]
+];

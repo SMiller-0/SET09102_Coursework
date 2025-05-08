@@ -1,0 +1,8 @@
+var searchData=
+[
+  ['updatefirmwareversionasync_0',['updatefirmwareversionasync',['../interfaceSET09102__Coursework_1_1Services_1_1ISensorService.html#ae9e957ceba2d812b5aa29b563d4dc13d',1,'SET09102_Coursework.Services.ISensorService.UpdateFirmwareVersionAsync()'],['../classSET09102__Coursework_1_1Services_1_1SensorService.html#a026873cbeae14476e09376014f38f305',1,'SET09102_Coursework.Services.SensorService.UpdateFirmwareVersionAsync()']]],
+  ['updatefirmwareviewmodel_1',['UpdateFirmwareViewModel',['../classSET09102__Coursework_1_1ViewModels_1_1UpdateFirmwareViewModel.html#a8b992206934828f71058dac6e8bf6988',1,'SET09102_Coursework::ViewModels::UpdateFirmwareViewModel']]],
+  ['updatesensorasync_2',['updatesensorasync',['../interfaceSET09102__Coursework_1_1Services_1_1ISensorService.html#af42848ef15c29fa6a3776152421f1c4e',1,'SET09102_Coursework.Services.ISensorService.UpdateSensorAsync()'],['../classSET09102__Coursework_1_1Services_1_1SensorService.html#a55546d94b789d79e73a40dbc52f819e4',1,'SET09102_Coursework.Services.SensorService.UpdateSensorAsync()']]],
+  ['updatesensorsettingsasync_3',['updatesensorsettingsasync',['../interfaceSET09102__Coursework_1_1Services_1_1ISensorService.html#a76761208953a2a34134adbc7497689b0',1,'SET09102_Coursework.Services.ISensorService.UpdateSensorSettingsAsync()'],['../classSET09102__Coursework_1_1Services_1_1SensorService.html#a8ef351bb77155579750abb644e9e1854',1,'SET09102_Coursework.Services.SensorService.UpdateSensorSettingsAsync()']]],
+  ['userviewmodel_4',['UserViewModel',['../classSET09102__Coursework_1_1ViewModels_1_1UserViewModel.html#aed9f2aff93e2bd270f312682ec35065c',1,'SET09102_Coursework::ViewModels::UserViewModel']]]
+];

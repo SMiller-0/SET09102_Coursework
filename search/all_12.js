@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['validate_0',['validate',['../interfaceSET09102__Coursework_1_1Validation_1_1ISensorValidator.html#aa844803325d386110a8803377ffc36ec',1,'SET09102_Coursework.Validation.ISensorValidator.Validate()'],['../interfaceSET09102__Coursework_1_1Validation_1_1ISettingsValidator.html#acda9d049970c3d129eadfad24bd66691',1,'SET09102_Coursework.Validation.ISettingsValidator.Validate()'],['../classSET09102__Coursework_1_1Validation_1_1SensorValidator.html#a29b4597fec926aaa568f3f5b24f4eb33',1,'SET09102_Coursework.Validation.SensorValidator.Validate()'],['../classSET09102__Coursework_1_1Validation_1_1SettingsValidator.html#a63928aba105d1378b7a1e16085aa3526',1,'SET09102_Coursework.Validation.SettingsValidator.Validate()']]],
+  ['validatecollection_1',['validatecollection',['../interfaceSET09102__Coursework_1_1Validation_1_1ISettingsValidator.html#a22f5d893e8b3aeb8f24d3f486f41f7a9',1,'SET09102_Coursework.Validation.ISettingsValidator.ValidateCollection()'],['../classSET09102__Coursework_1_1Validation_1_1SettingsValidator.html#a83baf1f22c0187ff0dc7dc274596451c',1,'SET09102_Coursework.Validation.SettingsValidator.ValidateCollection()']]],
+  ['validationresult_2',['ValidationResult',['../classSET09102__Coursework_1_1Validation_1_1ValidationResult.html',1,'SET09102_Coursework::Validation']]],
+  ['viewsensordetailscommand_3',['ViewSensorDetailsCommand',['../classSET09102__Coursework_1_1ViewModels_1_1AllSensorsViewModel.html#aba86e1b2c5d32ac8ea5a53cfc6c50882',1,'SET09102_Coursework::ViewModels::AllSensorsViewModel']]]
+];
