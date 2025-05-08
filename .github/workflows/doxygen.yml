@@ -1,0 +1,29 @@
+name: Doxygen GitHub Pages Deploy
+
+on:
+  push:
+    branches: [ TEST_Branch_Two ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: true
+    
+    - name: Install Doxygen
+      run: sudo apt-get install doxygen -y
+      
+    - name: Generate Doxygen Documentation
+      run: doxygen Doxyfile
+      
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        branch: gh-pages
+        folder: docs/html
+        token: ${{ secrets.GITHUB_TOKEN }}
+
