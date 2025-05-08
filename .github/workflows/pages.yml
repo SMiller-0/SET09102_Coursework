@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - Develop
+      - develop
 jobs:
   build:
     name: Build docs
