@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SET09102_Coursework.Views.TrendReportPage"
+             xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
+             xmlns:models="clr-namespace:SET09102_Coursework.Models"
+             Title="Trend Report">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="{Binding ReportTitle}"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}"
+                               HorizontalOptions="Center" />
+
+            <CollectionView ItemsSource="{Binding Statistics}"
+                          EmptyView="No measurement data available for this sensor.">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:MeasurementStatistic">
+                        <Frame BorderColor="Gray" 
+                               Padding="15" 
+                               Margin="0,5">
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="{Binding ParameterName, StringFormat='Parameter: {0}'}" 
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding LatestValue, StringFormat='Latest Value: {0:F2}'}" 
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}" />
+                                <Label Text="{Binding MaximumValue, StringFormat='Maximum Value: {0:F2}'}" />
+                                <Label Text="{Binding MinimumValue, StringFormat='Minimum Value: {0:F2}'}" />
+                                <Label Text="{Binding AverageValue, StringFormat='Average Value: {0:F2}'}" />
+                                <Label Text="{Binding ModeValue, StringFormat='Mode Value: {0:F2}'}" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+            <!-- Add a back button -->
+            <Button Text="Back to Sensor Report"
+                    Command="{Binding GoBackCommand}"
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+

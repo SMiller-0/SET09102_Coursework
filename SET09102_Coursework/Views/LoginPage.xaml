@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
+             x:Class="SET09102_Coursework.Views.LoginPage"
+             Shell.TabBarIsVisible="False"
+             Shell.NavBarIsVisible="False">
+
+    <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+        
+        <Image Source="sensor.png" 
+               HeightRequest="120"
+               HorizontalOptions="Center" />
+
+        <Label Text="Smart Sense Technologies"
+               FontSize="28"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="DarkBlue" />
+
+        <Label Text="Smart Monitoring for a Smarter World"
+               FontSize="16"
+               HorizontalOptions="Center"
+               TextColor="Gray" />
+
+        <!-- Email Box -->
+        <Frame CornerRadius="10"
+               BorderColor="{DynamicResource Primary}"
+               BackgroundColor="White"
+               HasShadow="True"
+               Padding="10">
+            <Entry Text="{Binding Email}" 
+                   Placeholder="Email" 
+                   Keyboard="Email"
+                   BackgroundColor="Transparent"
+                   FontSize="16" />
+        </Frame>
+
+        <!-- Password Box -->
+        <Frame CornerRadius="10"
+               BorderColor="{DynamicResource Primary}"
+               BackgroundColor="White"
+               HasShadow="False"
+               Padding="10">
+            <Entry Text="{Binding Password}" 
+                   Placeholder="Password" 
+                   IsPassword="True"
+                   BackgroundColor="Transparent"
+                   FontSize="16" />
+        </Frame>
+
+        <Button Text="Login"
+                Command="{Binding LoginCommand}" />
+
+        <Label Text="{Binding LoginError}"
+               TextColor="Red"
+               IsVisible="{Binding IsLoginFailed}" />
+    </VerticalStackLayout>
+</ContentPage>

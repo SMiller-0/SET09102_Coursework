@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SET09102_Coursework.Views.UpdateFirmwarePage"
+             Title="Update Firmware">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <!-- Header -->
+            <Label Text="{Binding Sensor.Name}"
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center"/>
+
+            <!-- Current Version -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Current Firmware Version" 
+                       FontAttributes="Bold"/>
+                <Label Text="{Binding Sensor.FirmwareVersion}" />
+            </VerticalStackLayout>
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" 
+                     BackgroundColor="Gray" />
+
+            <!-- New Version Input -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="New Firmware Version" 
+                       FontAttributes="Bold"/>
+                <Entry Text="{Binding NewVersion}"
+                       Placeholder="Enter version (e.g., 1.0.0)"/>
+                
+                <!-- Error Message -->
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="Red"
+                       IsVisible="{Binding HasError}"/>
+            </VerticalStackLayout>
+
+            <!-- Buttons -->
+            <Frame BorderColor="Gray" 
+                   Padding="15">
+                <VerticalStackLayout Spacing="10">
+                    <Button Text="Update Firmware"
+                            Command="{Binding UpdateFirmwareCommand}"
+                            BackgroundColor="{StaticResource Primary}"
+                            Margin="0,0,0,5"/>
+                    
+                    <Button Text="Cancel"
+                            Command="{Binding CancelCommand}"
+                            BackgroundColor="{StaticResource Primary}"/>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

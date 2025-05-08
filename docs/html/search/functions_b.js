@@ -1,0 +1,15 @@
+var searchData=
+[
+  ['sensordashboardviewmodel_0',['SensorDashboardViewModel',['../class_s_e_t09102___coursework_1_1_view_models_1_1_sensor_dashboard_view_model.html#a90ab080d825a5c3cc62917fdba946988',1,'SET09102_Coursework::ViewModels::SensorDashboardViewModel']]],
+  ['sensorrefreshservice_1',['SensorRefreshService',['../class_s_e_t09102___coursework_1_1_services_1_1_sensor_refresh_service.html#a41e6920aadb112fe0081b62586496242',1,'SET09102_Coursework::Services::SensorRefreshService']]],
+  ['sensorreportviewmodel_2',['SensorReportViewModel',['../class_s_e_t09102___coursework_1_1_view_models_1_1_sensor_report_view_model.html#a6434a5d1f378ef2706dce2c35efb6e9d',1,'SET09102_Coursework::ViewModels::SensorReportViewModel']]],
+  ['sensorservice_3',['SensorService',['../class_s_e_t09102___coursework_1_1_services_1_1_sensor_service.html#a0a9ccd1a30eb72a9627d3736de979098',1,'SET09102_Coursework::Services::SensorService']]],
+  ['sensorsettingsviewmodel_4',['SensorSettingsViewModel',['../class_s_e_t09102___coursework_1_1_view_models_1_1_sensor_settings_view_model.html#a80c34c29a940fc11a5c18a043ac439ec',1,'SET09102_Coursework::ViewModels::SensorSettingsViewModel']]],
+  ['sensorstatusviewmodel_5',['SensorStatusViewModel',['../class_s_e_t09102___coursework_1_1_view_models_1_1_sensor_status_view_model.html#a015c5d3e79caacf6e977a1dddad34eba',1,'SET09102_Coursework::ViewModels::SensorStatusViewModel']]],
+  ['sensorviewmodel_6',['SensorViewModel',['../class_s_e_t09102___coursework_1_1_view_models_1_1_sensor_view_model.html#ab28663a7ef059cb7dde25a51cde55bf8',1,'SET09102_Coursework::ViewModels::SensorViewModel']]],
+  ['setuser_7',['SetUser',['../class_s_e_t09102___coursework_1_1_services_1_1_current_user_service.html#a7ad5c9884a04cd24acf61ad817eb5131',1,'SET09102_Coursework.Services.CurrentUserService.SetUser()'],['../interface_s_e_t09102___coursework_1_1_services_1_1_i_current_user_service.html#a1759696e2c33a6d6585b46b5a3d4bf5d',1,'SET09102_Coursework.Services.ICurrentUserService.SetUser()']]],
+  ['start_8',['Start',['../interface_s_e_t09102___coursework_1_1_services_1_1_i_timer_service.html#aa3549f55f4d4d25eb584b891113ab12c',1,'SET09102_Coursework.Services.ITimerService.Start()'],['../class_s_e_t09102___coursework_1_1_services_1_1_timer_service.html#a396eb9a7a4cc9e6076349ea9021934ed',1,'SET09102_Coursework.Services.TimerService.Start()']]],
+  ['startautorefresh_9',['StartAutoRefresh',['../class_s_e_t09102___coursework_1_1_services_1_1_sensor_refresh_service.html#a7ce9ab63fea59aade37b95065b637416',1,'SET09102_Coursework::Services::SensorRefreshService']]],
+  ['stop_10',['Stop',['../interface_s_e_t09102___coursework_1_1_services_1_1_i_timer_service.html#aea2a94015b44f2a9cee79a893ce2a13d',1,'SET09102_Coursework.Services.ITimerService.Stop()'],['../class_s_e_t09102___coursework_1_1_services_1_1_timer_service.html#a1a325e6ca5414c86891b957adea8c225',1,'SET09102_Coursework.Services.TimerService.Stop()']]],
+  ['success_11',['Success',['../class_s_e_t09102___coursework_1_1_validation_1_1_validation_result.html#a10cba2b413cf9680b31e7c7aa13f36ae',1,'SET09102_Coursework::Validation::ValidationResult']]]
+];

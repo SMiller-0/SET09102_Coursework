@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
+             x:Class="SET09102_Coursework.Views.SensorPage"
+             Title="Sensor Details">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            
+            <!-- Header -->
+            <Label Text="{Binding Sensor.Name}"
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center"/>
+
+            <BoxView HeightRequest="1" BackgroundColor="Gray" />
+
+            <!-- Sensor Details Section -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="ID" FontAttributes="Bold"/>
+                <Label Text="{Binding Sensor.Id}" />
+
+                <Label Text="Name" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding Sensor.Name}" />
+
+                <Label Text="Type" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding Sensor.SensorType.Name}" />
+
+                <Label Text="Longitude" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding Sensor.Longitude}" />
+
+                <Label Text="Latitude" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding Sensor.Latitude}" />
+
+                <Label Text="Active Status" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding Sensor.IsActive}" />
+
+                <Label Text="Firmware Version" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding Sensor.FirmwareVersion}" />
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,5"/>
+
+            <!-- Action Buttons Section -->
+            <VerticalStackLayout Spacing="10">
+                <Button Text="Threshold Settings"
+                        Command="{Binding UpdateSettingsCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        Margin="0,0,0,5"/>
+                         
+                <Button Text="Edit Sensor"
+                        Command="{Binding EditSensorCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        Margin="0,0,0,5"
+                        IsVisible="{Binding IsEnvScientist}"/>
+                    
+                <Button Text="Update Firmware"
+                        Command="{Binding UpdateFirmwareCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        IsVisible="{Binding IsAdmin}"/>
+
+                <Button Text="Report Issue"
+                        Command="{Binding CreateTicketCommand}"
+                        BackgroundColor="IndianRed"
+                        TextColor="White"/>
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SET09102_Coursework.Views.SensorDashboardPage"
+             Title="Sensor Dashboard">
+   
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <!-- Heading -->
+            <Label Text="Sensor Dashboard" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center"/>
+
+            <Label Text="Monitor and manage your sensor network"
+                   FontSize="16"
+                   HorizontalOptions="Center"
+                   TextColor="#666666"/>
+
+            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
+
+            <!-- Dashboard Action Buttons -->
+            <VerticalStackLayout Spacing="10">
+                <Button Text="View All Sensors"
+                        Command="{Binding ViewSensorsCommand}"
+                        FontAttributes="Bold"/>
+                
+                <Button Text="Add New Sensor"
+                        Command="{Binding AddNewSensorCommand}"
+                        FontAttributes="Bold"/>
+
+                <Button Text="View Sensor Status"
+                        Command="{Binding ViewSensorStatusCommand}"
+                        FontAttributes="Bold"/>
+
+                <Button Text="Generate Sensor Report"
+                        Command="{Binding SensorReportCommand}"
+                        FontAttributes="Bold"/>
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+

@@ -56,3 +56,10 @@ $RECYCLE.BIN/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+SET09102_Coursework.Test/bin/
+SET09102_Coursework.Test/obj/
+
+# MacOS
+**/.DS_Store
+*.DS_Store

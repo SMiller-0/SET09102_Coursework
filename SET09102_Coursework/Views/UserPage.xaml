@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SET09102_Coursework.ViewModels"
+             xmlns:converters="clr-namespace:SET09102_Coursework.Converters"
+             x:Class="SET09102_Coursework.Views.UserPage"
+             Title="User Details">
+
+    <!-- Converters used for conditional visibility -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+ <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Header -->
+            <Label Text="{Binding FullName}"
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center"/>
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" BackgroundColor="Gray" />
+
+            <!-- Personal Information -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="First Name" FontAttributes="Bold"/>
+                <Label Text="{Binding FirstName}" />
+
+                <ContentView IsVisible="{Binding MiddleName, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Middle Name" FontAttributes="Bold" Margin="0,10,0,0"/>
+                        <Label Text="{Binding User.MiddleName}" />
+                    </VerticalStackLayout>
+                </ContentView>
+
+                <Label Text="Surname" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding Surname}" />
+
+                <Label Text="Role" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding RoleName, StringFormat='{}{0}', TargetNullValue='N/A'}" />
+
+                <Label Text="Email" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding Email}" />
+
+                <ContentView IsVisible="{Binding User.PhoneNumber, Converter={StaticResource HasTextConverter}}">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Phone Number" FontAttributes="Bold" Margin="0,10,0,0"/>
+                        <Label Text="{Binding PhoneNumber}" />
+                    </VerticalStackLayout>
+                </ContentView>
+             
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10"/>
+
+            <!-- Address Information -->
+            <Label Text="Address" 
+                    FontSize="22" 
+                    FontAttributes="Bold" 
+                    Margin="0,10,0,0" />
+
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Street" FontAttributes="Bold"/>
+                <Label Text="{Binding Street}" />
+
+                <Label Text="City" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding City}" />
+
+                <Label Text="Postcode" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Label Text="{Binding Postcode}" />
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,20"/>
+
+            <!-- Admin-only Buttons -->
+            <ContentView IsVisible="{Binding IsAdmin}">
+                <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                    <Button Text="Edit User"
+                            Command="{Binding EditCommand}" />
+                    <Button Text="Delete User"
+                            Command="{Binding DeleteCommand}"
+                            BackgroundColor="IndianRed"
+                            TextColor="White" />
+                </HorizontalStackLayout>
+            </ContentView>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

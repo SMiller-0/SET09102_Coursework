@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SET09102_Coursework.Views.EditUserPage"
+             Title="EditUserPage">
+    <ScrollView >
+        <VerticalStackLayout Padding="20" Spacing="10">
+            <Label Text="{Binding FullName}" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" BackgroundColor="Gray" />
+
+            <!-- Form Fields -->
+            <Entry Text="{Binding FirstName}"   Placeholder="First Name" />
+            <Entry Text="{Binding MiddleName}"  Placeholder="Middle Name" />
+            <Entry Text="{Binding Surname}"     Placeholder="Surname" />
+            <Entry Text="{Binding Email}"       Placeholder="Email"     Keyboard="Email" />
+            <Entry Text="{Binding PhoneNumber}" Placeholder="Phone"     Keyboard="Telephone" />
+            <Entry Text="{Binding Street}"      Placeholder="Street" />
+            <Entry Text="{Binding City}"        Placeholder="City" />
+            <Entry Text="{Binding Postcode}"    Placeholder="Postcode" />
+
+            <Label Text="Role" />
+            <Picker ItemsSource="{Binding AvailableRoles}" 
+                    ItemDisplayBinding="{Binding RoleName}"
+                    SelectedItem="{Binding SelectedRole}" />
+
+            <!-- Buttons -->
+            <ContentView IsVisible="{Binding IsAdmin}">
+                <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                    <Button Text="Save Changes"
+                            Command="{Binding SaveCommand}"
+                            BackgroundColor="Green"
+                            TextColor="White" />
+                    <Button Text="Cancel"
+                            Command="{Binding CancelCommand}"
+                            BackgroundColor="IndianRed"
+                            TextColor="White" />
+                </HorizontalStackLayout>
+            </ContentView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
