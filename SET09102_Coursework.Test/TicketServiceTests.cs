@@ -343,5 +343,30 @@ namespace SET09102_Coursework.Test
             // Assert: returns false
             Assert.False(ok);
         }
+
+        /// <summary>
+        /// GetTicketsBySensorAsync should return tickets filtered by sensor ID.
+        /// </summary>
+        [Fact]
+        public async Task GetTicketsBySensorAsync_ReturnsOnlyThatSensor()
+        {   
+            // Arrange: seed
+            var opts = NewContextOptions();
+            using (var seed = new AppDbContext(opts))
+            {
+                seed.SensorTickets.AddRange(
+                new SensorTicket { Id=1, SensorId=42, IssueDescription = "Testing",CreatedAt=DateTime.UtcNow},
+                new SensorTicket { Id=2, SensorId=99, IssueDescription = "Testing",CreatedAt=DateTime.UtcNow});
+                await seed.SaveChangesAsync();
+            }
+            using var ctx = new AppDbContext(opts);
+            var svc = new TicketService(ctx);
+            // Act: retrieve tickets for a specific sensor
+            var tickets = (await svc.GetTicketsBySensorAsync(42)).ToList();
+            // Assert: only tickets for sensor 42 should be returned
+            Assert.Single(tickets);
+            Assert.Equal(1, tickets[0].Id);
+        }
+
     }
 }
